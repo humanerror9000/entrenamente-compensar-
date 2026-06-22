@@ -595,8 +595,8 @@ body::before{display:none;}
   <div style="width:88px;height:88px;border-radius:28px;background:var(--teal-d);
     border:1.5px solid var(--teal-b);display:flex;align-items:center;justify-content:center;
     font-size:42px;margin-bottom:28px;box-shadow:0 0 40px rgba(46,207,184,0.15);">👁</div>
-  <div style="font-size:14px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
-    color:var(--teal);margin-bottom:10px;">Ejercicio 1 de 3</div>
+  <div id="first-intro-pos" style="font-size:14px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+    color:var(--teal);margin-bottom:10px;">Ejercicio 3 de 3</div>
   <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,7vw,44px);
     font-weight:300;color:var(--text);line-height:1.2;margin-bottom:16px;">
     Saltos <em style="color:var(--teal);font-style:italic;">Visuales</em>
@@ -1751,6 +1751,14 @@ function dismissDrillIntro(n) {
   if(params.get('first') === '1') {
     document.getElementById('ready-screen').classList.add('hidden');
     document.getElementById('first-intro').style.display = 'flex';
+    try {
+      const q = JSON.parse(localStorage.getItem('em_session_queue')||'null');
+      const posEl = document.getElementById('first-intro-pos');
+      if(q && posEl) {
+        const idx = q.keys.indexOf('saltos');
+        if(idx > -1) posEl.textContent = 'Ejercicio ' + (idx+1) + ' de ' + q.keys.length;
+      }
+    } catch(e) {}
   }
 })();
 
