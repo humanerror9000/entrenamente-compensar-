@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente en Forma — Saltos Visuales</title>
+<script src="brand.js"></script>
+<style>
+:root {
+  --bg:#F8F7FF; --bg2:#F0EEF8; --card:#FFFFFF; --card2:#F4F2FC;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --text:#1A1830; --text2:#4A4468; --text3:#5C5880;
+  /* Brand violet — primary accent */
+  --violet:#6C5CE7; --violet-d:rgba(108,92,231,0.10); --violet-b:rgba(108,92,231,0.25);
+  --violet-deep:#534AB7;
+  /* Teal — action/success/interactive */
+  --teal:#0A7A6A; --teal-d:rgba(10,122,106,0.10); --teal-b:rgba(10,122,106,0.25);
+  /* Supporting palette */
+  --gold:#C9A84C; --gold-l:rgba(201,168,76,0.12); --gold-b:rgba(201,168,76,0.30);
+  --amber:#F5A623; --amber-d:rgba(245,166,35,0.12); --amber-b:rgba(245,166,35,0.28);
+  --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
+  --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
+  --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --muted:#4A4860;
+  --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding-bottom: 60px;
+}
+
+/* ── Header ── */
+header {
+  width: 100%;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
+}
+.logo { font-size: 14px; font-weight: 700; letter-spacing: 0.03em; }
+.logo em { color: var(--amber); font-style: normal; }
+.ex-badge {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--teal);
+  background: var(--teal-d); border: 1px solid rgba(46,207,184,0.2);
+  padding: 4px 12px; border-radius: 20px;
+}
+.stat-row { display: flex; gap: 16px; }
+.stat { font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 5px; }
+.stat b { color: var(--amber); font-size: 13px; }
+
+/* ── Main ── */
+main { width: 100%; max-width: 700px; padding: 24px 16px 0; display: flex; flex-direction: column; gap: 18px; }
+
+/* ── Session progress ── */
+.session-bar { display: flex; gap: 5px; }
+.seg { flex: 1; height: 4px; border-radius: 2px; background: var(--card2); transition: background 0.4s; }
+.seg.done { background: var(--teal); }
+.seg.active { background: var(--amber); }
+
+/* ── Drill selector ── */
+.drill-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.dtab {
+  padding: 10px 8px; border-radius: 10px;
+  border: 1px solid var(--border2); background: var(--card);
+  cursor: pointer; text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px; font-weight: 600; color: var(--text3);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  transition: all 0.2s;
+}
+.dtab:hover { border-color:var(--teal);color:var(--text);background:var(--teal-d); }
+.dtab.active { background: var(--purple-d); border-color:var(--teal);color:var(--text);background:var(--teal-d); }
+.dtab .icon { font-size: 18px; display: block; margin-bottom: 4px; }
+
+/* ── Cards ── */
+.drill-card {
+  background: var(--card); border-radius: var(--r);
+  border: 1px solid var(--border2);
+  overflow: hidden; display: none;
+}
+.drill-card.active { display:flex; flex-direction:column; min-height:100dvh; height:100dvh; position:fixed; inset:0; overflow:hidden; z-index:10; background:var(--bg); }
+
+.card-head {
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.card-head-left .title { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+.card-head-left .sub { font-size: 12px; color: var(--text2); line-height: 1.5; max-width: 380px; }
+.pills { display: flex; gap: 6px; margin-top: 8px; }
+.pill { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; }
+.p-teal { background: var(--teal-d); color: var(--teal); border: 1px solid rgba(46,207,184,0.2); }
+.p-amber { background: var(--amber-d); color: var(--amber); border: 1px solid rgba(245,200,66,0.2); }
+.p-purple { background: var(--purple-d); color: var(--purple); border: 1px solid rgba(155,127,255,0.2); }
+.p-coral { background: var(--coral-d); color: var(--coral); border: 1px solid rgba(255,107,91,0.2); }
+
+.live-stat { text-align: right; }
+.live-stat .val { font-size: 22px; font-weight: 700; color: var(--teal); font-variant-numeric: tabular-nums; }
+.live-stat .lbl { font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ═══════════════════════════════
+   DRILL 1 — Horizontal jump targets
+   ═══════════════════════════════ */
+.jump-arena { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; gap:20px; width:100%; }
+.jump-track {
+  width: 100%; position: relative;
+  height: 72px; display: flex; align-items: center;
+  box-sizing: border-box; padding: 0 26px;
+}
+.jump-rail {
+  position: absolute; left: 0; right: 0; top: 50%;
+  height: 1px; background: var(--border2);
+}
+.jump-target {
+  position: absolute; top: 50%; transform: translate(-50%, -50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; user-select: none;
+  border: 2px solid transparent;
+}
+.jump-target.waiting {
+  background: var(--card2); border-color: var(--border2);
+  color: var(--text3);
+}
+.jump-target.active-target {
+  background: var(--amber-d); border-color: var(--amber);
+  color: var(--amber);
+  box-shadow: 0 0 0 4px rgba(245,200,66,0.1);
+  animation: pulse-target 0.8s ease-in-out infinite alternate;
+}
+.jump-target.hit {
+  background: var(--green-d); border-color: var(--green);
+  color: var(--green);
+}
+.jump-target.miss {
+  background: var(--coral-d); border-color: var(--coral);
+  color: var(--coral);
+}
+@keyframes pulse-target { from { box-shadow: 0 0 0 3px rgba(245,200,66,0.1); } to { box-shadow: 0 0 0 8px rgba(245,200,66,0.05); } }
+
+.jump-instruction {
+  font-size: 13px; color: var(--text2); text-align: center; line-height: 1.5;
+}
+.jump-instruction strong { color: var(--amber); }
+.rt-display {
+  font-size: 28px; font-weight: 700; color: var(--teal);
+  font-variant-numeric: tabular-nums;
+}
+.rt-label { font-size: 11px; color: var(--text3); letter-spacing: 0.06em; margin-top: -4px; }
+
+/* ═══════════════════════════════
+   DRILL 2 — Return sweep
+   ═══════════════════════════════ */
+.sweep-arena { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:16px 24px 8px; gap:8px; overflow:hidden; min-height:0; }
+.sweep-text-display { width:100%; max-width:560px; font-family:'Poppins',sans-serif; font-size:16px; line-height:1.8; color:var(--text); overflow:hidden; flex:1; min-height:0; display:flex; flex-direction:column; justify-content:flex-end; }
+@media (max-width: 600px) {
+  .sweep-text-display { font-size: 14px; line-height: 1.7; }
+}
+.sweep-line { display: block; margin-bottom: 4px; white-space: pre-wrap; }
+.sweep-word {
+  display: inline; border-radius: 3px;
+  transition: background 0.1s, color 0.1s;
+  padding: 1px 2px;
+}
+.sweep-word.current-word {
+  background: var(--amber-d); color: var(--amber);
+  outline: 1px solid rgba(245,200,66,0.3);
+}
+.sweep-word.read { color: var(--text3); }
+.sweep-word.line-start { color: var(--teal); }
+
+.sweep-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding:14px 20px 28px; border-top:1px solid var(--border); background:var(--bg); }
+.sweep-info { font-size: 12px; color: var(--text3); }
+.sweep-info b { color: var(--text2); }
+
+/* ═══════════════════════════════
+   DRILL 3 — Span digit scan
+   ═══════════════════════════════ */
+.span-arena { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; gap:16px; }
+.span-grid {
+  display: grid; gap: 10px; width: 100%;
+  max-width: 540px;
+}
+.span-cell {
+  aspect-ratio: 1; border-radius: 10px;
+  background: var(--card2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; user-select: none;
+  color: var(--text);
+}
+.span-cell:hover { border-color: var(--border2); }
+.span-cell.target-cell {
+  background: var(--purple-d); border-color: var(--purple);
+  color: var(--purple);
+}
+.span-cell.correct-cell {
+  background: var(--green-d); border-color: var(--green);
+  color: var(--green);
+}
+.span-cell.wrong-cell {
+  background: var(--coral-d); border-color: var(--coral);
+  color: var(--coral);
+}
+.span-cell.revealed { opacity: 0.35; }
+.span-prompt {
+  font-size: 14px; color: var(--text2); text-align: center;
+  max-width: 400px; line-height: 1.5;
+}
+.span-prompt strong { color: var(--amber); }
+.span-target-display {
+  font-family: 'Fraunces', serif; font-size: 42px; font-weight: 600;
+  color: var(--amber); letter-spacing: 0.08em;
+  text-align: center;
+}
+
+/* ═══════════════════════════════
+   DRILL 4 — King-Devick style number scan
+   ═══════════════════════════════ */
+.kd-arena { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; gap:16px; }
+.kd-board {
+  display: flex; flex-direction: column; gap: 14px;
+  margin-bottom: 18px;
+}
+.kd-row {
+  display: flex; justify-content: space-between; align-items: center;
+  position: relative;
+}
+.kd-row::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 50%;
+  height: 1px; background: var(--border); z-index: 0;
+}
+.kd-num {
+  width: 48px; height: 48px; border-radius: 8px;
+  background: var(--card2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600;
+  cursor: pointer; z-index: 1; transition: all 0.12s; user-select: none;
+  color: var(--text);
+}
+.kd-num:hover { border-color: var(--border2); }
+.kd-num.kd-active { background: var(--purple-d); border-color:var(--teal);color:var(--text);background:var(--teal-d); }
+.kd-num.kd-hit { background: var(--green-d); border-color: var(--green); color: var(--green); }
+.kd-num.kd-error { background: var(--coral-d); border-color: var(--coral); color: var(--coral); }
+.kd-instruction { font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.5; }
+.kd-instruction strong { color: var(--text); }
+.kd-stats { display: flex; gap: 14px; }
+.kd-stat { background: var(--card2); border-radius: 10px; padding: 10px 14px; border: 1px solid var(--border); }
+.kd-stat .v { font-size: 20px; font-weight: 700; color: var(--teal); }
+.kd-stat .l { font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 1px; }
+
+/* ── Shared controls ── */
+.drill-footer {
+  padding: 12px 20px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.btn {
+  font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600;
+  padding: 8px 16px; border-radius: 9px; border: none; cursor: pointer;
+  letter-spacing: 0.03em; transition: all 0.15s;
+}
+.btn-teal { background: var(--teal); color: var(--bg); }
+.btn-teal:hover { opacity: 0.88; }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover { border-color: var(--border2); color: var(--text); }
+.btn-amber { background: var(--amber); color: var(--bg); }
+.btn-amber:hover { opacity: 0.88; }
+
+/* ── Progress/feedback bar ── */
+.fb-bar {
+  height: 3px; width: 100%;
+  background: var(--card2);
+}
+.fb-fill { height: 100%; transition: width 0.3s ease, background 0.3s; border-radius: 0; }
+
+/* ── Results panel ── */
+.results-panel {
+  display: none; padding: 20px;
+  flex-direction: column; gap: 14px;
+}
+.results-panel.show { display: flex; }
+.result-metric { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--card2); border-radius: 10px; border: 1px solid var(--border); }
+.result-metric .label { font-size: 12px; color: var(--text2); }
+.result-metric .value { font-size: 16px; font-weight: 700; }
+.insight { padding: 12px 15px; background: var(--purple-d); border: 1px solid rgba(155,127,255,0.2); border-radius: 10px; font-size: 13px; color: var(--text2); line-height: 1.6; }
+.insight strong { color: var(--purple); }
+
+/* ── Science note ── */
+.sci {
+  background: var(--card); border: 1px solid var(--border2); border-radius: var(--r);
+  padding: 16px 20px; font-size: 12px; color: var(--text2); line-height: 1.7;
+}
+.sci-hd { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVENESS — applied globally
+   ═══════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Base text scale up */
+  body { font-size: 16px; }
+
+  /* Header: hide XP bar and secondary stats on very small screens */
+  .xp-bar-wrap { display: none !important; }
+  header { padding: 12px 16px !important; }
+
+  /* Main container: full bleed with comfortable padding */
+  main { padding: 16px 12px 0 !important; gap: 14px !important; }
+
+  /* Cards: reduce padding so content breathes */
+  .chead, .card-top { padding: 14px 16px 12px !important; }
+  .ctitle, .card-title { font-size: 17px !important; }
+  .csub, .card-sub { font-size: 14px !important; }
+
+  /* Controls grid: single column on mobile */
+  .controls-grid { grid-template-columns: 1fr !important; padding: 14px 16px !important; }
+
+  /* Question options: bigger tap targets */
+  .q-opt, .qopt, .copt, .ropt { 
+    padding: 14px 16px !important; 
+    font-size: 15px !important; 
+    min-height: 48px !important;
+  }
+
+  /* RSVP word: bigger on mobile */
+  .rsvp-pre, .rsvp-focal, .rsvp-post, .rsvp-word-full { font-size: 36px !important; }
+  .rsvp-phrase { font-size: 22px !important; line-height: 1.4 !important; }
+  .rsvp-viewport { height: 180px !important; padding: 0 16px !important; }
+
+  /* Buttons: full width on mobile where stacked */
+  .cfooter, .q-footer, .drill-footer { 
+    padding: 12px 14px !important; 
+    flex-wrap: wrap !important; 
+    gap: 8px !important;
+  }
+  .btn { font-size: 14px !important; padding: 11px 16px !important; min-height: 44px !important; }
+  .btn-sm { font-size: 13px !important; padding: 10px 14px !important; }
+  .start-btn { font-size: 16px !important; padding: 16px !important; }
+
+  /* Memory slots: 2 col max */
+  .memory-slots { grid-template-columns: 1fr 1fr !important; }
+
+  /* Recall grid: single col on narrow phones */
+  .recall-grid { grid-template-columns: 1fr !important; }
+
+  /* Word flash display */
+  .word-big { font-size: 34px !important; }
+  .mem-item { font-size: 38px !important; }
+
+  /* n-back grid cells */
+  .vis-grid { width: 192px !important; gap: 6px !important; }
+  .cell { width: 56px !important; height: 56px !important; }
+
+  /* Letter display */
+  .letter-display { font-size: 42px !important; }
+
+  /* Mode/tab grids */
+  .mode-grid { grid-template-columns: 1fr !important; }
+  .mode-tabs { grid-template-columns: 1fr !important; }
+  .task-tabs { grid-template-columns: 1fr !important; }
+
+  /* Pillar section padding on index */
+  .pillar, .section-label, .divider { padding-left: 16px !important; padding-right: 16px !important; }
+
+  /* Results boxes */
+  .res-top, .res-grid { gap: 8px !important; }
+  .res-box .rv, .res-big .rv { font-size: 32px !important; }
+
+  /* Sentence display in Contrarreloj */
+  .sentence-display { font-size: 16px !important; line-height: 1.8 !important; }
+  .reading-area { padding: 18px 16px 14px !important; }
+
+  /* Recall slots in Memoria Activa */
+  .recall-slot { min-width: 44px !important; height: 46px !important; font-size: 12px !important; }
+  .recall-area { padding: 14px 14px 16px !important; }
+  .keyboard { gap: 5px !important; }
+  .key { padding: 10px 5px !important; font-size: 14px !important; }
+
+  /* Equation display */
+  .equation-display { font-size: 26px !important; }
+
+  /* Sent display in Contrarreloj */
+  .sent-display { font-size: 18px !important; }
+
+  /* Tutorial steps */
+  .tut-body { padding: 14px 16px !important; font-size: 14px !important; }
+  .tut-footer { padding: 12px 16px !important; }
+  .tut-head { padding: 10px 16px !important; }
+
+  /* Stats header: smaller */
+  .hstats { gap: 10px !important; }
+  .hstat { font-size: 11px !important; }
+  .hstat b { font-size: 12px !important; }
+
+  /* Science note collapsible */
+  .sci-toggle-btn { font-size: 13px !important; }
+}
+
+/* Collapsible science note */
+.sci-details {
+  background: var(--card, #fff);
+  border: 1.5px solid var(--border2, rgba(0,0,0,0.12));
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.sci-details summary {
+  padding: 13px 18px;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; list-style: none;
+  display: flex; align-items: center; justify-content: space-between;
+  color: var(--muted, #888); letter-spacing: 0.03em;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.sci-details summary::-webkit-details-marker { display: none; }
+.sci-details summary::after {
+  content: '▸';
+  font-size: 11px; transition: transform 0.2s;
+  color: var(--muted, #888);
+}
+.sci-details[open] summary::after { transform: rotate(90deg); }
+.sci-details[open] summary {
+  border-bottom: 1.5px solid var(--border, rgba(0,0,0,0.08));
+}
+.sci-details-body {
+  padding: 14px 18px 16px;
+  font-size: 13px; color:var(--text); line-height: 1.7;
+}
+@media (max-width: 640px) {
+  .sci-details summary { font-size: 14px !important; padding: 14px 16px !important; }
+  .sci-details-body { font-size: 14px !important; padding: 14px 16px 16px !important; }
+}
+
+body::before{display:none;}
+
+/* ── Shared design system classes ── */
+.logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
+.logo em{color:var(--gold);font-style:italic;}
+.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.hdr-back:hover{color:var(--text2);}
+.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:13px;}
+.instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
+.instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
+.instr-text strong{color:var(--text);font-weight:600;}
+.card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary::-webkit-details-marker{display:none;}
+.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details[open] summary::after{transform:rotate(90deg);}
+.sci-details[open] summary{border-bottom:1px solid var(--border);}
+.sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
+.sci-body strong,.sci-details-body strong{color:var(--text);}
+
+
+/* ── Ready Screen ── */
+.ready-screen {
+  position:fixed; inset:0; z-index:200;
+  background:var(--bg);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:32px 24px; text-align:center;
+  overflow:hidden;
+}
+.ready-screen.hidden { display:none; }
+.ready-screen::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
+@keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-title {
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(32px,8vw,48px); font-weight:300;
+  color:var(--text); line-height:1.1; margin-bottom:12px;
+}
+.ready-title em { color:var(--teal); font-style:italic; }
+.ready-sub{font-size:19px;color:var(--text2);line-height:1.65;text-align:center;margin-bottom:24px;max-width:320px;}
+.ready-sub strong { color:var(--text); font-weight:600; }
+
+/* Animation preview box */
+.ready-preview {
+  width:100%; max-width:340px;
+  background:var(--card); border:1px solid var(--border2);
+  border-radius:16px; overflow:hidden;
+  margin-bottom:28px; min-height:110px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.preview-label {
+  position:absolute; top:10px; left:14px;
+  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  text-transform:uppercase; color:var(--text3);
+}
+.preview-inner {
+  padding:20px 24px; width:100%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+
+.ready-step-text strong { color:var(--text); font-weight:600; }
+
+.ready-btn {
+  width:100%; padding:17px;
+  background:var(--teal); color:var(--bg);
+  border:none; border-radius:13px; cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  font-size:17px; font-weight:700; letter-spacing:0.02em;
+  transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+  margin-bottom:14px;
+}
+.ready-btn:hover { opacity:0.88; transform:translateY(-1px); }
+.ready-btn:active { transform:translateY(0); }
+.ready-hint {
+  font-size:16px; color:var(--text3); line-height:1.5;
+}
+
+@media(max-width:600px) {
+  .ready-screen { padding:24px 16px; }
+  .ready-title { font-size:34px; }
+  .ready-sub { font-size:16px; }
+  .ready-steps { flex-direction:column; gap:8px; }
+  .ready-btn { font-size:16px; padding:16px; }
+}
+
+
+/* ── Brand logo ── */
+.logo, .brand-name {
+  font-family: 'Fredoka', 'Poppins', sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text); letter-spacing: -0.01em;
+  display: flex; align-items: center;
+}
+.logo em, .brand-name em {
+  color: var(--violet); font-style: italic;
+}
+/* ── Primary button — violet ── */
+.btn-teal, .ready-btn {
+  background: var(--violet-deep) !important;
+  color: #fff !important;
+}
+.btn-teal:hover, .ready-btn:hover {
+  background: var(--violet) !important;
+  opacity: 1 !important;
+}
+/* Keep teal for success/feedback states */
+.btn-teal.btn-success { background: var(--teal) !important; }
+
+
+/* Session next button — shown only during session flow */
+.session-next-btn {
+  display: none;
+  width: 100%;
+  padding: 16px;
+  background: var(--violet-deep);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-family: 'Fredoka', 'Poppins', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.session-next-btn:hover { background: var(--violet); }
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<main id="main-content">
+
+<!-- First-time intro screen -->
+<div id="first-intro" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:200;
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 28px;text-align:center;">
+  <div style="width:88px;height:88px;border-radius:28px;background:var(--teal-d);
+    border:1.5px solid var(--teal-b);display:flex;align-items:center;justify-content:center;
+    font-size:42px;margin-bottom:28px;box-shadow:0 0 40px rgba(46,207,184,0.15);">👁</div>
+  <div style="font-size:14px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+    color:var(--teal);margin-bottom:10px;">Ejercicio 1 de 3</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,7vw,44px);
+    font-weight:300;color:var(--text);line-height:1.2;margin-bottom:16px;">
+    Saltos <em style="color:var(--teal);font-style:italic;">Visuales</em>
+  </div>
+  <div style="font-size:16px;color:var(--text2);line-height:1.7;max-width:300px;margin-bottom:12px;">
+    Empecemos con este ejercicio que entrena el <strong style="color:var(--text);">movimiento de tus ojos</strong> — la base de una lectura más rápida y fluida. Un metrónomo marcará el ritmo.
+  </div>
+  <div style="font-size:16px;color:var(--text3);margin-bottom:36px;">~3 minutos · Sin presión</div>
+  <button onclick="dismissFirstIntro()" style="width:100%;max-width:340px;padding:18px;
+    background:var(--teal);color:#0C0C10;border:none;border-radius:14px;
+    font-family:'Fredoka','DM Sans',sans-serif;font-size:18px;font-weight:600;
+    cursor:pointer;letter-spacing:0.01em;">
+    ▶ Comenzar
+  </button>
+</div>
+
+<div class="ready-screen" id="ready-screen">
+  <div class="ready-inner">
+    <div class="ready-title">Saltos <em>Visuales</em></div>
+    <div class="ready-sub">Sigue el punto con los ojos y tócalo cuando se ilumine al ritmo del metrónomo.</div>
+
+    <!-- Static circle track preview -->
+    <div style="width:100%;max-width:340px;background:var(--card);border:1px solid var(--border2);
+      border-radius:14px;padding:28px 20px;margin-bottom:28px;position:relative;">
+      <!-- Rail -->
+      <div style="position:relative;height:56px;display:flex;align-items:center;">
+        <div style="position:absolute;left:0;right:0;height:2px;background:var(--border2);border-radius:1px;"></div>
+        <!-- Waiting circle -->
+        <div style="position:absolute;left:8%;transform:translateX(-50%);
+          width:44px;height:44px;border-radius:50%;background:var(--card2);
+          border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;
+          font-family:'Poppins',sans-serif;font-size:16px;font-weight:500;color:var(--text3);">A</div>
+        <!-- Active (amber) circle -->
+        <div style="position:absolute;left:40%;transform:translateX(-50%);
+          width:44px;height:44px;border-radius:50%;background:rgba(245,166,35,0.15);
+          border:2px solid var(--amber);display:flex;align-items:center;justify-content:center;
+          font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--amber);
+          box-shadow:0 0 0 6px rgba(245,166,35,0.08);">E</div>
+        <!-- Waiting circle -->
+        <div style="position:absolute;left:72%;transform:translateX(-50%);
+          width:44px;height:44px;border-radius:50%;background:var(--card2);
+          border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;
+          font-family:'Poppins',sans-serif;font-size:16px;font-weight:500;color:var(--text3);">I</div>
+        <!-- Waiting circle -->
+        <div style="position:absolute;left:92%;transform:translateX(-50%);
+          width:44px;height:44px;border-radius:50%;background:var(--card2);
+          border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;
+          font-family:'Poppins',sans-serif;font-size:16px;font-weight:500;color:var(--text3);">O</div>
+      </div>
+      <div style="text-align:center;margin-top:14px;font-size:14px;color:var(--text3);">
+        Toca el círculo <strong style="color:var(--amber);">dorado</strong> cuando se ilumine
+      </div>
+    </div>
+
+    <button class="ready-btn" onclick="dismissReady()">▶ Empecemos</button>
+  </div>
+</div>
+<script>
+// ── Age-based speed utilities ──
+function getBaseWpm(age) {
+  age = age || 60;
+  if (age < 30) return 250;
+  if (age < 40) return 230;
+  if (age < 50) return 210;
+  if (age < 60) return 185;
+  if (age < 70) return 160;
+  if (age < 80) return 140;
+  return 120;
+}
+function getUserAge() {
+  try { return parseInt(JSON.parse(localStorage.getItem('em_user')||'{}').age)||60; } catch(e){ return 60; }
+}
+
+// ── Metronome engine (Web Audio API) ──
+// Tempo derived from age-based WPM: each tick = one saccade
+// Average words per fixation ~1.5, so saccades/min ≈ wpm / 1.5
+let _metronomeOn = false;
+let _metronomeInterval = null;
+let _audioCtx = null;
+let jMetronomeInterval = null; // declared here so stopMetronome can reference it
+
+function getMetronomeBpm() {
+  const wpm = getBaseWpm(getUserAge());
+  return Math.round(wpm / 1.5); // saccades per minute
+}
+
+function playTick() {
+  try {
+    if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = _audioCtx.createOscillator();
+    const gain = _audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(_audioCtx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, _audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.15, _audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, _audioCtx.currentTime + 0.08);
+    osc.start(_audioCtx.currentTime);
+    osc.stop(_audioCtx.currentTime + 0.08);
+  } catch(e) {}
+}
+
+function startMetronome() {
+  stopMetronome();
+  const bpm = getMetronomeBpm();
+  const ms = Math.round(60000 / bpm);
+  playTick();
+  _metronomeInterval = setInterval(playTick, ms);
+}
+
+function stopMetronome() {
+  if (_metronomeInterval) { clearInterval(_metronomeInterval); _metronomeInterval = null; }
+  if (jMetronomeInterval) { clearInterval(jMetronomeInterval); jMetronomeInterval = null; }
+}
+
+function dismissFirstIntro() {
+  document.getElementById('first-intro').style.display = 'none';
+  document.getElementById('ready-screen').classList.remove('hidden');
+}
+
+function dismissReady(){
+  document.getElementById('ready-screen').classList.add('hidden');
+  if(typeof requestWakeLock==='function') requestWakeLock();
+  const bar = document.getElementById('session-bar');
+  if(bar) bar.style.display = '';
+  document.querySelectorAll('.drill-card').forEach((c,i) => {
+    c.classList.remove('active');
+    c.style.display = 'none';
+  });
+  const d0 = document.getElementById('drill-0');
+  if(d0) {
+    d0.classList.add('active');
+    d0.style.display = 'flex';
+    d0.style.position = 'fixed';
+    d0.style.inset = '0';
+    d0.style.zIndex = '500';
+    d0.style.background = 'var(--bg)';
+  }
+  document.querySelectorAll('.dtab').forEach((t,i) => t.classList.toggle('active', i===0));
+  setTimeout(function() {
+    try { startJump(); } catch(e) {
+      const btn = document.getElementById('j-start-btn');
+      if(btn) { btn.style.display = ''; btn.disabled = false; }
+    }
+  }, 100);
+}
+
+// ── Session completion tracking ──
+function markComplete() {
+  showSessionNextIfNeeded();
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const all = JSON.parse(localStorage.getItem('em_completions') || '{}');
+    if(!all[today]) all[today] = [];
+    if(!all[today].includes('saltos')) all[today].push('saltos');
+    localStorage.setItem('em_completions', JSON.stringify(all));
+  } catch(e) {}
+}
+
+function completeAndContinue() {
+  stopMetronome();
+  markComplete();
+  setTimeout(() => goNextOrHome('index.html'), 1200);
+}
+
+
+// ── Session navigation ──
+function getSessionNext() {
+  try {
+    const q = JSON.parse(localStorage.getItem('em_session_queue')||'null');
+    if(!q) return null;
+    const today = new Date().toISOString().slice(0,10);
+    if(q.date !== today) return null; // stale queue
+
+    // Get completed today
+    const all = JSON.parse(localStorage.getItem('em_completions')||'{}');
+    const done = all[today] || [];
+
+    // Find next uncompleted in queue
+    const remaining = q.keys.filter(k => !done.includes(k));
+    if(remaining.length === 0) return 'done'; // all finished
+
+    const urls = {
+      flash:'lectura_flash_rsvp.html', bloques:'lectura_por_bloques_prototype.html',
+      contra:'contrarreloj.html', vision:'vision_paralela.html',
+      saltos:'saltos_visuales.html', memoria:'memoria_activa.html',
+      cats:'actualizacion_categorias.html', continua:'actualizacion_continua.html',
+    };
+    const isFirst = new URLSearchParams(window.location.search).get('first') === '1';
+    const suffix = isFirst ? '?session=1&first=1' : '?session=1';
+    return urls[remaining[0]] ? urls[remaining[0]] + suffix : null;
+  } catch(e) { return null; }
+}
+
+function isInSession() {
+  return new URLSearchParams(window.location.search).get('session') === '1';
+}
+
+function goNextOrHome(homeUrl) {
+  if(!isInSession()) { window.location.href = homeUrl; return; }
+  const next = getSessionNext();
+  if(!next || next === 'done') {
+    window.location.href = 'index.html?done=session';
+  } else {
+    window.location.href = next;
+  }
+}
+
+
+// Show session next button on results if in session
+function showSessionNextIfNeeded() {
+  if(!isInSession()) return;
+  const existing = document.querySelector('.session-next-btn');
+  if(existing) { existing.style.display='block'; return; }
+  const btn = document.createElement('button');
+  btn.className = 'session-next-btn';
+  btn.textContent = 'Siguiente ejercicio →';
+  btn.onclick = completeAndContinue;
+  // Find results container and append
+  const targets = ['res-body','results-inner','result-wrap','s2','stage-2','stage-results'];
+  for(const t of targets) {
+    const el = document.getElementById(t);
+    if(el) { el.appendChild(btn); return; }
+  }
+  // Fallback: append to main
+  document.querySelector('main')?.appendChild(btn);
+}
+
+
+// Update session button labels to reflect position in queue
+function updateSessionBtnLabels() {
+  if(!isInSession()) return;
+  const next = getSessionNext();
+  const isLast = !next || next === 'done';
+  const label = isLast ? 'Finalizar sesión →' : 'Siguiente ejercicio →';
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.textContent = label;
+  });
+}
+
+</script>
+
+
+  <div class="session-bar" id="session-bar" style="display:none;">
+    <div class="seg active" id="seg0"></div>
+    <div class="seg" id="seg1"></div>
+    <div class="seg" id="seg2"></div>
+    <div class="seg" id="seg3"></div>
+  </div>
+
+  <!-- Drill tab selector -->
+  <div class="drill-tabs" style="display:none;">
+    <div class="dtab active" onclick="switchDrill(0)"><span class="icon">⇄</span>Saltos horizontales</div>
+    <div class="dtab" onclick="switchDrill(1)"><span class="icon">↵</span>Barrido de retorno</div>
+    <div class="dtab" onclick="switchDrill(2)"><span class="icon">◈</span>Amplitud visual</div>
+    <div class="dtab" onclick="switchDrill(3)"><span class="icon">#</span>Escaneo numérico</div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       DRILL 0: Horizontal jump targets
+       ═══════════════════════════════ -->
+  <div class="drill-card" id="drill-0">
+    <div class="card-head" style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:14px;color:var(--text3);">Saltos horizontales</div>
+      <div class="live-stat"><div class="val" id="j-score">0/0</div><div class="lbl">aciertos</div></div>
+    </div>
+    <div class="fb-bar"><div class="fb-fill" id="j-fb" style="width:0%;background:var(--teal)"></div></div>
+    <div class="jump-arena" id="jump-arena">
+      <div class="jump-track" id="jump-track">
+        <div class="jump-rail"></div>
+        <!-- targets injected by JS -->
+      </div>
+      <!-- Beat indicator -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div id="j-beat-row" style="display:flex;gap:8px;align-items:center;justify-content:center;">
+          <div id="j-beat-dot" style="width:18px;height:18px;border-radius:50%;background:var(--border2);
+            transition:background 0.05s,transform 0.05s;"></div>
+          <div id="j-beat-label" style="font-size:15px;color:var(--text3);">–</div>
+        </div>
+      </div>
+      <div class="jump-instruction" id="jump-instr">
+        Toca el círculo <strong style="color:var(--amber)">dorado</strong> al ritmo del metrónomo.
+      </div>
+    </div>
+    <div class="drill-footer">
+      <div></div>
+      <button class="btn btn-teal" id="j-start-btn" onclick="startJump()" style="display:none;">▶ Iniciar</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       DRILL 1: Return sweep
+       ═══════════════════════════════ -->
+  <div class="drill-card" id="drill-1">
+    <div class="card-head" style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:14px;color:var(--text3);">Barrido de retorno</div><span id="sw-regressions" style="display:none"></span>
+      <div class="live-stat"><div class="val" id="s-rt">–</div><div class="lbl">ms / línea</div></div>
+    </div>
+  <div class="fb-bar"><div class="fb-fill" id="sw-fb" style="width:0%;background:var(--teal)"></div></div>
+    <div class="sweep-arena">
+      <div class="sweep-text-display" id="sweep-display"></div>
+      <div class="sweep-controls">
+        <button class="btn btn-amber" id="sw-advance" onclick="sweepAdvance()" disabled>
+          ↵ Siguiente línea
+        </button>
+        <button class="btn btn-ghost" onclick="startSweep()" id="sw-start-btn">▶ Iniciar</button>
+        <div class="sweep-info">Línea <b id="sw-line">0</b> de <b id="sw-total">0</b> · Saltos correctos: <b id="sw-hits">0</b></div>
+      </div>
+    </div>
+    <!-- Comprehension questions — shown after sweep completes -->
+    <div id="sw-questions" style="display:none; padding: 0 24px 20px; border-top: 1px solid var(--border); margin-top: 4px;">
+      <div style="font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);padding:16px 0 12px">Comprensión del texto leído</div>
+      <div id="sw-q-container" style="display:flex;flex-direction:column;gap:14px;"></div>
+      <div id="sw-q-result" style="display:none;margin-top:16px;padding:12px 15px;border-radius:10px;font-size:13px;line-height:1.6;"></div>
+    </div>
+    <div class="drill-footer">
+      <span style="font-size:15px;color:var(--text3)">El barrido correcto aterriza a 3–7 caracteres del margen izquierdo</span>
+      <button class="btn btn-ghost" onclick="startSweep()">Reiniciar</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       DRILL 2: Visual span / amplitude
+       ═══════════════════════════════ -->
+  <div class="drill-card" id="drill-2">
+    <div class="card-head" style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:14px;color:var(--text3);">Amplitud visual</div><span id="sp-acc" style="display:none"></span>
+      <div class="live-stat"><div class="val" id="v-acc">–</div><div class="lbl">precisión</div></div>
+    </div>
+  <div class="fb-bar"><div class="fb-fill" id="sp-fb" style="width:0%;background:var(--purple)"></div></div>
+    <div class="span-arena">
+      <div class="span-prompt" id="sp-prompt">
+        Presiona <strong>Iniciar</strong>. Se mostrará un número durante <strong>500ms</strong>. Luego encuéntralo en la cuadrícula.
+      </div>
+      <div class="span-target-display" id="sp-target" style="display:none"></div>
+      <div class="span-grid" id="sp-grid" style="grid-template-columns: repeat(5, 1fr)"></div>
+    </div>
+    <div class="drill-footer">
+      <div style="display:flex;gap:6px;align-items:center">
+        <span style="font-size:15px;color:var(--text3)">Exposición:</span>
+        <button class="btn btn-ghost" onclick="setSpanExposure(700)" id="sp-700" style="padding:5px 10px">700ms</button>
+        <button class="btn btn-ghost" onclick="setSpanExposure(500)" id="sp-500" style="padding:5px 10px;border-color:var(--purple);color:var(--purple)">500ms</button>
+        <button class="btn btn-ghost" onclick="setSpanExposure(300)" id="sp-300" style="padding:5px 10px">300ms</button>
+      </div>
+      <button class="btn btn-teal" id="sp-start-btn" onclick="startSpan()">▶ Iniciar</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       DRILL 3: King-Devick scan
+       ═══════════════════════════════ -->
+  <div class="drill-card" id="drill-3">
+    <div class="card-head" style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:14px;color:var(--text3);">Escaneo numérico</div><span id="kd-time" style="display:none"></span>
+      <div class="live-stat"><div class="val" id="k-rt">–</div><div class="lbl">ms / número</div></div>
+    </div>
+  <div class="fb-bar"><div class="fb-fill" id="kd-fb" style="width:0%;background:var(--purple)"></div></div>
+    <div class="kd-arena">
+      <div class="kd-instruction" id="kd-instr">Presiona <strong>Iniciar</strong> y luego toca los números en orden: 1, 2, 3… lo más rápido posible sin errores.</div>
+      <div class="kd-board" id="kd-board"></div>
+      <div class="kd-stats">
+        <div class="kd-stat"><div class="v" id="kd-errors">0</div><div class="l">Errores</div></div>
+        <div class="kd-stat"><div class="v" id="kd-best">–</div><div class="l">Mejor marca</div></div>
+        <div class="kd-stat"><div class="v" id="kd-next">1</div><div class="l">Siguiente</div></div>
+      </div>
+    </div>
+    <div class="drill-footer">
+      <span style="font-size:15px;color:var(--text3)">Dificultad adaptativa tras cada ronda</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="initKD()">Reiniciar</button>
+        <button class="btn btn-teal" id="kd-start-btn" onclick="startKD()">▶ Iniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Science note -->
+  <details class="sci-details session-hide" id="sci-details" style="display:none;">
+  <summary>⚗ Base científica — sacadas y lectura</summary>
+  <div class="sci-details-body">Los ojos adultos expertos hacen 4–5 sacadas por segundo durante la lectura, cubriendo 7–9 caracteres por salto. El 10–15% de los movimientos son regresiones — costosas en tiempo pero necesarias para la comprensión. El barrido de retorno de fin de línea falla en el 40–60% de los casos: los ojos aterrizan a mitad de la siguiente línea y requieren una corrección. El estudio King-Devick (RCT, 2016) mostró +6.2% de fluidez y +7.5% de comprensión con 20 min/día de entrenamiento sacádico durante 6 semanas. El escaneo numérico entrena también el denominado "nombramiento automático rápido" (RAN), predictor independiente de la velocidad lectora.</div>
+</details>
+
+</main>
+
+<script>
+// ─────────────────────────────────────
+// Shared utilities
+// ─────────────────────────────────────
+function switchDrill(n) {
+  document.querySelectorAll('.dtab').forEach((t,i)=>t.classList.toggle('active',i===n));
+  document.querySelectorAll('.drill-card').forEach((c,i)=>c.classList.toggle('active',i===n));
+  ['seg0','seg1','seg2','seg3'].forEach((id,i)=>{
+    const s=document.getElementById(id);
+    s.classList.remove('active','done');
+    if(i<n) s.classList.add('done'); else if(i===n) s.classList.add('active');
+  });
+}
+
+// ─────────────────────────────────────
+// DRILL 0: Horizontal jump targets
+// ─────────────────────────────────────
+let jRunning=false, jCurrent=-1, jStart=0, jHits=0, jTrials=0, jTotalRT=0, jRound=1;
+let jWidth='medium', jTimer=null;
+const J_POSITIONS = {
+  short:  [15, 38, 62, 85],
+  medium: [10, 37, 63, 90],
+  long:   [5,  32, 68, 95],
+};
+const J_CHARS = ['A','E','I','O','U','M','T','S'];
+const J_ROUNDS = 12;
+
+function buildJumpTargets() {
+  const track = document.getElementById('jump-track');
+  track.querySelectorAll('.jump-target').forEach(t=>t.remove());
+  const positions = J_POSITIONS[jWidth];
+  positions.forEach((pct, i) => {
+    const el = document.createElement('div');
+    el.className = 'jump-target waiting';
+    el.style.left = pct + '%';
+    el.textContent = J_CHARS[i];
+    el.dataset.idx = i;
+    el.addEventListener('click', () => jumpHit(i));
+    track.appendChild(el);
+  });
+}
+
+function setJumpWidth(w) {
+  jWidth = w;
+  const idMap = {short:'short', medium:'med', long:'long'};
+  ['short','medium','long'].forEach(x=>{
+    const btn=document.getElementById('jw-'+idMap[x]);
+    if(!btn) return;
+    btn.style.borderColor = x===w ? 'var(--purple)' : 'rgba(255,255,255,0.13)';
+    btn.style.color = x===w ? 'var(--purple)' : '';
+  });
+  buildJumpTargets();
+}
+
+function getJumpBpm() {
+  // Age-based tempo: slightly slower than reading saccade rate so it's achievable
+  const age = getUserAge();
+  if (age < 40) return 80;
+  if (age < 55) return 66;
+  if (age < 70) return 54;
+  return 46;
+}
+
+function playJumpTick() {
+  try {
+    if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = _audioCtx.createOscillator();
+    const gain = _audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(_audioCtx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(660, _audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.18, _audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, _audioCtx.currentTime + 0.07);
+    osc.start(_audioCtx.currentTime);
+    osc.stop(_audioCtx.currentTime + 0.07);
+  } catch(e) {}
+}
+
+function pulseBeatDot(hit) {
+  const dot = document.getElementById('j-beat-dot');
+  if(!dot) return;
+  dot.style.background = hit === true ? 'var(--teal)' : hit === false ? 'var(--coral)' : 'var(--violet)';
+  dot.style.transform = 'scale(1.5)';
+  setTimeout(() => {
+    dot.style.transform = 'scale(1)';
+    dot.style.background = 'var(--border2)';
+  }, 150);
+}
+
+function startJump() {
+  jHits=0; jTrials=0; jTotalRT=0; jCurrent=-1; jRound=jRound||1;
+  jRunning=true;
+  buildJumpTargets();
+  document.getElementById('j-start-btn').textContent='En progreso…';
+  document.getElementById('j-start-btn').disabled=true;
+  document.getElementById('jump-instr').innerHTML='Toca el círculo <strong style="color:var(--amber)">dorado</strong> al ritmo del metrónomo.';
+  document.getElementById('j-score').textContent='0/0';
+  document.getElementById('j-fb').style.width='0%';
+
+  const bpm = getJumpBpm();
+  const ms = Math.round(60000 / bpm);
+  document.getElementById('j-beat-label').textContent = bpm + ' bpm';
+
+  // Full-screen countdown overlay
+  let countdown = 3;
+  const cdOv = document.createElement('div');
+  cdOv.id = 'jump-countdown';
+  cdOv.style.cssText = 'position:fixed;inset:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;';
+  cdOv.innerHTML = `
+    <div style="font-size:16px;color:var(--text3);margin-bottom:16px;letter-spacing:0.08em;text-transform:uppercase;">Prepárate</div>
+    <div id="cd-number" style="font-family:'Poppins',sans-serif;font-size:96px;font-weight:200;color:var(--violet);line-height:1;">${countdown}</div>
+    <div style="font-size:16px;color:var(--text3);margin-top:16px;">Al ritmo del metrónomo</div>
+  `;
+  document.body.appendChild(cdOv);
+
+  const cdInterval = setInterval(() => {
+    playJumpTick();
+    countdown--;
+    if (countdown > 0) {
+      document.getElementById('cd-number').textContent = countdown;
+    } else {
+      clearInterval(cdInterval);
+      cdOv.remove();
+      document.getElementById('jump-instr').innerHTML='Toca el círculo <strong style="color:var(--amber)">dorado</strong> al ritmo del metrónomo.';
+      document.getElementById('j-beat-label').textContent = bpm + ' bpm';
+      // First target immediately, then metronome drives the rest
+      nextJumpTarget();
+      jMetronomeInterval = setInterval(() => {
+        if(!jRunning) { clearInterval(jMetronomeInterval); return; }
+        playJumpTick();
+        pulseBeatDot(null);
+        // Missed — didn't tap in time
+        if(jCurrent >= 0) {
+          jTrials++;
+          const missed = document.querySelector(`.jump-target[data-idx="${jCurrent}"]`);
+          if(missed) missed.className='jump-target miss';
+          document.getElementById('j-score').textContent = jHits+'/'+jTrials;
+          document.getElementById('j-fb').style.width=(jTrials/J_ROUNDS*100)+'%';
+          document.getElementById('j-fb').style.background='var(--coral)';
+          jCurrent = -1;
+          if(jTrials >= J_ROUNDS) { clearInterval(jMetronomeInterval); finishJump(); return; }
+        }
+        nextJumpTarget();
+      }, ms);
+    }
+  }, ms);
+}
+
+function nextJumpTarget() {
+  if(!jRunning) return;
+  const targets = document.querySelectorAll('.jump-target');
+  targets.forEach(t=>t.className='jump-target waiting');
+  const positions = J_POSITIONS[jWidth];
+  let nextIdx;
+  do { nextIdx = Math.floor(Math.random()*positions.length); } while(nextIdx===jCurrent && positions.length>1);
+  jCurrent = nextIdx;
+  const target = document.querySelector(`.jump-target[data-idx="${nextIdx}"]`);
+  if(target) {
+    target.className='jump-target active-target';
+    jStart = performance.now();
+  }
+}
+
+function jumpHit(idx) {
+  if(!jRunning || jCurrent<0) return;
+  const hit = idx===jCurrent;
+  const target = document.querySelector(`.jump-target[data-idx="${idx}"]`);
+  if(hit) {
+    jHits++;
+    jTrials++;
+    target.className='jump-target hit';
+    pulseBeatDot(true);
+    jCurrent = -1; // prevent metronome from counting as miss
+    document.getElementById('j-score').textContent = jHits+'/'+jTrials;
+    document.getElementById('j-fb').style.width=(jTrials/J_ROUNDS*100)+'%';
+    document.getElementById('j-fb').style.background='var(--teal)';
+    if(jTrials >= J_ROUNDS) { clearInterval(jMetronomeInterval); finishJump(); }
+  } else {
+    target.className='jump-target miss';
+    pulseBeatDot(false);
+  }
+}
+
+function finishJump() {
+  jRunning=false;
+  clearInterval(jMetronomeInterval);
+  stopMetronome();
+  const acc = Math.round(jHits/J_ROUNDS*100);
+
+  const isLastRound = jRound >= 2;
+  const ov = document.createElement('div');
+  ov.id = 'jump-result';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;';
+  ov.innerHTML = `
+    <div style="font-size:52px;margin-bottom:12px;">${acc >= 80 ? '🎯' : acc >= 60 ? '👍' : '💪'}</div>
+    <div style="font-family:'Poppins',sans-serif;font-size:26px;font-weight:300;color:var(--text);margin-bottom:6px;">Saltos horizontales</div>
+    <div style="font-size:15px;color:var(--text3);margin-bottom:24px;">Ronda ${jRound} de 2</div>
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:22px 32px;margin-bottom:28px;width:100%;max-width:300px;">
+      <div style="font-size:52px;font-weight:700;color:var(--teal);font-family:'Fredoka',sans-serif;">${acc}%</div>
+      <div style="font-size:16px;color:var(--text2);margin-top:4px;">${jHits} de ${J_ROUNDS} aciertos</div>
+    </div>
+    <button id="jump-next-btn"
+      style="width:100%;max-width:300px;padding:18px;background:var(--violet-deep);color:#fff;border:none;
+      border-radius:14px;font-family:'Fredoka','Poppins',sans-serif;font-size:18px;font-weight:600;cursor:pointer;">
+      ${isLastRound ? 'Siguiente modo →' : 'Otra ronda →'}
+    </button>
+  `;
+  document.body.appendChild(ov);
+
+  document.getElementById('jump-next-btn').onclick = () => {
+    ov.remove();
+    if(isLastRound) {
+      markComplete();
+      nextSaltosDrill();
+    } else {
+      jRound++;
+      jHits=0; jTrials=0; jCurrent=-1;
+      setTimeout(() => startJump(), 50);
+    }
+  };
+}
+
+// ── Mode transition screen ──
+function showModeTransition(info, onStart) {
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;gap:16px;';
+  ov.innerHTML = `
+    <div style="font-size:52px;">${info.icon}</div>
+    <div style="font-family:'Poppins',sans-serif;font-size:28px;font-weight:300;color:var(--text);">${info.title}</div>
+    <div style="font-size:17px;color:var(--text2);line-height:1.6;max-width:280px;">${info.desc}</div>
+    <button id="mode-start-btn" style="width:100%;max-width:300px;padding:18px;background:var(--violet-deep);
+      color:#fff;border:none;border-radius:14px;font-family:'Fredoka','Poppins',sans-serif;
+      font-size:18px;font-weight:600;cursor:pointer;margin-top:8px;">¡Vamos! →</button>
+  `;
+  document.body.appendChild(ov);
+  document.getElementById('mode-start-btn').onclick = () => { ov.remove(); onStart(); };
+}
+
+function resetJump() {
+  jRunning=false;
+  clearInterval(jMetronomeInterval);
+  clearTimeout(jTimer);
+  document.getElementById('j-start-btn').textContent='▶ Iniciar';
+  document.getElementById('j-start-btn').disabled=false;
+  document.getElementById('j-score').textContent='–';
+  document.getElementById('j-beat-label').textContent='–';
+  document.getElementById('j-fb').style.width='0%';
+  document.getElementById('jump-instr').innerHTML='Toca el círculo <strong style="color:var(--amber)">dorado</strong> al ritmo del metrónomo.';
+  buildJumpTargets();
+}
+
+// ─────────────────────────────────────
+// DRILL 1: Return sweep
+// ─────────────────────────────────────
+const SWEEP_LINES = [
+  "Los océanos cubren más del setenta por ciento",
+  "de la superficie terrestre, albergando miles",
+  "de especies que la ciencia aún no ha descubierto.",
+  "Sin embargo, estos ecosistemas enfrentan hoy",
+  "amenazas sin precedentes: la contaminación",
+  "plástica transforma el medio marino a diario.",
+  "Los arrecifes de coral son los más afectados,",
+  "y su pérdida impacta a millones de personas.",
+  "Proteger la biodiversidad es protegernos a todos.",
+];
+let swLine=0, swWordIdx=0, swRegressions=0, swHits=0, swRunning=false, swTimer=null;
+
+function startSweep() {
+  swLine=0; swWordIdx=0; swRegressions=0; swHits=0; swRunning=true;
+  swQAnswered=0; swQCorrect=0;
+  document.getElementById('sw-advance').disabled=false;
+  document.getElementById('sw-start-btn').textContent='↺ Reiniciar';
+  document.getElementById('sw-total').textContent=SWEEP_LINES.length;
+  (document.getElementById('sw-regressions')||{textContent:''}).textContent='0';
+  document.getElementById('sw-hits').textContent='0';
+  document.getElementById('sw-fb').style.width='0%';
+  document.getElementById('sw-questions').style.display='none';
+  document.getElementById('sw-q-container').innerHTML='';
+  renderSweepLine();
+}
+
+function renderSweepLine() {
+  const display = document.getElementById('sweep-display');
+  display.innerHTML='';
+  SWEEP_LINES.forEach((line, li) => {
+    const lineEl=document.createElement('div');
+    lineEl.className='sweep-line';
+    lineEl.textContent = line;
+    if(li < swLine) {
+      // Already read — small and dimmed
+      lineEl.style.cssText='font-size:14px;opacity:0.3;color:var(--text3);padding:2px 0;transition:all 0.3s;';
+    } else if(li === swLine) {
+      // Active line — large, bright, centered
+      lineEl.style.cssText='font-size:26px;color:var(--text);font-weight:400;padding:12px 0;line-height:1.5;text-align:center;transition:all 0.3s;';
+    } else {
+      // Future lines — small and very dimmed
+      lineEl.style.cssText='font-size:14px;opacity:0.15;color:var(--text3);padding:2px 0;transition:all 0.3s;';
+    }
+    display.appendChild(lineEl);
+  });
+  document.getElementById('sw-line').textContent=swLine+1;
+
+  // Scroll active line into view
+  const activeLine = display.children[swLine];
+  if(activeLine) activeLine.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+
+const SWEEP_QUESTIONS = [
+  {
+    q: '¿Qué porcentaje de la superficie terrestre cubren los océanos?',
+    opts: ['El cincuenta por ciento', 'El setenta por ciento', 'El noventa por ciento', 'El cuarenta por ciento'],
+    correct: 1
+  },
+  {
+    q: '¿Cuál de estas amenazas se menciona explícitamente en el texto?',
+    opts: ['La deforestación', 'El turismo masivo', 'La contaminación plástica', 'La acidificación'],
+    correct: 2
+  }
+];
+let swQAnswered=0, swQCorrect=0;
+
+function sweepAdvance() {
+  if(!swRunning) return;
+  swHits++;
+  document.getElementById('sw-hits').textContent=swHits;
+  swLine++;
+  if(swLine >= SWEEP_LINES.length) {
+    document.getElementById('sw-advance').disabled=true;
+    document.getElementById('sw-fb').style.width='100%';
+    document.getElementById('sw-fb').style.background='var(--green)';
+    // Show completion message in text area, then reveal questions
+    document.getElementById('sweep-display').innerHTML=
+      '<span style="color:var(--teal);font-size:14px;font-weight:600">✓ Barrido completado — '+swHits+' líneas avanzadas.</span>' +
+      '<br><span style="color:var(--text3);font-size:13px;margin-top:6px;display:block">Ahora responde las preguntas de comprensión sin releer el texto.</span>';
+    swQAnswered=0; swQCorrect=0;
+    buildSweepQuestions();
+    document.getElementById('sw-questions').style.display='block';
+    return;
+  }
+  document.getElementById('sw-fb').style.width=(swLine/SWEEP_LINES.length*100)+'%';
+  renderSweepLine();
+}
+
+let swCurrentQ = 0;
+
+function buildSweepQuestions() {
+  swCurrentQ = 0;
+  swQAnswered = 0;
+  swQCorrect = 0;
+  document.getElementById('sw-q-result').style.display='none';
+  showSweepQuestion(0);
+}
+
+function showSweepQuestion(qi) {
+  const q = SWEEP_QUESTIONS[qi];
+  const container = document.getElementById('sw-q-container');
+  container.innerHTML = `
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:6px">Pregunta ${qi+1} de ${SWEEP_QUESTIONS.length}</div>
+    <div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.5">${q.q}</div>
+    <div id="sw-opts-${qi}" style="display:flex;flex-direction:column;gap:9px">
+      ${q.opts.map((o,oi)=>`<div class="q-opt" style="padding:12px 16px;border-radius:10px;border:1px solid var(--border2);background:var(--card2);cursor:pointer;font-size:14px;color:var(--text2);transition:all 0.15s" onclick="sweepAnswer(${qi},${oi},${q.correct})">${o}</div>`).join('')}
+    </div>
+  `;
+}
+
+function sweepAnswer(qi, chosen, correct) {
+  const opts = document.querySelectorAll(`#sw-opts-${qi} .q-opt`);
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  const hit = chosen === correct;
+  if (hit) {
+    swQCorrect++;
+    opts[chosen].style.background = 'var(--green-d)';
+    opts[chosen].style.borderColor = 'var(--green)';
+    opts[chosen].style.color = 'var(--green)';
+  } else {
+    opts[chosen].style.background = 'var(--coral-d)';
+    opts[chosen].style.borderColor = 'var(--coral)';
+    opts[chosen].style.color = 'var(--coral)';
+    opts[correct].style.background = 'var(--green-d)';
+    opts[correct].style.borderColor = 'var(--green)';
+    opts[correct].style.color = 'var(--green)';
+  }
+  swQAnswered++;
+
+  // After a short delay, either show next question or show result
+  setTimeout(() => {
+    if (swQAnswered < SWEEP_QUESTIONS.length) {
+      swCurrentQ++;
+      showSweepQuestion(swCurrentQ);
+    } else {
+      // All answered — show clean result overlay
+      const pct = Math.round(swQCorrect / SWEEP_QUESTIONS.length * 100);
+      const good = pct >= 50;
+      const ov = document.createElement('div');
+      ov.style.cssText = 'position:fixed;inset:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;';
+      ov.innerHTML = `
+        <div style="font-size:52px;margin-bottom:12px;">${good ? '📖' : '💪'}</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:26px;font-weight:300;color:var(--text);margin-bottom:6px;">Barrido de retorno</div>
+        <div style="font-size:15px;color:var(--text3);margin-bottom:24px;">Comprensión del texto</div>
+        <div style="background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:22px 32px;margin-bottom:28px;width:100%;max-width:300px;">
+          <div style="font-size:52px;font-weight:700;color:${good ? 'var(--teal)' : 'var(--amber)'};font-family:'Fredoka',sans-serif;">${pct}%</div>
+          <div style="font-size:16px;color:var(--text2);margin-top:4px;">${swQCorrect} de ${SWEEP_QUESTIONS.length} respuestas correctas</div>
+        </div>
+        <button id="sweep-next-btn" style="width:100%;max-width:300px;padding:18px;background:var(--violet-deep);color:#fff;border:none;border-radius:14px;font-family:'Fredoka','Poppins',sans-serif;font-size:18px;font-weight:600;cursor:pointer;">
+          Siguiente modo →
+        </button>
+      `;
+      document.body.appendChild(ov);
+      document.getElementById('sweep-next-btn').onclick = () => { ov.remove(); nextSaltosDrill(); };
+    }
+  }, 600);
+}
+
+// ─────────────────────────────────────
+// DRILL 2: Visual span
+// ─────────────────────────────────────
+const SP_GRID_SIZE = 20;
+const SP_MAX_TRIALS = 10;
+let spExposure=500, spTarget=-1, spHits=0, spTrials=0, spRunning=false;
+
+function setSpanExposure(ms) {
+  spExposure=ms;
+  [700,500,300].forEach(v=>{
+    const b=document.getElementById('sp-'+v);
+    b.style.borderColor=v===ms?'var(--purple)':'';
+    b.style.color=v===ms?'var(--purple)':'';
+  });
+}
+
+function buildSpanGrid(target) {
+  const grid=document.getElementById('sp-grid');
+  grid.innerHTML='';
+  const nums=new Set([target]);
+  while(nums.size<SP_GRID_SIZE) nums.add(Math.floor(Math.random()*90)+10);
+  const arr=[...nums].sort(()=>Math.random()-0.5);
+  arr.forEach(n=>{
+    const cell=document.createElement('div');
+    cell.className='span-cell'; // all identical — no pre-highlighting
+    cell.textContent=n;
+    cell.addEventListener('click',()=>spanTap(n,target,cell));
+    grid.appendChild(cell);
+  });
+}
+
+function startSpan() {
+  spHits=0; spTrials=0; spRunning=true;
+  document.getElementById('sp-start-btn').disabled=true;
+  document.getElementById('sp-start-btn').textContent='…';
+  document.getElementById('sp-grid').style.opacity='1';
+  document.getElementById('sp-grid').style.pointerEvents='';
+  spNextTrial();
+}
+
+function spNextTrial() {
+  spTarget = Math.floor(Math.random()*90)+10;
+  const tEl=document.getElementById('sp-target');
+  const pEl=document.getElementById('sp-prompt');
+  // Show trial counter in prompt while target is flashing
+  pEl.style.display='block';
+  pEl.innerHTML=`Intento <strong style="color:var(--amber)">${spTrials+1}</strong> de ${SP_MAX_TRIALS} — memoriza el número`;
+  tEl.style.display='block'; tEl.textContent=spTarget;
+  document.getElementById('sp-grid').innerHTML='';
+  setTimeout(()=>{
+    tEl.style.display='none';
+    buildSpanGrid(spTarget);
+  }, spExposure);
+}
+
+function spanTap(n, target, cell) {
+  if(!spRunning) return;
+  // Lock entire grid immediately — one tap per trial
+  document.getElementById('sp-grid').style.pointerEvents='none';
+  spTrials++;
+  const hit=(n===target);
+  if(hit) {
+    spHits++;
+    cell.className='span-cell correct-cell';
+  } else {
+    cell.className='span-cell wrong-cell';
+    // Reveal correct answer after wrong tap
+    document.querySelectorAll('.span-cell').forEach(c=>{
+      if(parseInt(c.textContent)===target) c.className='span-cell correct-cell';
+    });
+  }
+  const acc=Math.round(spHits/spTrials*100);
+  (document.getElementById('sp-acc')||{textContent:''}).textContent=acc+'%';
+  (document.getElementById('hdr-acc')||{textContent:''}).textContent=acc+'%';
+  document.getElementById('sp-fb').style.width=(spTrials/SP_MAX_TRIALS*100)+'%';
+  document.getElementById('sp-fb').style.background=hit?'var(--green)':'var(--coral)';
+  document.getElementById('sp-prompt').innerHTML=hit
+    ?`<strong style="color:var(--green)">✓ Correcto</strong> — ${spTrials}/${SP_MAX_TRIALS} intentos · Precisión: ${acc}%`
+    :`<strong style="color:var(--coral)">✗ Incorrecto</strong> — El número era <strong>${target}</strong> · ${spTrials}/${SP_MAX_TRIALS} intentos`;
+
+  if(spTrials >= SP_MAX_TRIALS) {
+    setTimeout(finishSpan, 900);
+  } else {
+    setTimeout(()=>{
+      document.getElementById('sp-grid').style.pointerEvents='';
+      spNextTrial();
+    }, 900);
+  }
+}
+
+function finishSpan() {
+  spRunning=false;
+  markComplete();
+  const acc=Math.round(spHits/SP_MAX_TRIALS*100);
+  document.getElementById('sp-grid').innerHTML='';
+  document.getElementById('sp-target').style.display='none';
+  document.getElementById('sp-fb').style.width='100%';
+  document.getElementById('sp-fb').style.background=acc>=75?'var(--green)':acc>=50?'var(--amber)':'var(--coral)';
+
+  let grade, advice;
+  if(acc>=85) {
+    grade=`<strong style="color:var(--green)">Excelente — ${acc}%</strong>`;
+    advice=`Amplitud visual alta. Intenta reducir el tiempo de exposición a 300ms en la próxima sesión.`;
+  } else if(acc>=65) {
+    grade=`<strong style="color:var(--amber)">Bueno — ${acc}%</strong>`;
+    advice=`Progreso sólido. Mantén ${spExposure}ms de exposición hasta alcanzar 85% de precisión.`;
+  } else {
+    grade=`<strong style="color:var(--coral)">En desarrollo — ${acc}%</strong>`;
+    advice=`Intenta con 700ms de exposición para consolidar la memoria visual antes de reducir el tiempo.`;
+  }
+
+  document.getElementById('sp-prompt').innerHTML=`
+    <div style="font-size:22px;font-weight:700;margin-bottom:6px">${spHits} / ${SP_MAX_TRIALS}</div>
+    <div style="margin-bottom:8px">${grade}</div>
+    <div style="font-size:15px;color:var(--text2);line-height:1.6">${advice}</div>
+  `;
+  document.getElementById('sp-start-btn').disabled=false;
+  document.getElementById('sp-start-btn').textContent='▶ Repetir';
+
+  nextSaltosDrill();
+}
+
+// ─────────────────────────────────────
+// DRILL 3: King-Devick scan
+// ─────────────────────────────────────
+let kdNums=[], kdNext=1, kdErrors=0, kdStartTime=0, kdBest=null, kdRunning=false, kdTicker=null;
+const KD_COUNT = 15;
+const KD_ROWS = 3;
+
+function buildKDBoard(count) {
+  // Shuffle 1..count across 3 rows
+  const nums = Array.from({length:count},(_,i)=>i+1).sort(()=>Math.random()-0.5);
+  const board = document.getElementById('kd-board');
+  board.innerHTML='';
+  const perRow = Math.ceil(count/KD_ROWS);
+  for(let r=0;r<KD_ROWS;r++){
+    const row=document.createElement('div');
+    row.className='kd-row';
+    for(let c=0;c<perRow;c++){
+      const idx=r*perRow+c;
+      if(idx>=count) break;
+      const n=nums[idx];
+      const el=document.createElement('div');
+      el.className='kd-num';
+      el.textContent=n;
+      el.dataset.n=n;
+      el.addEventListener('click',()=>kdTap(n,el));
+      row.appendChild(el);
+    }
+    board.appendChild(row);
+  }
+  kdNums=nums;
+}
+
+function initKD() {
+  kdNext=1; kdErrors=0; kdRunning=false;
+  clearInterval(kdTicker);
+  (document.getElementById('kd-time')||{textContent:''}).textContent='0.0s';
+  document.getElementById('kd-errors').textContent='0';
+  document.getElementById('kd-next').textContent='1';
+  document.getElementById('kd-fb').style.width='0%';
+  document.getElementById('kd-start-btn').disabled=false;
+  document.getElementById('kd-start-btn').textContent='▶ Iniciar';
+  document.getElementById('kd-instr').innerHTML='Presiona <strong>Iniciar</strong> y luego toca los números en orden: 1, 2, 3… lo más rápido posible sin errores.';
+  buildKDBoard(KD_COUNT);
+}
+
+function startKD() {
+  kdNext=1; kdErrors=0; kdRunning=true;
+  kdStartTime=performance.now();
+  document.getElementById('kd-start-btn').disabled=true;
+  document.getElementById('kd-instr').innerHTML='Toca los números en orden: <strong style="color:var(--amber)">'+kdNext+'</strong>';
+  kdTicker=setInterval(()=>{
+    const elapsed=((performance.now()-kdStartTime)/1000).toFixed(1);
+    (document.getElementById('kd-time')||{textContent:''}).textContent=elapsed+'s';
+  },100);
+}
+
+function kdTap(n, el) {
+  if(!kdRunning) return;
+  if(n===kdNext) {
+    el.className='kd-num kd-hit';
+    kdNext++;
+    document.getElementById('kd-next').textContent=kdNext;
+    document.getElementById('kd-fb').style.width=(kdNext-1)/KD_COUNT*100+'%';
+    document.getElementById('kd-instr').innerHTML='Toca: <strong style="color:var(--amber)">'+kdNext+'</strong>';
+    if(kdNext>KD_COUNT) finishKD();
+  } else {
+    el.className='kd-num kd-error';
+    kdErrors++;
+    document.getElementById('kd-errors').textContent=kdErrors;
+    setTimeout(()=>{ el.className='kd-num'; },500);
+  }
+}
+
+function finishKD() {
+  clearInterval(kdTicker);
+  kdRunning=false;
+  markComplete();
+  const elapsed=((performance.now()-kdStartTime)/1000).toFixed(1);
+  if(!kdBest || parseFloat(elapsed)<parseFloat(kdBest)) kdBest=elapsed;
+  document.getElementById('kd-best').textContent=kdBest+'s';
+  const _hr=document.getElementById('hdr-rt'); if(_hr) _hr.textContent=elapsed+'s';
+  (document.getElementById('kd-time')||{textContent:''}).textContent=elapsed+'s';
+  document.getElementById('kd-fb').style.background=kdErrors===0?'var(--green)':'var(--amber)';
+  const msg=kdErrors===0
+    ?`<strong style="color:var(--green)">✓ Perfecto — ${elapsed}s sin errores.</strong> Dificultad aumentada para la próxima ronda.`
+    :`Completado en <strong>${elapsed}s</strong> con <strong style="color:var(--coral)">${kdErrors} error${kdErrors>1?'es':''}</strong>. Intenta de nuevo para mejorar la precisión antes de aumentar velocidad.`;
+  document.getElementById('kd-instr').innerHTML=msg;
+  document.getElementById('kd-start-btn').disabled=false;
+  document.getElementById('kd-start-btn').textContent='▶ Repetir';
+
+  nextSaltosDrill();
+}
+
+// ─────────────────────────────────────
+// Init
+// ─────────────────────────────────────
+buildJumpTargets();
+renderSweepLine();
+buildKDBoard(KD_COUNT);
+
+// ── Show session navigation UI ──
+function showSessionUI() {
+  if(!isInSession()) return;
+  updateSessionBtnLabels();
+  // Show the next button
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.style.cssText = 'display:block!important';
+  });
+  // Hide the repeat/reset buttons
+  document.querySelectorAll('.session-hide').forEach(b => {
+    b.style.cssText = 'display:none!important';
+  });
+}
+
+// ── Wake Lock: prevent screen sleep during exercise ──
+let _wakeLock = null;
+async function requestWakeLock() {
+  if(!('wakeLock' in navigator)) return;
+  try {
+    _wakeLock = await navigator.wakeLock.request('screen');
+  } catch(e) {}
+}
+function releaseWakeLock() {
+  if(_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
+}
+// Re-acquire on tab visibility change
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible') requestWakeLock();
+  else stopMetronome();
+});
+
+// ── Saltos auto-flow ──
+let _saltosDrill = 0;
+const _saltosOrder = [
+  {start: startJump},
+  {start: startSweep},
+  {start: startSpan},
+  {start: startKD}
+];
+
+const DRILL_INTROS = [
+  null, // Saltos horizontales has no intro (it's first)
+  { icon:'↵', title:'Barrido de retorno', desc:'Lee cada línea de izquierda a derecha y toca Listo al terminar.' },
+  { icon:'◈', title:'Amplitud visual', desc:'Memoriza el número del destello y encuéntralo en la cuadrícula.' },
+  { icon:'#', title:'Escaneo numérico', desc:'Toca los números en orden ascendente lo más rápido posible.' },
+];
+
+function nextSaltosDrill(){
+  _saltosDrill++;
+  if(_saltosDrill >= _saltosOrder.length){
+    showSaltosComplete();
+    return;
+  }
+  const intro = DRILL_INTROS[_saltosDrill];
+  const launchDrill = () => {
+    document.querySelectorAll('.drill-card').forEach(c => {
+      c.classList.remove('active');
+      c.style.cssText = '';
+    });
+    const dn = document.getElementById('drill-' + _saltosDrill);
+    if(dn) {
+      dn.classList.add('active');
+      dn.style.display = 'flex';
+      dn.style.position = 'fixed';
+      dn.style.inset = '0';
+      dn.style.zIndex = '500';
+      dn.style.background = 'var(--bg)';
+    }
+    document.querySelectorAll('.dtab').forEach((t,i) => t.classList.toggle('active', i===_saltosDrill));
+    setTimeout(() => { try { _drillStarts[_saltosDrill](); } catch(e) {} }, 100);
+  };
+  if(intro) {
+    showModeTransition(intro, launchDrill);
+  } else {
+    launchDrill();
+  }
+}
+
+function showSaltosComplete(){
+  markComplete();
+  releaseWakeLock();
+  const next=getSessionNext();
+  const isLast=!next||next==='done';
+  const btnLabel=isLast?'Finalizar sesión →':'Siguiente ejercicio →';
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;';
+  const inner=document.createElement('div');
+  inner.style.cssText='width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center;gap:16px;';
+  const icon=document.createElement('div'); icon.style.cssText='font-size:48px;'; icon.textContent='👁';
+  const title=document.createElement('div');
+  title.style.cssText="font-family:'Poppins',sans-serif;font-size:30px;font-weight:300;color:var(--text);";
+  title.textContent='Saltos Visuales';
+  const sub=document.createElement('div');
+  sub.style.cssText='font-size:15px;color:var(--text2);';
+  sub.textContent='Los cuatro ejercicios completados.';
+  const btn=document.createElement('button');
+  btn.style.cssText="width:100%;padding:16px;background:var(--violet-deep);color:#fff;border:none;border-radius:13px;font-family:'Fredoka','Poppins',sans-serif;font-size:17px;font-weight:600;cursor:pointer;";
+  btn.textContent=isInSession()?btnLabel:'← Inicio';
+  btn.onclick=isInSession()?completeAndContinue:()=>window.location.href='index.html';
+  inner.appendChild(icon);inner.appendChild(title);inner.appendChild(sub);inner.appendChild(btn);
+  ov.appendChild(inner);document.body.appendChild(ov);
+}
+
+
+// ── Drill intro overlays ──
+const _drillStarts = [startJump, startSweep, startSpan, startKD];
+
+function showDrillIntro(n) {
+  alert('showDrillIntro called! n=' + n + ' caller=' + (new Error().stack||'unknown').split('\n')[1]);
+  // No-op: drill intros removed, flow goes directly to exercise
+  return;
+}
+
+function dismissDrillIntro(n) {
+  const ov = document.getElementById('intro-overlay');
+  if(ov) ov.remove();
+  const bar = document.getElementById('session-bar');
+  if(bar) bar.style.display = '';
+  document.querySelectorAll('.drill-card').forEach((c,i) => {
+    c.classList.remove('active');
+    c.style.display = 'none';
+  });
+  const dn = document.getElementById('drill-' + n);
+  if(dn) { dn.classList.add('active'); dn.style.display='flex'; dn.style.position='fixed'; dn.style.inset='0'; dn.style.zIndex='500'; dn.style.background='var(--bg)'; }
+  document.querySelectorAll('.dtab').forEach((t,i) => t.classList.toggle('active', i===n));
+  setTimeout(() => { try { _drillStarts[n](); } catch(e) {} }, 100);
+}
+
+// First-time intro
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('first') === '1') {
+    document.getElementById('ready-screen').classList.add('hidden');
+    document.getElementById('first-intro').style.display = 'flex';
+  }
+})();
+
+</script>
+
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  </a>
+</div>
+
+</body>
+</html>

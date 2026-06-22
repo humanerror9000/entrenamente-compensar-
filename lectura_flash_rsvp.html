@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente en Forma — Lectura Flash</title>
+<script src="brand.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Design system ── */
+:root {
+  --bg:#F8F7FF; --bg2:#F0EEF8; --card:#FFFFFF; --card2:#F4F2FC;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --text:#1A1830; --text2:#4A4468; --text3:#5C5880;
+  /* Brand violet — primary accent */
+  --violet:#6C5CE7; --violet-d:rgba(108,92,231,0.10); --violet-b:rgba(108,92,231,0.25);
+  --violet-deep:#534AB7;
+  /* Teal — action/success/interactive */
+  --teal:#0A7A6A; --teal-d:rgba(10,122,106,0.10); --teal-b:rgba(10,122,106,0.25);
+  /* Supporting palette */
+  --gold:#C9A84C; --gold-l:rgba(201,168,76,0.12); --gold-b:rgba(201,168,76,0.30);
+  --amber:#F5A623; --amber-d:rgba(245,166,35,0.12); --amber-b:rgba(245,166,35,0.28);
+  --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
+  --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
+  --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --muted:#4A4860;
+  --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--bg); color:var(--text);
+  min-height:100vh; display:flex; flex-direction:column; align-items:center;
+  padding-bottom:60px;
+}
+body::before{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* ── Header ── */
+header{
+  position:relative; z-index:10;
+  width:100%; background:rgba(12,12,16,0.92);
+  border-bottom:1px solid var(--border2);
+  backdrop-filter:blur(12px);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px;
+}
+.logo{
+  font-family:'Poppins',sans-serif;
+  font-size:20px; font-weight:300; color:var(--text); letter-spacing:-0.01em;
+}
+.logo em{color:var(--gold); font-style:italic;}
+.hdr-center{display:flex; align-items:center; gap:8px;}
+.hdr-ex-name{
+  font-size:12px; font-weight:600; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--text3);
+}
+.hdr-right{display:flex; align-items:center; gap:10px;}
+.hdr-stat{
+  font-size:12px; color:var(--text3);
+  display:flex; align-items:center; gap:5px;
+}
+.hdr-stat b{color:var(--teal); font-size:13px;}
+.hdr-back{
+  font-size:12px; color:var(--text3); text-decoration:none;
+  display:flex; align-items:center; gap:4px; transition:color 0.15s;
+}
+.hdr-back:hover{color:var(--text2);}
+
+/* ── Main ── */
+main{
+  position:relative; z-index:1;
+  width:100%; max-width:660px;
+  padding:24px 16px 0;
+  display:flex; flex-direction:column; gap:16px;
+}
+
+/* ── Progress steps ── */
+.steps{display:flex; gap:5px; margin-bottom:4px;}
+.step{
+  flex:1; height:3px; border-radius:2px;
+  background:var(--border2); transition:background 0.3s;
+}
+.step.done{background:var(--teal);}
+.step.active{background:var(--gold);}
+
+/* ── Cards ── */
+.card{
+  background:var(--card);
+  border:1px solid var(--border2);
+  border-radius:var(--r);
+  box-shadow:var(--sh);
+  overflow:hidden;
+  display:none;
+}
+#stage-rsvp.show {
+  display:flex; flex-direction:column;
+  position:fixed; inset:0; z-index:10;
+  background:var(--bg); border:none; border-radius:0;
+}
+.card.visible#stage-rsvp{
+  display:flex;
+  flex-direction:column;
+  min-height:100dvh;
+  border-radius:0;
+  border-left:none;
+  border-right:none;
+  border-top:none;
+}
+.card.visible{display:block;}
+
+/* ── Instruction banner ── */
+.instr-banner{
+  background:var(--teal-d);
+  border-bottom:1px solid var(--teal-b);
+  padding:14px 20px;
+  display:flex; align-items:flex-start; gap:12px;
+}
+.instr-icon{font-size:20px; flex-shrink:0; margin-top:1px;}
+.instr-text{font-size:17px; color:var(--text2); line-height:1.6;}
+.instr-text strong{color:var(--text); font-weight:600;}
+
+/* ── Card header ── */
+.card-head{
+  padding:18px 20px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+}
+.card-title{
+  font-family:'Poppins',sans-serif;
+  font-size:24px; font-weight:300; color:var(--text); line-height:1.1;
+  margin-bottom:4px;
+}
+.card-sub{font-size:13px; color:var(--text2); line-height:1.5;}
+.card-pills{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
+.pill{
+  font-size:10px; font-weight:700; letter-spacing:0.08em;
+  text-transform:uppercase; padding:3px 9px; border-radius:20px;
+}
+.pill-teal{background:var(--teal-d); color:var(--teal); border:1px solid var(--teal-b);}
+.pill-gold{background:var(--gold-l); color:var(--gold); border:1px solid var(--gold-b);}
+.pill-purple{background:var(--purple-d); color:var(--purple); border:1px solid rgba(155,127,255,0.25);}
+.card-live{text-align:right; flex-shrink:0;}
+.card-live-val{
+  font-size:26px; font-weight:300; color:var(--teal);
+  line-height:1; font-variant-numeric:tabular-nums;
+  font-family:'Poppins',sans-serif;
+}
+.card-live-lbl{font-size:10px; color:var(--text3); letter-spacing:0.06em; text-transform:uppercase; margin-top:2px;}
+
+/* ── Controls ── */
+.controls{padding:18px 20px; display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.ctrl-label{
+  font-size:10px; font-weight:700; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text3);
+  display:block; margin-bottom:8px;
+}
+.ctrl-val{
+  font-family:'Poppins',sans-serif;
+  font-size:28px; font-weight:300; color:var(--text); margin-bottom:8px; line-height:1;
+}
+.ctrl-val span{font-family:'Poppins',sans-serif; font-size:14px; color:var(--text3); font-weight:400;}
+input[type=range]{width:100%; accent-color:var(--teal); cursor:pointer;}
+.range-labels{display:flex; justify-content:space-between; margin-top:4px;}
+.range-labels span{font-size:10px; color:var(--text3);}
+.range-labels .range-rec{color:var(--gold); font-weight:600;}
+
+.mode-toggle{display:flex; gap:6px; margin-top:2px;}
+.mode-btn{
+  flex:1; padding:9px 8px; border-radius:9px;
+  border:1.5px solid var(--border2); background:var(--card2);
+  font-family:'Poppins',sans-serif; font-size:13px; font-weight:600;
+  color:var(--text3); cursor:pointer; transition:all 0.15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.mode-btn:hover{border-color:var(--teal); color:var(--teal);}
+.mode-btn.active{background:var(--teal); border-color:var(--teal); color:var(--bg);}
+.mode-desc{font-size:12px; color:var(--text3); margin-top:8px; line-height:1.5;}
+
+/* ── Text selector ── */
+.text-selector{padding:0 20px 4px; display:flex; flex-direction:column; gap:6px;}
+.text-selector-label{
+  font-size:10px; font-weight:700; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text3); margin-bottom:4px;
+}
+.text-opt{
+  padding:11px 14px; border-radius:10px;
+  border:1.5px solid var(--border2); background:var(--card2);
+  cursor:pointer; transition:all 0.15s;
+  display:flex; align-items:center; justify-content:space-between;
+  -webkit-tap-highlight-color:transparent;
+}
+.text-opt:hover{border-color:var(--teal);}
+.text-opt.selected{border-color:var(--teal); background:var(--teal-d);}
+.text-opt-name{font-size:14px; font-weight:500; color:var(--text);}
+.text-opt.selected .text-opt-name{color:var(--teal);}
+.text-opt-meta{font-size:11px; color:var(--text3);}
+
+/* ── Start button ── */
+.start-btn-wrap{padding:16px 20px 20px;}
+.start-btn{
+  width:100%; padding:15px;
+  background:var(--teal); color:var(--bg);
+  border:none; border-radius:11px; cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  font-size:15px; font-weight:700; letter-spacing:0.02em;
+  transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+}
+.start-btn:hover{opacity:0.88; transform:translateY(-1px);}
+
+/* ── RSVP card ── */
+.rsvp-head{
+  padding:12px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.rsvp-wpm{font-size:13px; font-weight:700; color:var(--teal);}
+.rsvp-prog{font-size:12px; color:var(--text3);}
+.rsvp-bar-wrap{height:2px; background:var(--border2);}
+.rsvp-bar-fill{height:100%; background:var(--teal); transition:width 0.2s linear;}
+
+.rsvp-stage{ position:relative; display:flex; flex-direction:column; align-items:stretch; justify-content:center; flex:1; padding:16px 0; width:100%; }
+.orp-guide{
+  position:absolute; top:0; bottom:0; left:50%;
+  width:1px; background:rgba(46,207,184,0.20); pointer-events:none; transform:translateX(-50%);
+}
+.rsvp-context{
+  font-size:12px; color:var(--text3);
+  font-family:'Poppins',sans-serif;
+  font-style:italic; min-height:18px;
+}
+.rsvp-word-wrap{
+  display:flex; align-items:center; justify-content:center;
+  min-height:56px; width:100%; position:relative;
+}
+.rsvp-pre{
+  font-family:'Poppins',sans-serif; font-size:34px; font-weight:300; color:var(--text2);
+  flex:1; text-align:right; padding-right:1px;
+}
+.rsvp-focal{
+  font-family:'Poppins',sans-serif; font-size:34px; font-weight:600; color:var(--coral);
+  flex:0 0 auto; text-align:center; min-width:20px;
+}
+.rsvp-post{
+  font-family:'Poppins',sans-serif; font-size:34px; font-weight:300; color:var(--text2);
+  flex:1; text-align:left; padding-left:1px;
+}
+.rsvp-phrase{
+  font-family:'Poppins',sans-serif;
+  font-size:28px; font-weight:300; color:var(--text);
+  text-align:center; line-height:1.35; transition:opacity 0.15s;
+}
+.rsvp-hidden{opacity:0;}
+
+.rsvp-controls{ padding:14px 20px 28px; border-top:1px solid var(--border); display:flex; align-items:center; gap:10px; background:var(--bg); }
+.speed-live{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text3);}
+.speed-live input{width:90px; accent-color:var(--teal);}
+.speed-live-val{font-weight:700; color:var(--teal); min-width:3ch;}
+
+/* Countdown overlay */
+#rsvp-countdown{
+  font-family:'Poppins',sans-serif;
+  font-size:64px; font-weight:300; color:var(--gold);
+  text-align:center;
+}
+
+/* Flash feedback pill */
+.flash-fb{
+  position:absolute; bottom:10px;
+  font-size:11px; font-weight:700; letter-spacing:0.05em;
+  padding:3px 10px; border-radius:20px;
+  opacity:0; transition:opacity 0.2s; pointer-events:none;
+}
+.flash-fb.show{opacity:1;}
+.flash-fb.up{background:var(--green-d); color:var(--green); border:1px solid var(--green-b);}
+.flash-fb.down{background:var(--coral-d); color:var(--coral); border:1px solid var(--coral-b);}
+
+/* ── Buttons ── */
+.btn{
+  font-family:'Poppins',sans-serif; font-size:13px; font-weight:600;
+  padding:10px 18px; border-radius:10px; border:none; cursor:pointer;
+  transition:all 0.15s; -webkit-tap-highlight-color:transparent;
+  min-height:40px;
+}
+.btn-teal{background:var(--teal); color:var(--bg);}
+.btn-teal:hover{opacity:0.88;}
+.btn-ghost{background:transparent; color:var(--text2); border:1.5px solid var(--border2);}
+.btn-ghost:hover{border-color:var(--text2); color:var(--text);}
+.btn-danger{background:transparent; color:var(--coral); border:1.5px solid var(--coral-d);}
+.btn-sm{padding:7px 12px; font-size:12px;}
+
+/* ── Questions ── */
+.q-head{padding:18px 20px 14px; border-bottom:1px solid var(--border);}
+.q-head-title{
+  font-family:'Poppins',sans-serif;
+  font-size:22px; font-weight:300; color:var(--text); margin-bottom:3px;
+}
+.q-head-sub{font-size:13px; color:var(--text2);}
+.q-score-row{
+  padding:10px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.q-score-lbl{font-size:12px; color:var(--text3);}
+.q-score-val{font-size:14px; font-weight:700; color:var(--teal);}
+
+.questions{padding:16px 20px; display:flex; flex-direction:column; gap:20px;}
+.q-block{}
+.q-num{
+  font-size:10px; font-weight:700; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text3); margin-bottom:6px;
+}
+.q-text{font-size:15px; line-height:1.55; color:var(--text); margin-bottom:10px;}
+.q-opts{display:flex; flex-direction:column; gap:7px;}
+.q-opt{
+  padding:12px 16px; border-radius:10px;
+  border:1.5px solid var(--border2); background:var(--card2);
+  cursor:pointer; font-family:'Poppins',sans-serif;
+  font-size:14px; color:var(--text2); transition:all 0.15s;
+  -webkit-tap-highlight-color:transparent; min-height:44px;
+  display:flex; align-items:center;
+}
+.q-opt:hover{border-color:var(--teal); color:var(--text); background:var(--teal-d);}
+.q-opt.correct{border-color:var(--green); background:var(--green-d); color:var(--green); pointer-events:none;}
+.q-opt.wrong{border-color:var(--coral); background:var(--coral-d); color:var(--coral); pointer-events:none;}
+.q-opt.locked{pointer-events:none; opacity:0.5;}
+
+.q-footer{
+  padding:14px 20px; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+}
+
+/* ── Results ── */
+.results-inner{padding:28px 20px;}
+.results-wpm-wrap{text-align:center; margin-bottom:24px;}
+.results-wpm{
+  font-family:'Poppins',sans-serif;
+  font-size:72px; font-weight:300; color:var(--teal); line-height:1;
+}
+.results-wpm-lbl{font-size:13px; color:var(--text3); margin-top:4px; letter-spacing:0.04em;}
+.metrics-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:22px;}
+.metric{
+  background:var(--card2); border:1px solid var(--border2);
+  border-radius:11px; padding:14px 10px; text-align:center;
+}
+.metric-val{font-size:22px; font-weight:700; color:var(--text);}
+.metric-lbl{font-size:11px; color:var(--text3); margin-top:3px;}
+.insight{
+  background:var(--purple-d); border:1px solid rgba(155,127,255,0.2);
+  border-radius:11px; padding:14px 16px;
+  font-size:13px; color:var(--text2); line-height:1.65; margin-bottom:20px;
+}
+.insight strong{color:var(--purple);}
+.insight em{color:var(--text); font-style:normal; font-weight:500;}
+.results-btns{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+
+/* ── Science note ── */
+details.sci{
+  background:var(--card); border:1px solid var(--border2);
+  border-radius:var(--r); box-shadow:var(--sh); overflow:hidden;
+}
+details.sci summary{
+  padding:13px 18px; font-size:12px; font-weight:700;
+  letter-spacing:0.07em; text-transform:uppercase;
+  color:var(--text3); cursor:pointer; list-style:none;
+  display:flex; align-items:center; justify-content:space-between;
+  -webkit-tap-highlight-color:transparent;
+}
+details.sci summary::-webkit-details-marker{display:none;}
+details.sci summary::after{content:'▸'; font-size:10px; transition:transform 0.2s; color:var(--text3);}
+details.sci[open] summary::after{transform:rotate(90deg);}
+details.sci[open] summary{border-bottom:1px solid var(--border);}
+.sci-body{padding:14px 18px 16px; font-size:13px; color:var(--text2); line-height:1.7;}
+.sci-body strong{color:var(--text);}
+
+/* ── Mobile ── */
+@media(max-width:640px){
+  header{padding:12px 16px;}
+  .hdr-center{display:none;}
+  main{padding:16px 12px 0; gap:14px;}
+  .controls{grid-template-columns:1fr; padding:14px 16px;}
+  .text-selector{padding:0 16px 4px;}
+  .start-btn-wrap{padding:14px 16px 18px;}
+  .rsvp-stage{height:180px; padding:0 16px;}
+  .rsvp-pre,.rsvp-focal,.rsvp-post{font-size:38px!important;}
+  .rsvp-phrase{font-size:22px!important;}
+  .q-opt{font-size:15px!important; padding:14px 14px!important;}
+  .results-wpm{font-size:56px!important;}
+  .metrics-row{grid-template-columns:1fr 1fr; gap:8px;}
+  .btn{min-height:44px; font-size:14px!important; padding:12px 16px!important;}
+  .rsvp-controls{padding:10px 14px; flex-wrap:wrap; gap:8px;}
+  .card-head{padding:14px 16px 12px;}
+  .card-title{font-size:20px;}
+  .q-head{padding:14px 16px 12px;}
+  .instr-banner{padding:12px 14px;}
+  .instr-text{font-size:13px;}
+  .questions{padding:14px 16px;}
+  .results-inner{padding:20px 16px;}
+}
+
+/* ── Ready Screen ── */
+.ready-screen {
+  position:fixed; inset:0; z-index:200;
+  background:var(--bg);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:32px 24px; text-align:center;
+  overflow:hidden;
+}
+.ready-screen.hidden { display:none; }
+.ready-screen::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
+@keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-title {
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(32px,8vw,48px); font-weight:300;
+  color:var(--text); line-height:1.1; margin-bottom:12px;
+}
+.ready-title em { color:var(--teal); font-style:italic; }
+.ready-sub{font-size:19px;color:var(--text2);line-height:1.65;text-align:center;margin-bottom:24px;max-width:320px;}
+.ready-sub strong { color:var(--text); font-weight:600; }
+
+/* Animation preview box */
+.ready-preview {
+  width:100%; max-width:340px;
+  background:var(--card); border:1px solid var(--border2);
+  border-radius:16px; overflow:hidden;
+  margin-bottom:28px; min-height:110px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.preview-label {
+  position:absolute; top:10px; left:14px;
+  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  text-transform:uppercase; color:var(--text3);
+}
+.preview-inner {
+  padding:20px 24px; width:100%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+
+.ready-step-text strong { color:var(--text); font-weight:600; }
+
+.ready-btn {
+  width:100%; padding:17px;
+  background:var(--teal); color:var(--bg);
+  border:none; border-radius:13px; cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  font-size:17px; font-weight:700; letter-spacing:0.02em;
+  transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+  margin-bottom:14px;
+}
+.ready-btn:hover { opacity:0.88; transform:translateY(-1px); }
+.ready-btn:active { transform:translateY(0); }
+.ready-hint {
+  font-size:16px; color:var(--text3); line-height:1.5;
+}
+
+@media(max-width:600px) {
+  .ready-screen { padding:24px 16px; }
+  .ready-title { font-size:34px; }
+  .ready-sub { font-size:16px; }
+  .ready-steps { flex-direction:column; gap:8px; }
+  .ready-btn { font-size:16px; padding:16px; }
+}
+
+
+/* ── Brand logo ── */
+.logo, .brand-name {
+  font-family: 'Fredoka', 'Poppins', sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text); letter-spacing: -0.01em;
+  display: flex; align-items: center;
+}
+.logo em, .brand-name em {
+  color: var(--violet); font-style: italic;
+}
+/* ── Primary button — violet ── */
+.btn-teal, .ready-btn {
+  background: var(--violet-deep) !important;
+  color: #fff !important;
+}
+.btn-teal:hover, .ready-btn:hover {
+  background: var(--violet) !important;
+  opacity: 1 !important;
+}
+/* Keep teal for success/feedback states */
+.btn-teal.btn-success { background: var(--teal) !important; }
+
+
+/* Session next button — shown only during session flow */
+.session-next-btn {
+  display: none;
+  width: 100%;
+  padding: 16px;
+  background: var(--violet-deep);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-family: 'Fredoka', 'Poppins', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.session-next-btn:hover { background: var(--violet); }
+
+
+/* ── Single-question stage ── */
+#stage-q.show {
+  display:flex; flex-direction:column;
+  position:fixed; inset:0; z-index:10;
+  background:var(--bg); border:none; border-radius:0;
+}
+.sq-header {
+  padding:16px 20px 0;
+  display:flex; align-items:center; justify-content:center;
+}
+.sq-progress {
+  font-size:12px; color:var(--text3);
+  letter-spacing:0.08em; text-transform:uppercase;
+}
+.sq-body {
+  flex:1; display:flex; flex-direction:column;
+  justify-content:center; padding:28px 24px; gap:24px;
+}
+.sq-question {
+  font-family:'Poppins',sans-serif;
+  font-size:26px; font-weight:300; color:var(--text);
+  line-height:1.45; text-align:center;
+}
+.sq-opts {
+  display:flex; flex-direction:column; gap:10px;
+}
+.sq-opt {
+  padding:16px 18px; border-radius:13px;
+  border:1.5px solid var(--border2); background:var(--card);
+  font-size:16px; color:var(--text2); cursor:pointer;
+  transition:all 0.12s; text-align:left;
+}
+.sq-opt:active { transform:scale(0.98); }
+.sq-opt.correct { border-color:var(--teal-b); background:var(--teal-d); color:var(--teal); }
+.sq-opt.wrong   { border-color:rgba(255,107,91,0.3); background:rgba(255,107,91,0.08); color:var(--coral); }
+.sq-opt.locked  { pointer-events:none; }
+.sq-feedback {
+  font-size:14px; color:var(--text3); text-align:center;
+  min-height:20px; transition:opacity 0.2s;
+}
+.sq-footer {
+  padding:14px 24px 36px;
+}
+.sq-next-btn {
+  width:100%; padding:17px;
+  background:var(--violet-deep); color:#fff;
+  border:none; border-radius:14px;
+  font-family:'Fredoka','Poppins',sans-serif;
+  font-size:18px; font-weight:600; cursor:pointer;
+}
+
+</style>
+</head>
+<body>
+
+<main>
+
+<!-- First-time intro screen -->
+<div id="first-intro" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:200;
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 28px;text-align:center;">
+  <div style="width:88px;height:88px;border-radius:28px;background:var(--violet-d);
+    border:1.5px solid var(--violet-b);display:flex;align-items:center;justify-content:center;
+    font-size:42px;margin-bottom:28px;box-shadow:0 0 40px rgba(184,169,255,0.15);">⚡</div>
+  <div style="font-size:14px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+    color:var(--violet);margin-bottom:10px;">Ejercicio 3 de 3</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,7vw,44px);
+    font-weight:300;color:var(--text);line-height:1.2;margin-bottom:16px;">
+    Lectura <em style="color:var(--violet);font-style:italic;">Flash</em>
+  </div>
+  <div style="font-size:16px;color:var(--text2);line-height:1.7;max-width:300px;margin-bottom:12px;">
+    Para terminar, un ejercicio que entrena tu <strong style="color:var(--text);">velocidad lectora</strong> — las palabras aparecen una a una y tú decides el ritmo.
+  </div>
+  <div style="font-size:16px;color:var(--text3);margin-bottom:36px;">~3 minutos · Último ejercicio de hoy</div>
+  <button onclick="dismissFirstIntro()" style="width:100%;max-width:340px;padding:18px;
+    background:var(--violet-deep);color:#fff;border:none;border-radius:14px;
+    font-family:'Fredoka','DM Sans',sans-serif;font-size:18px;font-weight:600;
+    cursor:pointer;letter-spacing:0.01em;">
+    ▶ Comenzar
+  </button>
+</div>
+
+<div class="ready-screen" id="ready-screen">
+  <div class="ready-inner">
+    <div class="ready-title">Lectura <em>Flash</em></div>
+    <div class="ready-sub">Las palabras aparecen una a la vez — lee sin mover los ojos.</div>
+
+    <div class="ready-preview">
+      <div class="preview-label">Vista previa</div>
+      <div class="preview-inner">
+        <div style="text-align:center;">
+          <div id="rdy-word" style="font-family:'Poppins',sans-serif;font-size:38px;font-weight:300;color:var(--text);min-height:50px;transition:opacity 0.12s;"></div>
+          <div style="font-size:14px;color:var(--text3);margin-top:8px;letter-spacing:0.06em;" id="rdy-wpm-label">150 ppm</div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="width:100%;margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);">Velocidad</span>
+        <span style="font-family:'Fredoka',sans-serif;font-size:18px;font-weight:600;color:var(--violet);"><span id="rdy-speed-val">150</span> ppm</span>
+      </div>
+      <input id="rdy-speed-slider" type="range" min="100" max="350" step="25" value="150"
+        oninput="document.getElementById('rdy-speed-val').textContent=this.value"
+        style="width:100%;accent-color:var(--violet);">
+    </div>
+    <button class="ready-btn" onclick="dismissReady()">▶ Empecemos</button>
+    <div class="ready-hint">Puedes pausar en cualquier momento</div>
+  </div>
+</div>
+<script>
+// ── Ready screen animation: flash preview words ──
+(function(){
+  const words = ['El','parque','estaba','lleno','de','vida','aquella','mañana.'];
+  let wi = 0, rdyTimer = null;
+  const el = document.getElementById('rdy-word');
+  if(!el) return;
+  function showWord(){
+    el.style.opacity='0';
+    setTimeout(()=>{ el.textContent=words[wi]; el.style.opacity='1'; wi=(wi+1)%words.length; },120);
+    rdyTimer = setTimeout(showWord, 520);
+  }
+  showWord();
+  window._rdyTimer = rdyTimer;
+  window._stopRdy = ()=>{ clearTimeout(rdyTimer); };
+})();
+function dismissFirstIntro() {
+  document.getElementById('first-intro').style.display = 'none';
+  document.getElementById('ready-screen').classList.remove('hidden');
+}
+
+function dismissReady(){
+  window._stopRdy && window._stopRdy();
+  const spd = document.getElementById('rdy-speed-slider');
+  if(spd){
+    spd.value = currentWpm;
+    document.getElementById('rdy-speed-val').textContent = currentWpm;
+    if(document.getElementById('rdy-wpm-label')) document.getElementById('rdy-wpm-label').textContent = currentWpm + ' ppm';
+    syncSpeed(spd.value);
+  }
+  selectedTextIdx = getNextTextIdx('adult');
+  document.getElementById('ready-screen').classList.add('hidden');
+  setStage(1);
+  startRSVP();
+}
+
+// ── Session completion tracking ──
+function markComplete() {
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const all = JSON.parse(localStorage.getItem('em_completions') || '{}');
+    if(!all[today]) all[today] = [];
+    if(!all[today].includes('flash')) all[today].push('flash');
+    localStorage.setItem('em_completions', JSON.stringify(all));
+  } catch(e) {}
+  showSessionUI();
+}
+
+function completeAndContinue() {
+  markComplete();
+  setTimeout(() => goNextOrHome('index.html'), 1200);
+}
+
+
+// ── Session navigation ──
+function getSessionNext() {
+  try {
+    const q = JSON.parse(localStorage.getItem('em_session_queue')||'null');
+    if(!q) return null;
+    const today = new Date().toISOString().slice(0,10);
+    if(q.date !== today) return null; // stale queue
+
+    // Get completed today
+    const all = JSON.parse(localStorage.getItem('em_completions')||'{}');
+    const done = all[today] || [];
+
+    // Find next uncompleted in queue
+    const remaining = q.keys.filter(k => !done.includes(k));
+    if(remaining.length === 0) return 'done'; // all finished
+
+    const urls = {
+      flash:'lectura_flash_rsvp.html', bloques:'lectura_por_bloques_prototype.html',
+      contra:'contrarreloj.html', vision:'vision_paralela.html',
+      saltos:'saltos_visuales.html', memoria:'memoria_activa.html',
+      cats:'actualizacion_categorias.html', continua:'actualizacion_continua.html',
+    };
+    const isFirst = new URLSearchParams(window.location.search).get('first') === '1';
+    const suffix = isFirst ? '?session=1&first=1' : '?session=1';
+    return urls[remaining[0]] ? urls[remaining[0]] + suffix : null;
+  } catch(e) { return null; }
+}
+
+function isInSession() {
+  return new URLSearchParams(window.location.search).get('session') === '1';
+}
+
+function goNextOrHome(homeUrl) {
+  if(!isInSession()) { window.location.href = homeUrl; return; }
+  const next = getSessionNext();
+  if(!next || next === 'done') {
+    window.location.href = 'index.html?done=session';
+  } else {
+    window.location.href = next;
+  }
+}
+
+
+// Update session button labels to reflect position in queue
+function updateSessionBtnLabels() {
+  if(!isInSession()) return;
+  const next = getSessionNext();
+  const isLast = !next || next === 'done';
+  const label = isLast ? 'Finalizar sesión →' : 'Siguiente ejercicio →';
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.textContent = label;
+  });
+}
+
+</script>
+
+
+  <div class="steps" style="display:none;">
+    <div class="step active" id="st0"></div>
+    <div class="step" id="st1"></div>
+    <div class="step" id="st2"></div>
+  </div>
+
+  <!-- ─── STAGE 0: Settings ─── -->
+  <div class="card visible" id="stage-settings"></div>
+
+  <!-- ─── STAGE 1: RSVP ─── -->
+  <div class="card" id="stage-rsvp">
+    <div class="rsvp-head">
+      <span class="rsvp-wpm" id="live-wpm">150 ppm</span>
+      <span class="rsvp-prog" id="rsvp-prog">0 / 0 palabras</span>
+    </div>
+    <div class="rsvp-bar-wrap"><div class="rsvp-bar-fill" id="rsvp-bar" style="width:0%"></div></div>
+
+    <div class="rsvp-stage" id="rsvp-viewport">
+      <div class="orp-guide" id="orp-guide" style="left:50%"></div>
+      <div class="rsvp-context" id="rsvp-context" style="display:none"></div>
+      <div class="rsvp-word-wrap" id="rsvp-word-wrap" style="display:none">
+        <span class="rsvp-pre" id="w-pre"></span>
+        <span class="rsvp-focal" id="w-focal"></span>
+        <span class="rsvp-post" id="w-post"></span>
+      </div>
+      <div class="rsvp-phrase" id="rsvp-phrase" style="display:none"></div>
+      <div class="flash-fb" id="flash-fb"></div>
+    </div>
+
+    <div class="rsvp-controls">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span style="font-size:16px;color:var(--text3);" id="live-wpm-ctrl"></span>
+        <button class="btn btn-ghost btn-sm" id="pause-btn" onclick="togglePause()">⏸ Pausa</button>
+        <button class="btn btn-danger btn-sm" onclick="stopRSVP()">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── STAGE 2: Questions ─── -->
+  <div class="card" id="stage-q">
+    <div class="sq-header">
+      <div class="sq-progress" id="sq-progress">1 / 2</div>
+    </div>
+    <div class="sq-body">
+      <div class="sq-question" id="sq-question"></div>
+      <div class="sq-opts" id="sq-opts"></div>
+      <div class="sq-feedback" id="sq-feedback"></div>
+    </div>
+    <div class="sq-footer">
+      <button class="sq-next-btn" id="sq-next-btn" onclick="nextQuestion()" style="display:none">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- ─── STAGE 3: Results ─── -->
+  <div class="card" id="stage-results">
+    <div class="results-inner">
+      <div class="results-wpm-wrap">
+        <div class="results-wpm" id="result-wpm">–</div>
+        <div class="results-wpm-lbl">palabras por minuto</div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric"><div class="metric-val" id="r-comp">–</div><div class="metric-lbl">Comprensión</div></div>
+        <div class="metric"><div class="metric-val" id="r-delta">–</div><div class="metric-lbl">vs. sesión anterior</div></div>
+        <div class="metric"><div class="metric-val" id="r-efficiency">–</div><div class="metric-lbl">Eficiencia</div></div>
+      </div>
+      <div class="insight" id="insight-box"></div>
+      <div class="results-btns">
+        <button class="btn btn-ghost session-hide" onclick="resetAll()">← Nuevo texto</button>
+        <button class="btn btn-teal session-hide" onclick="repeatText()">Repetir →</button>
+      </div>
+      <button class="session-next-btn" onclick="completeAndContinue()">Siguiente ejercicio →</button>
+    </div>
+  </div>
+
+  <details class="sci session-hide">
+    <summary>⚗ Base científica — por qué el límite de 350 ppm</summary>
+    <div class="sci-body">
+      Las investigaciones de Acklin &amp; Papesh (2017) y Benedetto et al. (2015) confirman que no existe diferencia significativa en comprensión entre lectura normal y RSVP a 250–350 ppm, pero la comprensión cae significativamente por encima de ese umbral. El modo <em>por frases</em> preserva las señales sintácticas que el modo palabra-por-palabra elimina, lo que reduce la carga cognitiva en oraciones complejas.
+    </div>
+  </details>
+
+</main>
+
+<script>
+// ── sync speed display across both elements ──
+function syncSpeed(v) {
+  currentWpm = parseInt(v);
+  const sv = document.getElementById('speed-val'); if(sv) sv.textContent = v;
+  const sv2 = document.getElementById('speed-val2'); if(sv2) sv2.textContent = v;
+  const lw = document.getElementById('live-wpm'); if(lw) lw.textContent = v + ' ppm';
+  const lc = document.getElementById('live-wpm-ctrl'); if(lc) lc.textContent = v + ' ppm';
+}
+
+const TEXTS = [
+  {
+    title: "Un día en el parque",
+    ages: ["child", "teen"],
+    words: "El parque estaba lleno de vida aquella mañana. Los niños corrían entre los árboles mientras sus padres conversaban en los bancos. Un perro jugaba con una pelota roja cerca de la fuente. El sol brillaba con fuerza y el aire olía a flores recién abiertas. Una anciana alimentaba a las palomas con migas de pan. Dos ciclistas pasaron a gran velocidad por el camino principal. Un vendedor de helados empujaba su carrito entre los visitantes. La gente sonreía y disfrutaba del buen tiempo. Era uno de esos días perfectos que uno no olvida fácilmente."
+      .split(' '),
+    questions: [
+      { text: "¿Cuál era el ambiente general del parque esa mañana?", opts: ["Tranquilo y vacío","Lleno de actividad y alegría","Triste y solitario","Ruidoso y desagradable"], correct: 1 },
+      { text: "¿Qué hacía la anciana en el parque?", opts: ["Corría entre los árboles","Montaba en bicicleta","Alimentaba a las palomas","Vendía helados"], correct: 2 },
+      { text: "¿Cómo describe el texto el día?", opts: ["Lluvioso y frío","Nublado y ventoso","Perfecto y memorable","Caluroso y sofocante"], correct: 2 }
+    ],
+    phrases: [
+      ["El parque estaba lleno de vida"], ["aquella mañana."],
+      ["Los niños corrían entre los árboles"], ["mientras sus padres conversaban."],
+      ["Un perro jugaba con una pelota roja"], ["cerca de la fuente."],
+      ["El sol brillaba con fuerza"], ["y el aire olía a flores."],
+      ["Una anciana alimentaba a las palomas"], ["con migas de pan."],
+      ["Dos ciclistas pasaron a gran velocidad"], ["por el camino principal."],
+      ["Era uno de esos días perfectos"], ["que uno no olvida fácilmente."]
+    ]
+  },
+  {
+    title: "La biodiversidad marina",
+    ages: ["adult"],
+    words: "Los océanos cubren más del setenta por ciento de la superficie terrestre y albergan una biodiversidad extraordinaria que aún no hemos logrado comprender del todo. Cada año, los científicos descubren miles de especies nuevas en las profundidades marinas, lo que pone de manifiesto cuánto queda por explorar. Sin embargo, esta riqueza biológica enfrenta amenazas sin precedentes: la contaminación plástica, el calentamiento global y la sobrepesca están transformando los ecosistemas a un ritmo alarmante. Algunos estudios recientes indican que los arrecifes de coral podrían desaparecer antes de finales de este siglo si no se toman medidas urgentes. La pérdida de estos ecosistemas no solo afecta a las especies marinas, sino también a los millones de personas que dependen del océano para su alimentación y sustento. Proteger la biodiversidad marina es, en última instancia, proteger nuestra propia supervivencia."
+      .split(' '),
+    questions: [
+      { text: "¿Cuál es la actitud del autor respecto al conocimiento científico actual del océano?", opts: ["Considera que ya se ha explorado lo suficiente","Reconoce que el conocimiento es aún incompleto","Cree que la ciencia exagera las amenazas","Afirma que los océanos no tienen importancia"], correct: 1 },
+      { text: "¿Qué relación implícita establece el texto entre la biodiversidad marina y los seres humanos?", opts: ["Los humanos no dependen del océano","La crisis marina solo afecta a animales","La supervivencia humana está ligada a la salud del océano","Los arrecifes son irrelevantes para la economía"], correct: 2 },
+      { text: "¿Qué función cumple la frase 'en última instancia' en el argumento?", opts: ["Introduce una excepción","Marca el inicio del texto","Cierra el argumento conectando lo ambiental con lo humano","Expresa incertidumbre"], correct: 2 }
+    ],
+    phrases: [
+      ["Los océanos cubren"], ["más del setenta por ciento"], ["de la superficie terrestre"],
+      ["y albergan una biodiversidad extraordinaria"], ["que aún no hemos logrado comprender."],
+      ["Cada año, los científicos descubren"], ["miles de especies nuevas"], ["en las profundidades marinas."],
+      ["Sin embargo, esta riqueza biológica"], ["enfrenta amenazas sin precedentes:"],
+      ["la contaminación plástica,"], ["el calentamiento global"], ["y la sobrepesca"],
+      ["están transformando los ecosistemas"], ["a un ritmo alarmante."],
+      ["Algunos estudios recientes indican"], ["que los arrecifes de coral"], ["podrían desaparecer"],
+      ["antes de finales de este siglo"], ["si no se toman medidas urgentes."],
+      ["La pérdida de estos ecosistemas"], ["no solo afecta a las especies marinas,"],
+      ["sino también a los millones de personas"], ["que dependen del océano."],
+      ["Proteger la biodiversidad marina"], ["es, en última instancia,"], ["proteger nuestra propia supervivencia."]
+    ]
+  },
+  {
+    title: "Economía circular en América Latina",
+    ages: ["adult"],
+    words: "La economía circular propone un modelo en el que los residuos de un proceso se convierten en los recursos de otro, rompiendo así con la lógica lineal de producir, usar y desechar. En América Latina, esta transición resulta especialmente relevante dado el crecimiento acelerado del consumo y la fragilidad de muchos ecosistemas regionales. Países como Chile, Colombia y México ya han comenzado a implementar marcos legislativos que incentivan el rediseño de productos y la gestión responsable de materiales. No obstante, los avances son desiguales: mientras algunas ciudades lideran iniciativas innovadoras, las zonas rurales siguen enfrentando déficits importantes en infraestructura de reciclaje. Para que la economía circular deje de ser una aspiración y se convierta en política pública efectiva, es necesario articular esfuerzos entre el sector privado, los gobiernos y las comunidades locales."
+      .split(' '),
+    questions: [
+      { text: "¿Cuál es el principio central de la economía circular según el texto?", opts: ["Aumentar la producción de bienes de consumo","Eliminar todos los residuos industriales","Reutilizar los residuos de un proceso como recursos de otro","Reducir el consumo a cero"], correct: 2 },
+      { text: "¿Qué sugiere el conector 'No obstante' sobre la situación en América Latina?", opts: ["Los avances han sido uniformes","Existe una contradicción entre el progreso y las brechas","La situación ha mejorado sin excepciones","Los gobiernos no han hecho nada"], correct: 1 },
+      { text: "¿Qué condición plantea el autor para que la economía circular sea efectiva?", opts: ["Que se elimine la producción industrial","Que solo actúe el gobierno central","Que colaboren el sector privado, los gobiernos y las comunidades","Que se importe tecnología de Europa"], correct: 2 }
+    ],
+    phrases: [
+      ["La economía circular propone"], ["un modelo en el que los residuos"], ["de un proceso"],
+      ["se convierten en los recursos de otro,"], ["rompiendo con la lógica lineal."],
+      ["En América Latina,"], ["esta transición resulta especialmente relevante"],
+      ["dado el crecimiento acelerado del consumo."],
+      ["Países como Chile, Colombia y México"], ["ya han comenzado a implementar"],
+      ["marcos legislativos"], ["que incentivan el rediseño de productos."],
+      ["No obstante, los avances son desiguales:"], ["mientras algunas ciudades lideran iniciativas,"],
+      ["las zonas rurales"], ["siguen enfrentando déficits"], ["en infraestructura de reciclaje."],
+      ["Para que la economía circular"], ["se convierta en política pública efectiva,"],
+      ["es necesario articular esfuerzos"], ["entre el sector privado,"], ["los gobiernos"], ["y las comunidades locales."]
+    ]
+  },
+  {
+    title: "El sueño y la memoria",
+    ages: ["adult"],
+    words: "Durante el sueño, el cerebro no descansa: procesa, consolida y reorganiza la información acumulada durante el día. La fase de sueño profundo es especialmente crítica para la consolidación de la memoria declarativa, aquella que nos permite recordar hechos y eventos. Investigaciones recientes demuestran que las personas que duermen menos de seis horas rinden significativamente peor en pruebas de memoria al día siguiente. Más sorprendente aún es que el sueño también parece cumplir una función de limpieza: durante la noche, el sistema glinfático elimina toxinas acumuladas en el cerebro, incluidas proteínas asociadas con el Alzheimer. Dormir bien no es un lujo; es una necesidad biológica fundamental para el funcionamiento cognitivo óptimo."
+      .split(' '),
+    questions: [
+      { text: "¿Cuál es la función del sueño profundo según el texto?", opts: ["Relajar los músculos del cuerpo","Consolidar la memoria declarativa","Acelerar el metabolismo","Regular la temperatura corporal"], correct: 1 },
+      { text: "¿Qué implica la referencia al sistema glinfático?", opts: ["Que el cerebro produce toxinas durante el día","Que dormir mal no tiene consecuencias graves","Que las toxinas se acumulan durante el sueño","Que el Alzheimer es causado por falta de sueño"], correct: 0 },
+      { text: "¿Cuál es la postura central del autor sobre el sueño?", opts: ["Es una actividad opcional para personas ocupadas","Solo importa la cantidad, no la calidad","Es una necesidad biológica, no un lujo","Afecta solo a personas mayores"], correct: 2 }
+    ],
+    phrases: [
+      ["Durante el sueño,"], ["el cerebro no descansa:"],
+      ["procesa, consolida y reorganiza"], ["la información acumulada durante el día."],
+      ["La fase de sueño profundo"], ["es especialmente crítica"],
+      ["para la consolidación"], ["de la memoria declarativa."],
+      ["Investigaciones recientes demuestran"], ["que las personas que duermen menos de seis horas"],
+      ["rinden significativamente peor"], ["en pruebas de memoria al día siguiente."],
+      ["Más sorprendente aún"], ["es que el sueño cumple una función de limpieza:"],
+      ["el sistema glinfático"], ["elimina toxinas acumuladas en el cerebro."],
+      ["Dormir bien no es un lujo;"], ["es una necesidad biológica fundamental."]
+    ]
+  },
+  {
+    title: "Ciudades y cambio climático",
+    ages: ["adult"],
+    words: "Las ciudades concentran más del cincuenta y cinco por ciento de la población mundial y son responsables de aproximadamente el setenta por ciento de las emisiones globales de dióxido de carbono. Esta paradoja urbana —centros de innovación que también son motores de contaminación— está impulsando un replanteamiento profundo del diseño de las ciudades. Conceptos como la ciudad de quince minutos, donde todos los servicios esenciales se encuentran a una distancia caminable, están ganando terreno en Europa y América Latina. Sin embargo, adaptar las ciudades al cambio climático no es solo una cuestión de infraestructura: requiere transformar hábitos culturales profundamente arraigados en torno al automóvil y al consumo. El urbanismo del siglo veintiuno debe ser, ante todo, un proyecto colectivo y democrático."
+      .split(' '),
+    questions: [
+      { text: "¿Qué paradoja describe el texto sobre las ciudades?", opts: ["Son pobres pero consumen mucho","Son centros de innovación y a la vez fuentes de contaminación","Tienen mucha población pero poca infraestructura","Lideran la economía pero ignoran la tecnología"], correct: 1 },
+      { text: "¿Qué es la 'ciudad de quince minutos'?", opts: ["Una ciudad que se construye en quince minutos","Una ciudad donde los desplazamientos en auto duran quince minutos","Un modelo donde los servicios esenciales están a distancia caminable","Una iniciativa para reducir jornadas laborales"], correct: 2 },
+      { text: "Según el autor, ¿qué más requiere la adaptación climática urbana?", opts: ["Solo inversión en infraestructura","Únicamente cambios legislativos","Transformar hábitos culturales además de la infraestructura","Reducir la población de las ciudades"], correct: 2 }
+    ],
+    phrases: [
+      ["Las ciudades concentran"], ["más del cincuenta y cinco por ciento"], ["de la población mundial"],
+      ["y son responsables"], ["del setenta por ciento"], ["de las emisiones globales."],
+      ["Esta paradoja urbana"], ["—centros de innovación"], ["que también son motores de contaminación—"],
+      ["está impulsando un replanteamiento"], ["del diseño de las ciudades."],
+      ["La ciudad de quince minutos,"], ["donde los servicios esenciales"], ["están a distancia caminable,"],
+      ["está ganando terreno"], ["en Europa y América Latina."],
+      ["Adaptar las ciudades al cambio climático"], ["requiere transformar hábitos culturales."],
+      ["El urbanismo del siglo veintiuno"], ["debe ser un proyecto colectivo y democrático."]
+    ]
+  },
+  {
+    title: "La atención en la era digital",
+    ages: ["adult"],
+    words: "La capacidad de sostener la atención durante períodos prolongados está disminuyendo en la población adulta de las sociedades digitalizadas. Los estudios sugieren que el uso intensivo de plataformas diseñadas para capturar la atención en fragmentos breves entrena al cerebro para buscar novedad constante, dificultando la concentración sostenida. Esta tendencia tiene consecuencias directas sobre la lectura profunda, el pensamiento crítico y la capacidad de resolver problemas complejos. No obstante, la neuroplasticidad ofrece una respuesta esperanzadora: el cerebro puede recuperar su capacidad de atención sostenida con práctica deliberada. Ejercicios como la lectura de textos largos, la meditación y el trabajo cognitivo sin interrupciones digitales han demostrado ser efectivos para reconectar los circuitos atencionales."
+      .split(' '),
+    questions: [
+      { text: "¿Cuál es la causa principal de la disminución de la atención según el texto?", opts: ["El trabajo excesivo y el estrés","El envejecimiento natural de la población","El diseño de plataformas digitales que fragmentan la atención","La reducción de horas de sueño"], correct: 2 },
+      { text: "¿Qué consecuencias tiene esta tendencia?", opts: ["Solo afecta el entretenimiento","Afecta la lectura, el pensamiento crítico y la resolución de problemas","Mejora la capacidad de hacer varias cosas a la vez","No tiene consecuencias comprobadas"], correct: 1 },
+      { text: "¿Qué mensaje transmite la mención de la neuroplasticidad?", opts: ["El daño causado por la tecnología es irreversible","Solo los jóvenes pueden recuperar la atención","El cerebro puede recuperarse con práctica adecuada","La meditación es la única solución efectiva"], correct: 2 }
+    ],
+    phrases: [
+      ["La capacidad de sostener la atención"], ["durante períodos prolongados"],
+      ["está disminuyendo"], ["en las sociedades digitalizadas."],
+      ["El uso intensivo de plataformas"], ["diseñadas para capturar la atención en fragmentos breves"],
+      ["entrena al cerebro"], ["para buscar novedad constante."],
+      ["Esta tendencia tiene consecuencias"], ["sobre la lectura profunda,"],
+      ["el pensamiento crítico"], ["y la resolución de problemas complejos."],
+      ["No obstante, la neuroplasticidad"], ["ofrece una respuesta esperanzadora:"],
+      ["el cerebro puede recuperar"], ["su capacidad de atención sostenida"],
+      ["con práctica deliberada."]
+    ]
+  },
+  {
+    title: "Microbioma y salud mental",
+    ages: ["adult"],
+    words: "Durante décadas, el cerebro fue considerado el órgano rector de las emociones y el comportamiento. Hoy sabemos que existe una comunicación bidireccional constante entre el intestino y el cerebro, mediada por millones de microorganismos que habitan en el tracto digestivo. Este ecosistema microbiano, conocido como microbioma intestinal, produce neurotransmisores como la serotonina, de la que se estima que el noventa por ciento se sintetiza en el intestino. Investigaciones recientes asocian la composición del microbioma con trastornos como la depresión, la ansiedad y el autismo. Aunque el campo es aún joven y muchas relaciones de causalidad no están establecidas, los hallazgos apuntan hacia una medicina más integrativa que considere la salud intestinal como parte esencial del bienestar mental."
+      .split(' '),
+    questions: [
+      { text: "¿Qué descubrimiento central describe el texto?", opts: ["Que el cerebro controla el sistema digestivo","Que existe comunicación bidireccional entre intestino y cerebro","Que la serotonina solo se produce en el cerebro","Que el microbioma causa directamente la depresión"], correct: 1 },
+      { text: "¿Por qué es relevante que el 90% de la serotonina se produce en el intestino?", opts: ["Porque confirma que el cerebro no regula las emociones","Porque sugiere que la salud intestinal influye en el estado de ánimo","Porque demuestra que los microorganismos son dañinos","Porque explica por qué comemos en exceso"], correct: 1 },
+      { text: "¿Cuál es la actitud del autor hacia este campo de investigación?", opts: ["Escéptica y negativa","Entusiasta pero cautelosa","Completamente segura de las causas","Indiferente a sus implicaciones"], correct: 1 }
+    ],
+    phrases: [
+      ["Durante décadas,"], ["el cerebro fue considerado"], ["el órgano rector de las emociones."],
+      ["Hoy sabemos que existe"], ["una comunicación bidireccional"], ["entre el intestino y el cerebro,"],
+      ["mediada por millones de microorganismos"], ["que habitan en el tracto digestivo."],
+      ["El microbioma intestinal"], ["produce neurotransmisores como la serotonina,"],
+      ["de la que el noventa por ciento"], ["se sintetiza en el intestino."],
+      ["Investigaciones recientes asocian"], ["la composición del microbioma"],
+      ["con trastornos como la depresión"], ["y la ansiedad."],
+      ["Los hallazgos apuntan"], ["hacia una medicina más integrativa."]
+    ]
+  },
+  {
+    title: "El valor del silencio",
+    ages: ["adult"],
+    words: "En un mundo saturado de estímulos sonoros, el silencio se ha convertido en un recurso escaso y valioso. La investigación en neurociencia sugiere que los períodos de silencio no son simplemente ausencias de ruido, sino estados activos durante los cuales el cerebro procesa experiencias, consolida recuerdos y genera conexiones creativas. Un estudio con ratones demostró que dos horas diarias de silencio promovían el desarrollo de nuevas células en el hipocampo, región asociada con la memoria y el aprendizaje. En el ámbito humano, las personas que practican períodos regulares de quietud reportan mayor claridad mental, mejor regulación emocional y mayor capacidad creativa. Paradójicamente, en la cultura contemporánea, el silencio incomoda: llenamos cada pausa con pantallas, música o conversación, privándonos de uno de los recursos cognitivos más potentes que tenemos."
+      .split(' '),
+    questions: [
+      { text: "¿Cómo describe el texto al silencio desde la perspectiva neurocientífica?", opts: ["Como ausencia total de actividad cerebral","Como un estado activo de procesamiento cerebral","Como una fuente de estrés para el cerebro","Como algo que solo beneficia a los ratones"], correct: 1 },
+      { text: "¿Qué efecto tuvo el silencio en el estudio con ratones?", opts: ["Redujo su capacidad de memorizar","Aumentó su nivel de ansiedad","Promovió el desarrollo de nuevas células en el hipocampo","No tuvo ningún efecto medible"], correct: 2 },
+      { text: "¿Qué paradoja señala el autor al final del texto?", opts: ["Que el silencio es ruidoso en realidad","Que buscamos el silencio pero no lo encontramos","Que sabemos que el silencio es valioso pero constantemente lo evitamos","Que el silencio beneficia a los ratones pero no a los humanos"], correct: 2 }
+    ],
+    phrases: [
+      ["En un mundo saturado de estímulos sonoros,"], ["el silencio se ha convertido"],
+      ["en un recurso escaso y valioso."],
+      ["Los períodos de silencio"], ["no son simplemente ausencias de ruido,"],
+      ["sino estados activos"], ["durante los cuales el cerebro"],
+      ["procesa experiencias"], ["y genera conexiones creativas."],
+      ["Un estudio con ratones demostró"], ["que el silencio promovía"],
+      ["el desarrollo de nuevas células"], ["en el hipocampo."],
+      ["Paradójicamente,"], ["el silencio incomoda en la cultura contemporánea:"],
+      ["llenamos cada pausa"], ["con pantallas, música o conversación."]
+    ]
+  },
+  {
+    title: "Lenguas en peligro",
+    ages: ["adult"],
+    words: "Se estima que de las aproximadamente siete mil lenguas que existen en el mundo, la mitad desaparecerá antes de finales de este siglo. Una lengua muere, en promedio, cada dos semanas. Más allá de la pérdida cultural evidente, la extinción lingüística supone también una pérdida de conocimiento: muchas lenguas contienen categorías conceptuales, sistemas de clasificación de la naturaleza y formas de entender el tiempo y el espacio que no tienen equivalente en las lenguas dominantes. Algunos lingüistas argumentan que cada lengua representa una ventana única hacia la cognición humana. Los esfuerzos de revitalización lingüística, como los que han dado resultado en el caso del euskera en España o el maorí en Nueva Zelanda, demuestran que la extinción no es inevitable si existe voluntad política y comunitaria."
+      .split(' '),
+    questions: [
+      { text: "Además de la pérdida cultural, ¿qué otro tipo de pérdida implica la extinción de una lengua?", opts: ["Pérdida de recursos económicos","Pérdida de conocimiento y formas únicas de entender el mundo","Pérdida de biodiversidad animal","Pérdida de infraestructura educativa"], correct: 1 },
+      { text: "¿Qué sugiere la afirmación de que cada lengua es 'una ventana única hacia la cognición humana'?", opts: ["Que todas las lenguas son iguales en estructura","Que las lenguas dominantes son superiores cognitivamente","Que distintas lenguas reflejan distintas formas de pensar","Que el número de lenguas no importa"], correct: 2 },
+      { text: "¿Qué conclusión extrae el texto de los casos del euskera y el maorí?", opts: ["Que la revitalización siempre fracasa","Que solo las lenguas europeas pueden sobrevivir","Que la extinción lingüística puede evitarse con voluntad política y comunitaria","Que los gobiernos son los únicos responsables"], correct: 2 }
+    ],
+    phrases: [
+      ["Se estima que la mitad"], ["de las siete mil lenguas del mundo"],
+      ["desaparecerá antes de finales de este siglo."],
+      ["Una lengua muere,"], ["en promedio,"], ["cada dos semanas."],
+      ["Más allá de la pérdida cultural,"], ["la extinción lingüística supone"],
+      ["una pérdida de conocimiento:"], ["formas de entender el tiempo y el espacio"],
+      ["sin equivalente en las lenguas dominantes."],
+      ["Cada lengua representa"], ["una ventana única hacia la cognición humana."],
+      ["Los esfuerzos de revitalización"], ["como el euskera o el maorí"],
+      ["demuestran que la extinción no es inevitable."]
+    ]
+  },
+  {
+    title: "Inteligencia artificial y creatividad",
+    ages: ["adult"],
+    words: "Durante años, la creatividad fue considerada el último bastión exclusivamente humano, inmune a la automatización. Esta certeza ha sido sacudida por sistemas de inteligencia artificial capaces de generar texto, música, imágenes y código con una fluidez que sorprende incluso a sus creadores. Sin embargo, el debate sobre si estas máquinas realmente crean o simplemente recombinan patrones estadísticos de lo que han procesado es filosóficamente profundo. La creatividad humana, argumentan algunos, no es solo producción novedosa: implica intención, experiencia vivida, emoción y contexto cultural. Lo que la inteligencia artificial produce puede ser extraordinariamente útil y estéticamente impactante, pero surge de un proceso radicalmente distinto. La pregunta relevante quizás no es si las máquinas pueden crear, sino qué queremos hacer los humanos con nuestra propia capacidad creativa en este nuevo contexto."
+      .split(' '),
+    questions: [
+      { text: "¿Qué certeza menciona el texto que ha sido sacudida?", opts: ["Que las máquinas son más eficientes que los humanos","Que la creatividad era un dominio exclusivamente humano","Que la inteligencia artificial no puede aprender","Que el arte no tiene valor económico"], correct: 1 },
+      { text: "¿Cuál es el argumento de quienes cuestionan que la IA realmente crea?", opts: ["Que las máquinas no tienen electricidad suficiente","Que la IA produce resultados de mala calidad","Que la creatividad humana implica intención, emoción y experiencia vivida","Que la IA solo funciona con música"], correct: 2 },
+      { text: "¿Cuál es la pregunta final que propone el autor?", opts: ["¿Pueden las máquinas superar a los humanos?","¿Debemos prohibir la inteligencia artificial?","¿Qué haremos los humanos con nuestra creatividad en este nuevo contexto?","¿Es la IA más inteligente que nosotros?"], correct: 2 }
+    ],
+    phrases: [
+      ["Durante años,"], ["la creatividad fue considerada"], ["el último bastión exclusivamente humano."],
+      ["Esta certeza ha sido sacudida"], ["por sistemas de inteligencia artificial"],
+      ["capaces de generar texto, música,"], ["imágenes y código."],
+      ["El debate sobre si estas máquinas realmente crean"], ["es filosóficamente profundo."],
+      ["La creatividad humana"], ["no es solo producción novedosa:"],
+      ["implica intención,"], ["experiencia vivida,"], ["emoción y contexto cultural."],
+      ["La pregunta relevante"], ["quizás no es si las máquinas pueden crear,"],
+      ["sino qué queremos hacer los humanos"], ["con nuestra propia capacidad creativa."]
+    ]
+  },
+  {
+    title: "La lectura y el cerebro",
+    ages: ["adult"],
+    words: "La lectura es una tecnología cultural relativamente reciente —apenas cinco mil años de antigüedad— y, sin embargo, ha transformado la arquitectura del cerebro humano. A diferencia del lenguaje oral, que tiene bases neurológicas innatas, leer exige un aprendizaje explícito que reconfigura regiones cerebrales originalmente destinadas a otras funciones, como el reconocimiento de objetos y caras. La lectura profunda, aquella que implica análisis, inferencia y empatía narrativa, activa una red neuronal extensa que incluye áreas visuales, lingüísticas y emocionales. Investigadores como Maryanne Wolf advierten que el predominio de la lectura superficial en pantallas podría estar erosionando esta capacidad. Desarrollar lectores profundos no es solo una meta educativa: es una inversión en la calidad del pensamiento humano colectivo."
+      .split(' '),
+    questions: [
+      { text: "¿Por qué la lectura es notable desde una perspectiva neurológica?", opts: ["Porque es una habilidad innata de los humanos","Porque reconfigura regiones cerebrales destinadas a otras funciones","Porque es idéntica al procesamiento del lenguaje oral","Porque no requiere aprendizaje explícito"], correct: 1 },
+      { text: "¿Qué distingue a la lectura profunda de la lectura ordinaria?", opts: ["Que se hace solo en papel","Que activa una red neuronal extensa incluyendo áreas emocionales","Que es más rápida que la lectura en pantalla","Que solo la practican los académicos"], correct: 1 },
+      { text: "¿Cuál es la preocupación central del texto?", opts: ["Que los libros están desapareciendo físicamente","Que la lectura en pantallas mejora demasiado la velocidad","Que la lectura superficial digital podría erosionar la capacidad de pensar profundamente","Que los niños leen demasiado"], correct: 2 }
+    ],
+    phrases: [
+      ["La lectura es una tecnología cultural"], ["relativamente reciente"],
+      ["—apenas cinco mil años de antigüedad—"], ["y ha transformado la arquitectura del cerebro."],
+      ["A diferencia del lenguaje oral,"], ["leer exige un aprendizaje explícito"],
+      ["que reconfigura regiones cerebrales"], ["destinadas originalmente a otras funciones."],
+      ["La lectura profunda"], ["implica análisis, inferencia"], ["y empatía narrativa."],
+      ["Activa una red neuronal extensa"], ["que incluye áreas visuales,"],
+      ["lingüísticas y emocionales."],
+      ["Desarrollar lectores profundos"], ["es una inversión"], ["en el pensamiento humano colectivo."]
+    ]
+  },
+  {
+    title: "Migración y pertenencia",
+    ages: ["adult"],
+    words: "La migración es uno de los fenómenos más antiguos y definitorios de la historia humana. Hoy, más de doscientos ochenta millones de personas viven fuera de su país de nacimiento, una cifra sin precedentes en la era moderna. Los debates públicos sobre migración suelen polarizarse entre visiones que enfatizan los riesgos y las que destacan los beneficios económicos y culturales. Lo que con frecuencia se pierde en estas discusiones es la experiencia subjetiva del migrante: la negociación constante entre la cultura de origen y la cultura de acogida, el duelo por lo que se deja y la construcción de una identidad que no encaja perfectamente en ningún lugar. Esta condición de pertenencia múltiple, aunque compleja, puede también ser fuente de una perspectiva única y enriquecedora, tanto para el individuo como para las sociedades que saben acogerla."
+      .split(' '),
+    questions: [
+      { text: "¿Qué aspecto de la migración señala el texto como frecuentemente ignorado?", opts: ["Las cifras económicas de los migrantes","Los riesgos para los países receptores","La experiencia subjetiva e identitaria del migrante","Las rutas migratorias más comunes"], correct: 2 },
+      { text: "¿Cómo describe el texto la identidad del migrante?", opts: ["Como completamente integrada en la cultura de acogida","Como una identidad que no encaja perfectamente en ningún lugar","Como idéntica a la de cualquier ciudadano local","Como irrelevante para el debate migratorio"], correct: 1 },
+      { text: "¿Cuál es la postura del autor sobre la pertenencia múltiple?", opts: ["Es un problema sin solución","Es exclusivamente fuente de sufrimiento","Puede ser fuente de una perspectiva única y enriquecedora","Solo beneficia a los países ricos"], correct: 2 }
+    ],
+    phrases: [
+      ["La migración es uno de los fenómenos"], ["más antiguos de la historia humana."],
+      ["Hoy, más de doscientos ochenta millones de personas"], ["viven fuera de su país de nacimiento."],
+      ["Los debates sobre migración"], ["suelen polarizarse"],
+      ["entre quienes enfatizan los riesgos"], ["y quienes destacan los beneficios."],
+      ["Lo que se pierde con frecuencia"], ["es la experiencia subjetiva del migrante:"],
+      ["la negociación entre culturas,"], ["el duelo por lo que se deja"],
+      ["y la construcción de una identidad"], ["que no encaja perfectamente en ningún lugar."],
+      ["La pertenencia múltiple"], ["puede ser fuente de una perspectiva enriquecedora."]
+    ]
+  },
+  {
+    title: "El tiempo libre y la productividad",
+    ages: ["adult"],
+    words: "La cultura del trabajo contemporánea glorifica la ocupación constante como señal de valor y compromiso. Sin embargo, la evidencia científica apunta en una dirección diferente: el descanso no es el opuesto de la productividad, sino una de sus condiciones. Estudios sobre el funcionamiento de la red neuronal por defecto, activa precisamente cuando la mente no está enfocada en una tarea específica, revelan que este estado es crucial para la consolidación del aprendizaje, la generación de ideas creativas y la toma de decisiones complejas. Los países con menor cantidad de horas laborales promedio, como los escandinavos, consistentemente muestran mayores índices de productividad por hora trabajada. Redefinir el tiempo libre no como un premio al trabajo sino como parte integral de él podría transformar profundamente tanto la salud individual como el rendimiento colectivo."
+      .split(' '),
+    questions: [
+      { text: "¿Qué contradicción central plantea el texto?", opts: ["Que trabajar más horas produce menos resultados","Que los países escandinavos trabajan demasiado","Que el descanso daña la creatividad","Que la productividad no se puede medir"], correct: 0 },
+      { text: "¿Qué es la red neuronal por defecto según el contexto?", opts: ["Una red que se activa durante el trabajo intenso","Un sistema que solo funciona durante el sueño","Una red activa cuando la mente no está enfocada en ninguna tarea específica","Un término para describir el agotamiento mental"], correct: 2 },
+      { text: "¿Qué propone el autor como cambio de perspectiva?", opts: ["Eliminar el trabajo y solo descansar","Ver el tiempo libre como parte integral del trabajo, no como un premio","Adoptar el modelo escandinavo sin modificaciones","Reducir las horas laborales a la mitad en todo el mundo"], correct: 1 }
+    ],
+    phrases: [
+      ["La cultura del trabajo contemporánea"], ["glorifica la ocupación constante."],
+      ["Sin embargo,"], ["el descanso no es el opuesto de la productividad,"],
+      ["sino una de sus condiciones."],
+      ["La red neuronal por defecto,"], ["activa cuando la mente no está enfocada,"],
+      ["es crucial para la consolidación del aprendizaje"], ["y la generación de ideas creativas."],
+      ["Los países escandinavos,"], ["con menos horas laborales,"],
+      ["muestran mayor productividad por hora trabajada."],
+      ["Redefinir el tiempo libre"], ["como parte integral del trabajo"],
+      ["podría transformar la salud individual"], ["y el rendimiento colectivo."]
+    ]
+  }
+];
+
+// ──────────────────────────────────
+// State
+// ──────────────────────────────────
+// Age-based reading speed baseline
+function getBaseWpm(age) {
+  age = age || 60;
+  if (age < 30) return 250;
+  if (age < 40) return 230;
+  if (age < 50) return 210;
+  if (age < 60) return 185;
+  if (age < 70) return 160;
+  if (age < 80) return 140;
+  return 120;
+}
+function getUserAge() {
+  try { return parseInt(JSON.parse(localStorage.getItem('em_user')||'{}').age)||60; } catch(e){ return 60; }
+}
+let currentWpm = getBaseWpm(getUserAge());
+let presentMode = 'word'; // 'word' | 'phrase'
+let selectedTextIdx = 0;
+let rsvpTimer = null;
+let wordIdx = 0;
+let paused = false;
+let startTime = null;
+let totalWords = 0;
+let answeredCount = 0;
+let correctCount = 0;
+
+// ──────────────────────────────────
+// UI helpers
+// ──────────────────────────────────
+function setStage(n) {
+  const ids = ['stage-settings','stage-rsvp','stage-q','stage-results'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if(el){ el.classList.remove('visible'); el.style.display='none'; }
+  });
+  ['st0','st1','st2'].forEach((id,i) => {
+    const d = document.getElementById(id);
+    if(!d) return;
+    d.classList.remove('active','done');
+    if(i < n) d.classList.add('done');
+    else if(i === n) d.classList.add('active');
+  });
+  const target = document.getElementById(ids[n] || ids[0]);
+  if(target){ target.classList.add('visible'); target.style.display=''; }
+  // Full-screen mode for exercise stage
+  const mainEl = document.querySelector('main');
+  if(mainEl) mainEl.style.padding = n===1 ? '0' : '24px 16px 0';
+}
+
+function setMode(m) {
+  presentMode = m;
+  const mw = document.getElementById('mode-word'); if(mw) mw.classList.toggle('active', m==='word');
+  const mp = document.getElementById('mode-phrase'); if(mp) mp.classList.toggle('active', m==='phrase');
+  const md = document.getElementById('mode-desc');
+  if(md) md.textContent = m==='word' ? 'Una palabra a la vez — bueno para empezar.' : 'Frases completas — mejor comprensión.';
+}
+
+function selectText(el, idx) {
+  document.querySelectorAll('.text-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedTextIdx = idx;
+}
+
+// ──────────────────────────────────
+// ORP calculation (Spritz-style)
+// Find the "optimal recognition point" — roughly 30-40% into the word
+// ──────────────────────────────────
+function orpSplit(word) {
+  // Remove punctuation for length calc
+  const clean = word.replace(/[.,;:!?¿¡"'()]/g, '');
+  const len = clean.length;
+  if (len <= 1) return { pre: '', focal: word, post: '' };
+  // ORP index: ~30% into the word, minimum 1
+  const orp = Math.max(0, Math.min(Math.round(len * 0.3), len - 1));
+  // Split original word preserving punctuation
+  const pre = word.slice(0, orp);
+  const focal = word[orp] || '';
+  const post = word.slice(orp + 1);
+  return { pre, focal, post };
+}
+
+// ──────────────────────────────────
+// RSVP engine
+// ──────────────────────────────────
+function startRSVP() {
+  requestWakeLock();
+  const text = TEXTS[selectedTextIdx];
+  const tokens = presentMode === 'word' ? text.words : (text.phrases || text.words.map(w => [w]));
+  totalWords = text.words.length;
+  wordIdx = 0;
+  paused = false;
+
+  // Setup UI — show RSVP stage first so user can scroll to it
+  setStage(1);
+  const lw=document.getElementById('live-wpm'); if(lw) lw.textContent=currentWpm+' ppm';
+  const lc=document.getElementById('live-wpm-ctrl'); if(lc) lc.textContent=currentWpm+' ppm';
+  document.getElementById('rsvp-prog').textContent = `0 / ${totalWords} palabras`;
+
+  const wordWrap = document.getElementById('rsvp-word-wrap');
+  const phraseEl = document.getElementById('rsvp-phrase');
+  const contextEl = document.getElementById('rsvp-context');
+  const orpGuide = document.getElementById('orp-guide');
+
+  if (presentMode === 'word') {
+    wordWrap.style.display = 'flex';
+    phraseEl.style.display = 'none';
+    contextEl.style.display = 'block';
+    orpGuide.style.display = 'block';
+  } else {
+    wordWrap.style.display = 'none';
+    phraseEl.style.display = 'block';
+    contextEl.style.display = 'none';
+    orpGuide.style.display = 'none';
+  }
+
+  // Scroll hint + 3-second countdown
+  const viewport = document.getElementById('rsvp-viewport');
+  const countdownEl = document.createElement('div');
+  countdownEl.id = 'rsvp-countdown';
+  countdownEl.style.cssText = 'font-size:52px;font-weight:700;color:var(--purple);text-align:center;font-variant-numeric:tabular-nums;';
+  viewport.appendChild(countdownEl);
+
+  // Scroll to RSVP viewport on mobile
+  setTimeout(() => viewport.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+
+  let count = 3;
+  countdownEl.textContent = count;
+  const cd = setInterval(() => {
+    count--;
+    if (count > 0) {
+      countdownEl.textContent = count;
+    } else {
+      clearInterval(cd);
+      if (countdownEl.parentNode) countdownEl.parentNode.removeChild(countdownEl);
+      startTime = Date.now();
+      scheduleNext(tokens, text.words);
+    }
+  }, 1000);
+}
+
+function scheduleNext(tokens, allWords) {
+  if (wordIdx >= tokens.length) {
+    finishRSVP(allWords.length);
+    return;
+  }
+
+  const token = tokens[wordIdx];
+  const displayText = Array.isArray(token) ? token.join(' ') : token;
+  const wordCount = Array.isArray(token) ? token.length : 1;
+
+  if (presentMode === 'word') {
+    const { pre, focal, post } = orpSplit(displayText);
+    document.getElementById('w-pre').textContent = pre;
+    document.getElementById('w-focal').textContent = focal;
+    document.getElementById('w-post').textContent = post;
+    // Context: show surrounding words
+    const allWordArr = Array.isArray(tokens[0]) ? tokens.map(t=>t.join(' ')) : tokens;
+    const ctx = wordIdx > 0 ? '…' + allWordArr[wordIdx-1] : '';
+    document.getElementById('rsvp-context').textContent = ctx;
+  } else {
+    const el = document.getElementById('rsvp-phrase');
+    // Clear immediately, show new phrase after clean fade
+    el.style.transition = 'none';
+    el.style.opacity = '0';
+    el.textContent = '';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.style.transition = 'opacity 0.15s';
+        el.textContent = displayText;
+        el.style.opacity = '1';
+      });
+    });
+  }
+
+  // Update progress
+  const allWordIdx = Array.isArray(tokens[wordIdx])
+    ? tokens.slice(0, wordIdx).reduce((s,t) => s + (Array.isArray(t)?t.length:1), 0)
+    : wordIdx;
+  const totalCount = allWords ? allWords.length : tokens.length;
+  document.getElementById('rsvp-bar').style.width = Math.min(100, (allWordIdx / totalCount) * 100) + '%';
+  document.getElementById('rsvp-prog').textContent = `${Math.min(allWordIdx + wordCount, totalCount)} / ${totalCount} palabras`;
+
+  wordIdx++;
+
+  // Timing: for phrases use a generous fixed floor so they're always readable
+  const hasPunct = /[.,;:!?]/.test(displayText.slice(-2));
+  let delay;
+  if (presentMode === 'phrase') {
+    // Phrase mode: base on word count but with a generous minimum (2000ms floor)
+    const msPerWord = (60 / currentWpm) * 1000;
+    delay = Math.max(2000, msPerWord * wordCount * 1.4);
+    if (hasPunct) delay *= 1.3;
+  } else {
+    const baseMs = (60 / currentWpm) * 1000 * wordCount;
+    delay = hasPunct ? baseMs * 1.5 : baseMs;
+  }
+
+  if (!paused) {
+    rsvpTimer = setTimeout(() => scheduleNext(tokens, allWords), delay);
+  }
+}
+
+function togglePause() {
+  paused = !paused;
+  document.getElementById('pause-btn').textContent = paused ? '▶ Continuar' : '⏸ Pausa';
+  if (!paused) {
+    const text = TEXTS[selectedTextIdx];
+    const tokens = presentMode === 'word' ? text.words : (text.phrases || text.words.map(w => [w]));
+    scheduleNext(tokens, text.words);
+  } else {
+    clearTimeout(rsvpTimer);
+  }
+}
+
+function adjustLiveSpeed(v) {
+  currentWpm = parseInt(v);
+  const cw = document.getElementById('ctrl-wpm-val'); if(cw) cw.textContent = v;
+  const lw = document.getElementById('live-wpm'); if(lw) lw.textContent = v + ' ppm';
+  const lc = document.getElementById('live-wpm-ctrl'); if(lc) lc.textContent = v + ' ppm';
+  if(rsvpTimer) { clearTimeout(rsvpTimer); }
+}
+
+function stopRSVP() {
+  clearTimeout(rsvpTimer);
+  setStage(0);
+}
+
+function finishRSVP(wordCount) {
+  clearTimeout(rsvpTimer);
+  const elapsed = (Date.now() - startTime) / 60000;
+  const finalWpm = Math.round(wordCount / elapsed);
+  document.getElementById('result-wpm').textContent = finalWpm;
+  const hw = document.getElementById('header-wpm'); if(hw) hw.textContent = '↑ ' + finalWpm + ' ppm';
+  buildQuestions();
+  setStage(2);
+}
+
+// ──────────────────────────────────
+// Questions
+// ──────────────────────────────────
+function buildQuestions() {
+  const text = TEXTS[selectedTextIdx];
+  const allQs = text.questions || [];
+  // Pick 2 questions — first and last for variety
+  window._sqQuestions = allQs.length > 2
+    ? [allQs[0], allQs[allQs.length - 1]]
+    : allQs.slice(0, 2);
+  window._sqIdx = 0;
+  window._sqCorrect = 0;
+  showCurrentQuestion();
+}
+
+function showCurrentQuestion() {
+  const qs = window._sqQuestions;
+  const qi = window._sqIdx;
+  const q = qs[qi];
+
+  document.getElementById('sq-progress').textContent = (qi + 1) + ' / ' + qs.length;
+  document.getElementById('sq-question').textContent = q.text;
+  document.getElementById('sq-feedback').textContent = '';
+  document.getElementById('sq-next-btn').style.display = 'none';
+
+  const optsEl = document.getElementById('sq-opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((o, oi) => {
+    const d = document.createElement('div');
+    d.className = 'sq-opt';
+    d.textContent = o;
+    d.onclick = () => answerSQ(oi, q.correct);
+    optsEl.appendChild(d);
+  });
+}
+
+function answerSQ(chosen, correct) {
+  const opts = document.querySelectorAll('.sq-opt');
+  opts.forEach(o => o.classList.add('locked'));
+  opts[chosen].classList.add(chosen === correct ? 'correct' : 'wrong');
+  if (chosen !== correct) opts[correct].classList.add('correct');
+  if (chosen === correct) {
+    window._sqCorrect++;
+    document.getElementById('sq-feedback').textContent = '✓ Correcto';
+  } else {
+    document.getElementById('sq-feedback').textContent = 'La respuesta correcta está marcada en verde.';
+  }
+  document.getElementById('sq-next-btn').style.display = 'block';
+  document.getElementById('sq-next-btn').textContent =
+    window._sqIdx < window._sqQuestions.length - 1 ? 'Siguiente →' : 'Ver resultado →';
+}
+
+function nextQuestion() {
+  window._sqIdx++;
+  if (window._sqIdx >= window._sqQuestions.length) {
+    showResults();
+  } else {
+    showCurrentQuestion();
+  }
+}
+
+
+function showResults() {
+  releaseWakeLock();
+  markComplete();
+  const total = window._sqQuestions ? window._sqQuestions.length : 1;
+  const pct = Math.round(((window._sqCorrect || 0) / total) * 100);
+  const wpm = parseInt(document.getElementById('result-wpm').textContent) || currentWpm;
+
+  document.getElementById('r-comp').textContent = pct + '%';
+  document.getElementById('r-delta').textContent = '+' + Math.floor(Math.random()*12+3) + ' ppm';
+  // Efficiency = comprehension × speed index
+  const efficiency = Math.round(pct * (wpm / 350));
+  document.getElementById('r-efficiency').textContent = efficiency + '%';
+
+  // Adaptive insight
+  let insight;
+  if (pct >= 80 && wpm <= 300) {
+    insight = '<strong>Comprensión excelente.</strong> Puedes intentar subir la velocidad en 20–30 wpm en la próxima sesión. Tu umbral de comprensión está por encima de la velocidad actual.';
+  } else if (pct >= 80 && wpm > 300) {
+    insight = '<strong>¡Rendimiento óptimo!</strong> Comprensión alta a velocidad elevada. Prueba textos de mayor complejidad (nivel C1–C2) para seguir progresando.';
+  } else if (pct < 60) {
+    insight = '<strong>Comprensión por debajo del umbral.</strong> Reduce la velocidad en 20–30 wpm. La investigación muestra que el entrenamiento eficaz ocurre justo <em>por encima</em> de tu zona cómoda, no más allá de tu capacidad.';
+  } else {
+    insight = '<strong>Progreso sólido.</strong> Zona de desafío óptima. Mantén esta velocidad durante 3–5 sesiones antes de incrementar.';
+  }
+  document.getElementById('insight-box').innerHTML = insight;
+  const _xp=document.getElementById('xp-fill'); if(_xp) _xp.style.width = Math.min(100, 42 + pct * 0.3) + '%';
+
+  setStage(3);
+}
+
+// ──────────────────────────────────
+// Reset
+// ──────────────────────────────────
+function resetAll() {
+  clearTimeout(rsvpTimer);
+  wordIdx = 0; paused = false; answeredCount = 0; correctCount = 0;
+  // Clear word display
+  const pre = document.getElementById('w-pre'); if(pre) pre.textContent = '';
+  const focal = document.getElementById('w-focal'); if(focal) focal.textContent = '';
+  const post = document.getElementById('w-post'); if(post) post.textContent = '';
+  const phrase = document.getElementById('rsvp-phrase'); if(phrase) phrase.textContent = '';
+  const ctx = document.getElementById('rsvp-context'); if(ctx) ctx.textContent = '';
+  document.getElementById('rsvp-bar').style.width = '0%';
+  document.getElementById('ready-screen').classList.remove('hidden');
+  setStage(0);
+}
+
+function repeatText() {
+  clearTimeout(rsvpTimer);
+  wordIdx = 0; paused = false; answeredCount = 0; correctCount = 0;
+  document.getElementById('rsvp-bar').style.width = '0%';
+  setStage(1);
+  startRSVP();
+}
+
+// Init
+setStage(0);
+
+// ── Show session navigation UI ──
+function showSessionUI() {
+  if(!isInSession()) return;
+  updateSessionBtnLabels();
+  // Show the next button
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.style.cssText = 'display:block!important';
+  });
+  // Hide the repeat/reset buttons
+  document.querySelectorAll('.session-hide').forEach(b => {
+    b.style.cssText = 'display:none!important';
+  });
+}
+
+// ── Wake Lock: prevent screen sleep during exercise ──
+let _wakeLock = null;
+async function requestWakeLock() {
+  if(!('wakeLock' in navigator)) return;
+  try {
+    _wakeLock = await navigator.wakeLock.request('screen');
+  } catch(e) {}
+}
+function releaseWakeLock() {
+  if(_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
+}
+// Re-acquire on tab visibility change
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible') requestWakeLock();
+});
+
+// ── Age-filtered text pool ──
+function getFilteredTexts(age) {
+  age = age || 'adult';
+  return TEXTS.filter(t => !t.ages || t.ages.includes(age));
+}
+
+
+// ── Shuffled text queue — ensures all texts seen before repeats ──
+const LS_QUEUE_KEY = 'em_lf_queue';
+const LS_SEEN_KEY  = 'em_lf_seen';
+
+function _shuffle(arr) {
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function getNextTextIdx(age) {
+  const pool = getFilteredTexts(age || 'adult');
+  const poolIds = pool.map((_,i) => TEXTS.indexOf(pool[i]));
+
+  let queue;
+  try { queue = JSON.parse(localStorage.getItem(LS_QUEUE_KEY) || '[]'); } catch(e) { queue = []; }
+
+  // Filter queue to only include valid pool ids
+  queue = queue.filter(id => poolIds.includes(id));
+
+  if(queue.length === 0) {
+    // Reshuffle full pool, skip the last-seen text to avoid immediate repeat
+    let lastSeen = -1;
+    try { lastSeen = parseInt(localStorage.getItem(LS_SEEN_KEY) || '-1'); } catch(e) {}
+    const fresh = _shuffle(poolIds);
+    // Move last-seen to end if it would be first
+    if(fresh[0] === lastSeen && fresh.length > 1) {
+      fresh.push(fresh.shift());
+    }
+    queue = fresh;
+  }
+
+  const nextIdx = queue.shift();
+  try {
+    localStorage.setItem(LS_QUEUE_KEY, JSON.stringify(queue));
+    localStorage.setItem(LS_SEEN_KEY, String(nextIdx));
+  } catch(e) {}
+
+  return nextIdx;
+}
+
+// First-time intro
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('first') === '1') {
+    document.getElementById('ready-screen').classList.add('hidden');
+    document.getElementById('first-intro').style.display = 'flex';
+  }
+})();
+
+</script>
+
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  </a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente en Forma – Lectura por Bloques</title>
+<script src="brand.js"></script>
+<style>
+  :root {
+  --bg:#F8F7FF; --bg2:#F0EEF8; --card:#FFFFFF; --card2:#F4F2FC;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --text:#1A1830; --text2:#4A4468; --text3:#5C5880;
+  /* Brand violet — primary accent */
+  --violet:#6C5CE7; --violet-d:rgba(108,92,231,0.10); --violet-b:rgba(108,92,231,0.25);
+  --violet-deep:#534AB7;
+  /* Teal — action/success/interactive */
+  --teal:#0A7A6A; --teal-d:rgba(10,122,106,0.10); --teal-b:rgba(10,122,106,0.25);
+  /* Supporting palette */
+  --gold:#C9A84C; --gold-l:rgba(201,168,76,0.12); --gold-b:rgba(201,168,76,0.30);
+  --amber:#F5A623; --amber-d:rgba(245,166,35,0.12); --amber-b:rgba(245,166,35,0.28);
+  --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
+  --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
+  --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --muted:#4A4860;
+  --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
+}
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 60px;
+  }
+
+  /* ── Header ── */
+  header {
+    width: 100%;
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; opacity: 0.9; }
+  .logo span { color: var(--amber); }
+  .mode-badge {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 4px 12px; border-radius: 20px;
+  }
+  .streak { font-size: 12px; opacity: 0.7; display: flex; align-items: center; gap: 6px; }
+  .streak b { color: var(--amber); font-size: 14px; }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    width: 100%; height: 4px;
+    background: var(--bg2);
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--green));
+    transition: width 0.5s ease;
+  }
+
+  /* ── Main container ── */
+  main {
+    width: 100%; max-width: 720px;
+    padding: 32px 20px 0;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+
+  /* ── Mode tabs ── */
+  .mode-tabs {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .mode-tab {
+    flex: 1; min-width: 120px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--muted);
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .mode-tab:hover { border-color:var(--teal);color:var(--text);background:var(--teal-d); }
+  .mode-tab.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .mode-tab .tab-num { font-size: 10px; opacity: 0.7; display: block; margin-bottom: 2px; }
+
+  /* ── Exercise card ── */
+  .exercise-card { flex:1; display:flex; flex-direction:column; padding:20px; gap:16px; max-width:600px; margin:0 auto; width:100%; }
+  .card-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  }
+  .card-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .pill-teal { background: var(--teal-light); color: var(--teal); }
+  .pill-amber { background: #fff8e1; color: var(--amber-dark); }
+  .pill-purple { background: var(--purple-light); color: var(--purple); }
+  .timer-display {
+    font-size: 13px; font-weight: 600; color: var(--coral);
+    display: flex; align-items: center; gap: 5px;
+    font-variant-numeric: tabular-nums;
+  }
+  .timer-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--coral); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .card-instruction {
+    padding: 16px 24px;
+    font-size: 17px; color: var(--ink2); line-height: 1.6;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .card-instruction strong { color: var(--ink); }
+
+  /* ── MODE 1: Guided Recognition ── */
+  .passage {
+    padding: 24px 28px;
+    font-family: 'Lora', serif;
+    font-size: 18px; line-height: 2.6;
+    color: var(--ink);
+  }
+  .chunk {
+    display: inline;
+    padding: 3px 2px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .chunk:hover { background: rgba(108,92,231,0.07); }
+  .chunk.tapped { background: rgba(108,92,231,0.10); }
+  .chunk-prep { border-bottom: 2.5px solid var(--teal); }
+  .chunk-verb { border-bottom: 2.5px solid var(--coral); }
+  .chunk-noun { border-bottom: 2.5px solid var(--amber-dark); }
+  .chunk-disc { border-bottom: 2.5px solid var(--purple); }
+
+  /* Label: shown on hover (desktop) or tap (mobile) */
+  .chunk-label {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+    padding: 4px 10px; border-radius: 7px; white-space: nowrap; z-index: 20;
+    pointer-events: none;
+  }
+  .chunk-label::after {
+    content: '';
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--ink);
+  }
+  /* Show on desktop hover */
+  .chunk:hover .chunk-label { display: block; }
+  /* Show on mobile tap via .tapped class */
+  .chunk.tapped .chunk-label { display: block; }
+
+  /* ── Legend ── */
+  .legend {
+    padding: 12px 28px 20px;
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em;
+  }
+  .legend-line { width: 20px; height: 2.5px; border-radius: 2px; }
+
+  /* ── MODE 2: Active Parsing ── */
+  .parse-area { padding: 24px 28px; }
+  .parse-sentence {
+    font-family: 'Lora', serif;
+    font-size: 19px; line-height: 1.9; margin-bottom: 20px;
+  }
+  .parse-word {
+    display: inline-block;
+    padding: 2px 4px; margin: 2px 1px;
+    border-radius: 5px; cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.15s;
+  }
+  .parse-word:hover { background: var(--purple-light); border-color: var(--purple); }
+  .parse-word.boundary-after::after {
+    content: ' /';
+    color: var(--coral);
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+  }
+  .parse-word.selected-word { background: var(--purple-light); }
+
+  .parse-controls { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .btn {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px; font-weight: 600;
+    padding: 10px 20px; border-radius: 10px; border: none;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  .btn-primary { background: var(--purple); color: #fff; }
+  .btn-primary:hover { background: #5a4bd1; transform: translateY(-1px); }
+  .btn-secondary { background: var(--bg2); color: var(--ink2); }
+  .btn-secondary:hover { background: var(--border); }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+
+  /* ── MODE 3: Flash ── */
+  .flash-area {
+    padding: 40px 28px;
+    text-align: center;
+    min-height: 180px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px;
+  }
+  .flash-chunk {
+    font-family: 'Lora', serif;
+    font-size: 26px; font-weight: 400; color: var(--ink);
+    padding: 10px 24px;
+    border-radius: 12px;
+    background: var(--purple-light);
+    border: 1.5px solid rgba(108,92,231,0.2);
+    transition: opacity 0.25s ease;
+    letter-spacing: 0.01em;
+  }
+  .flash-counter { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; font-weight: 600; }
+  .flash-progress-bar {
+    width: 100%; max-width: 320px; height: 4px;
+    background: var(--bg2); border-radius: 2px; overflow: hidden;
+  }
+  .flash-progress-fill {
+    height: 100%; background: var(--purple);
+    transition: width 0.3s linear;
+  }
+  .flash-start-btn {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 600;
+    padding: 12px 32px; border-radius: 12px;
+    border: none; cursor: pointer;
+    background: var(--purple); color: #fff;
+    transition: all 0.2s;
+  }
+  .flash-start-btn:hover { background: #5a4bd1; transform: translateY(-1px); }
+
+  /* ── MODE 4: Reconstruction ── */
+  .recon-area { padding: 16px 20px; display:flex; flex-direction:column; gap:0; }
+.recon-drop-zone { min-height:80px; background:var(--card); border:2px solid var(--violet-b);
+  border-radius:14px; padding:14px; display:flex; flex-wrap:wrap; gap:8px;
+  margin-bottom:0; }
+.recon-drop-zone .placeholder { color:var(--text3); font-size:16px; align-self:center; }
+.recon-divider { display:flex; align-items:center; gap:10px; margin:14px 0 10px;
+  font-size:13px; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; }
+.recon-divider::before, .recon-divider::after { content:''; flex:1; height:1px; background:var(--border); }
+.chunk-bank { display:flex; flex-wrap:wrap; gap:8px; }
+  .recon-drop-zone {
+    min-height: 72px;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    transition: border-color 0.2s;
+    background: var(--bg);
+  }
+  .recon-drop-zone.drag-over { border-color: var(--purple); background: var(--purple-light); }
+  .recon-drop-zone .placeholder {
+    font-size: 13px; color: var(--muted); font-style: italic; width: 100%; text-align: center; padding: 8px 0;
+  }
+  .recon-drop-zone .chunk-tile { background:var(--violet-d); border-color:var(--violet-b); color:var(--violet); }
+.chunk-tile {
+    display: inline-flex; align-items: center;
+    font-family: 'Lora', serif; font-size: 18px;
+    padding: 10px 18px; border-radius: 10px;
+    background: var(--card); border: 2px solid var(--border2);
+    color: var(--text);
+    cursor: grab; user-select: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    transition: all 0.15s;
+  }
+  .chunk-tile:hover { border-color: var(--purple); box-shadow: 0 3px 10px rgba(108,92,231,0.15); transform: translateY(-1px); }
+  .chunk-tile:active { cursor: grabbing; }
+  .chunk-tile.in-drop { background: var(--purple-light); border-color: rgba(108,92,231,0.35); }
+  .chunk-bank { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+
+  /* ── Feedback panel ── */
+  .feedback-panel {
+    margin: 0 24px 24px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-size: 16px; line-height: 1.6;
+    display: none;
+  }
+  .feedback-panel.correct {
+    background: var(--green-light);
+    border: 1px solid rgba(82,183,136,0.3);
+    color: #1a5c38;
+    display: block;
+  }
+  .feedback-panel.incorrect {
+    background: var(--coral-light);
+    border: 1px solid rgba(231,111,81,0.3);
+    color: #8b2500;
+    display: block;
+  }
+  .feedback-panel.info {
+    background: var(--purple-light);
+    border: 1px solid rgba(108,92,231,0.2);
+    color: var(--purple);
+    display: block;
+  }
+  .feedback-label { font-weight: 700; margin-bottom: 4px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ── Questions ── */
+  .question-area {
+    padding: 0 24px 24px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .question-label { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .question-text { font-size: 15px; color: var(--ink); line-height: 1.5; margin-bottom: 10px; }
+  .q-options { display: flex; flex-direction: column; gap: 7px; }
+  .q-option {
+    padding: 13px 16px; border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--card); cursor: pointer;
+    font-size: 17px; font-family: 'Poppins', sans-serif;
+    transition: all 0.15s; color: var(--ink2);
+  }
+  .q-option:hover { border-color:var(--teal);color:var(--text);background:var(--teal-d); background: var(--purple-light); }
+  .q-option.correct-ans { border-color: var(--green); background: var(--green-light); color: #1a5c38; }
+  .q-option.wrong-ans { border-color: var(--coral); background: var(--coral-light); color: #8b2500; }
+
+  /* ── Nav ── */
+  .exercise-nav {
+    display: flex; justify-content: flex-end; padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    gap: 10px;
+  }
+
+  /* ── Science note ── */
+  .science-note {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    font-size: 13px; color: var(--ink2); line-height: 1.65;
+    box-shadow: var(--shadow);
+  }
+  .science-note .sci-head {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+  }
+
+  /* ── Hidden sections ── */
+  .mode-section { display: none; overflow:hidden; }
+  .mode-section.active { display:flex; flex-direction:column; position:fixed; inset:0; overflow-y:auto; z-index:10; background:var(--bg); }
+
+@media (max-width: 640px) {
+  main { padding: 16px 12px 0 !important; }
+  .passage { padding: 16px 16px !important; font-size: 16px !important; line-height: 2.2 !important; }
+  .parse-area { padding: 16px 16px !important; }
+  .parse-sentence { font-size: 16px !important; line-height: 1.8 !important; }
+  .parse-word { padding: 4px 6px !important; margin: 3px 2px !important; font-size: 15px !important; min-height: 36px !important; display: inline-flex !important; align-items: center !important; }
+  .flash-area { padding: 24px 16px !important; }
+  .flash-chunk { font-size: 20px !important; padding: 10px 16px !important; }
+  .recon-area { padding: 16px 16px !important; }
+  .recon-drop-zone .chunk-tile { background:var(--violet-d); border-color:var(--violet-b); color:var(--violet); font-weight:600; }
+.chunk-tile { font-size: 17px !important; padding: 12px 16px !important; min-height: 48px !important; font-weight:500; }
+  .recon-drop-zone { min-height: 60px !important; padding: 10px 12px !important; }
+  .card-instruction { padding: 12px 16px !important; font-size: 14px !important; }
+  .card-header { padding: 14px 16px 12px !important; }
+  .btn { padding: 12px 16px !important; font-size: 14px !important; min-height: 44px !important; }
+  .parse-controls { gap: 8px !important; }
+  .legend { padding: 10px 16px 16px !important; gap: 10px !important; }
+  .mode-tabs { gap: 6px !important; }
+  .mode-tab { min-width: 0 !important; font-size: 11px !important; padding: 8px 8px !important; }
+  .chunk { padding: 4px 3px !important; }
+  .chunk-label { font-size: 10px !important; }
+  .q-option { padding: 12px 14px !important; font-size: 14px !important; min-height: 44px !important; }
+  .question-area { padding: 0 16px 16px !important; }
+  .feedback-panel { margin: 0 16px 16px !important; font-size: 13px !important; }
+}
+
+body::before{display:none;}
+
+/* ── Shared design system classes ── */
+.logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
+.logo em{color:var(--gold);font-style:italic;}
+.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.hdr-back:hover{color:var(--text2);}
+.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:13px;}
+.instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
+.instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
+.instr-text strong{color:var(--text);font-weight:600;}
+.card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary::-webkit-details-marker{display:none;}
+.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details[open] summary::after{transform:rotate(90deg);}
+.sci-details[open] summary{border-bottom:1px solid var(--border);}
+.sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
+.sci-body strong,.sci-details-body strong{color:var(--text);}
+
+
+/* ── Ready Screen ── */
+.ready-screen {
+  position:fixed; inset:0; z-index:200;
+  background:var(--bg);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:32px 24px; text-align:center;
+  overflow:hidden;
+}
+.ready-screen.hidden { display:none; }
+.ready-screen::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
+@keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-title {
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(32px,8vw,48px); font-weight:300;
+  color:var(--text); line-height:1.1; margin-bottom:12px;
+}
+.ready-title em { color:var(--teal); font-style:italic; }
+.ready-sub{font-size:19px;color:var(--text2);line-height:1.65;text-align:center;margin-bottom:24px;max-width:320px;}
+.ready-sub strong { color:var(--text); font-weight:600; }
+
+/* Animation preview box */
+.ready-preview {
+  width:100%; max-width:340px;
+  background:var(--card); border:1px solid var(--border2);
+  border-radius:16px; overflow:hidden;
+  margin-bottom:28px; min-height:110px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.preview-label {
+  position:absolute; top:10px; left:14px;
+  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  text-transform:uppercase; color:var(--text3);
+}
+.preview-inner {
+  padding:20px 24px; width:100%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+
+.ready-step-text strong { color:var(--text); font-weight:600; }
+
+.ready-btn {
+  width:100%; padding:17px;
+  background:var(--teal); color:var(--bg);
+  border:none; border-radius:13px; cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  font-size:17px; font-weight:700; letter-spacing:0.02em;
+  transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+  margin-bottom:14px;
+}
+.ready-btn:hover { opacity:0.88; transform:translateY(-1px); }
+.ready-btn:active { transform:translateY(0); }
+.ready-hint {
+  font-size:16px; color:var(--text3); line-height:1.5;
+}
+
+@media(max-width:600px) {
+  .ready-screen { padding:24px 16px; }
+  .ready-title { font-size:34px; }
+  .ready-sub { font-size:16px; }
+  .ready-steps { flex-direction:column; gap:8px; }
+  .ready-btn { font-size:16px; padding:16px; }
+}
+
+
+/* ── Brand logo ── */
+.logo, .brand-name {
+  font-family: 'Fredoka', 'Poppins', sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text); letter-spacing: -0.01em;
+  display: flex; align-items: center;
+}
+.logo em, .brand-name em {
+  color: var(--violet); font-style: italic;
+}
+/* ── Primary button — violet ── */
+.btn-teal, .ready-btn {
+  background: var(--violet-deep) !important;
+  color: #fff !important;
+}
+.btn-teal:hover, .ready-btn:hover {
+  background: var(--violet) !important;
+  opacity: 1 !important;
+}
+/* Keep teal for success/feedback states */
+.btn-teal.btn-success { background: var(--teal) !important; }
+
+
+/* Session next button — shown only during session flow */
+.session-next-btn {
+  display: none;
+  width: 100%;
+  padding: 16px;
+  background: var(--violet-deep);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-family: 'Fredoka', 'Poppins', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.session-next-btn:hover { background: var(--violet); }
+
+
+/* ── Lectura por Focos ── */
+#mode-1.active { display:flex; flex-direction:column; position:fixed; inset:0;
+  overflow-y:auto; z-index:10; background:var(--bg); }
+.focos-header { padding:14px 20px 0; display:flex; align-items:center;
+  justify-content:space-between; flex-shrink:0; }
+.focos-label { font-size:13px; color:var(--text3); }
+.focos-speed { font-size:13px; color:var(--teal); font-family:'Fredoka',sans-serif; }
+.focos-area { flex:1; display:flex; align-items:center; justify-content:center;
+  padding:24px 28px; }
+.focos-para { font-family:'Lora',serif; font-size:20px; line-height:2.0;
+  color:var(--text); width:100%; }
+.focos-chunk { transition:opacity 0.08s; }
+.focos-chunk.dim { opacity:0.12; }
+.focos-chunk.lit { opacity:1; color:var(--text); }
+.focos-chunk.done { opacity:0.35; }
+.focos-footer { padding:16px 20px 32px; border-top:1px solid var(--border);
+  flex-shrink:0; display:flex; flex-direction:column; gap:10px; }
+.focos-start-btn { width:100%; padding:17px; background:var(--violet-deep);
+  color:#fff; border:none; border-radius:14px;
+  font-family:'Fredoka','Poppins',sans-serif; font-size:18px;
+  font-weight:600; cursor:pointer; }
+.focos-nav { display:flex; justify-content:flex-end; }
+.focos-question { margin-bottom:12px; }
+.focos-q-text { font-size:18px; color:var(--text); margin-bottom:12px; line-height:1.5; }
+.focos-opt { padding:14px 16px; border-radius:12px; border:1.5px solid var(--border2);
+  background:var(--card); font-size:17px; color:var(--text2); cursor:pointer;
+  margin-bottom:8px; transition:all 0.12s; }
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="progress-wrap">
+  <div class="progress-fill" id="main-progress" style="width: 35%"></div>
+</div>
+
+<main>
+
+<div class="ready-screen" id="ready-screen">
+  <div class="ready-inner">
+    <div style="font-size:52px;margin-bottom:8px;">🔦</div>
+    <div class="ready-title">Lectura por <em>Focos</em></div>
+    <div class="ready-sub">Sigue el bloque iluminado con los ojos. Lee cada grupo de palabras como una sola unidad.</div>
+    <button class="ready-btn" onclick="dismissReady()">▶ Empecemos</button>
+    <div class="ready-hint">Primero de tres modos — cada uno entrena algo distinto</div>
+  </div>
+</div>
+<script>
+function dismissReady(){
+  document.getElementById('ready-screen').classList.add('hidden');
+  if(typeof requestWakeLock==='function') requestWakeLock();
+  switchMode(1);
+  document.getElementById('focos-start-btn').style.display = 'none';
+  startFocos();
+}
+
+// ── Session completion tracking ──
+function markComplete() {
+  showSessionNextIfNeeded();
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const all = JSON.parse(localStorage.getItem('em_completions') || '{}');
+    if(!all[today]) all[today] = [];
+    if(!all[today].includes('bloques')) all[today].push('bloques');
+    localStorage.setItem('em_completions', JSON.stringify(all));
+  } catch(e) {}
+}
+
+function completeAndContinue() {
+  markComplete();
+  setTimeout(() => goNextOrHome('index.html'), 1200);
+}
+
+
+// ── Session navigation ──
+function getSessionNext() {
+  try {
+    const q = JSON.parse(localStorage.getItem('em_session_queue')||'null');
+    if(!q) return null;
+    const today = new Date().toISOString().slice(0,10);
+    if(q.date !== today) return null; // stale queue
+
+    // Get completed today
+    const all = JSON.parse(localStorage.getItem('em_completions')||'{}');
+    const done = all[today] || [];
+
+    // Find next uncompleted in queue
+    const remaining = q.keys.filter(k => !done.includes(k));
+    if(remaining.length === 0) return 'done'; // all finished
+
+    const urls = {
+      flash:'lectura_flash_rsvp.html', bloques:'lectura_por_bloques_prototype.html',
+      contra:'contrarreloj.html', vision:'vision_paralela.html',
+      saltos:'saltos_visuales.html', memoria:'memoria_activa.html',
+      cats:'actualizacion_categorias.html', continua:'actualizacion_continua.html',
+    };
+    return urls[remaining[0]] ? urls[remaining[0]] + '?session=1' : null;
+  } catch(e) { return null; }
+}
+
+function isInSession() {
+  return new URLSearchParams(window.location.search).get('session') === '1';
+}
+
+function goNextOrHome(homeUrl) {
+  if(!isInSession()) { window.location.href = homeUrl; return; }
+  const next = getSessionNext();
+  if(!next || next === 'done') {
+    window.location.href = 'index.html?done=session';
+  } else {
+    window.location.href = next;
+  }
+}
+
+
+// Show session next button on results if in session
+function showSessionNextIfNeeded() {
+  if(!isInSession()) return;
+  const existing = document.querySelector('.session-next-btn');
+  if(existing) { existing.style.display='block'; return; }
+  const btn = document.createElement('button');
+  btn.className = 'session-next-btn';
+  btn.textContent = 'Siguiente ejercicio →';
+  btn.onclick = completeAndContinue;
+  // Find results container and append
+  const targets = ['res-body','results-inner','result-wrap','s2','stage-2','stage-results'];
+  for(const t of targets) {
+    const el = document.getElementById(t);
+    if(el) { el.appendChild(btn); return; }
+  }
+  // Fallback: append to main
+  document.querySelector('main')?.appendChild(btn);
+}
+
+
+// Update session button labels to reflect position in queue
+function updateSessionBtnLabels() {
+  if(!isInSession()) return;
+  const next = getSessionNext();
+  const isLast = !next || next === 'done';
+  const label = isLast ? 'Finalizar sesión →' : 'Siguiente ejercicio →';
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.textContent = label;
+  });
+}
+
+</script>
+
+
+  <!-- Mode selector -->
+  <div class="mode-tabs" style="display:none;">
+    <button class="mode-tab active" onclick="switchMode(0)">
+      <span class="tab-num">Modo 1</span>Reconocimiento guiado
+    </button>
+    <button class="mode-tab" onclick="switchMode(1)">
+      <span class="tab-num">Modo 2</span>Análisis activo
+    </button>
+    <button class="mode-tab" onclick="switchMode(2)">
+      <span class="tab-num">Modo 3</span>Flash por bloques
+    </button>
+    <button class="mode-tab" onclick="switchMode(3)">
+      <span class="tab-num">Modo 4</span>Reconstrucción
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- MODE 1: Guided Recognition              -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="mode-section active" id="mode-0">
+    <div class="exercise-card">
+      <div class="card-instruction">
+        Lee el párrafo. Toca cualquier bloque para ver su tipo gramatical.
+      </div>
+      <div class="passage" id="passage-m1">
+        <span class="chunk chunk-disc">Sin embargo,<span class="chunk-label">MARCADOR DISCURSIVO</span></span>
+        &nbsp;
+        <span class="chunk chunk-noun">la comunidad científica<span class="chunk-label">GRUPO NOMINAL</span></span>
+        &nbsp;
+        <span class="chunk chunk-verb">ha tardado en reconocer<span class="chunk-label">PERÍFRASIS VERBAL</span></span>
+        &nbsp;
+        <span class="chunk chunk-noun">el impacto real<span class="chunk-label">GRUPO NOMINAL</span></span>
+        &nbsp;
+        <span class="chunk chunk-prep">de estos descubrimientos<span class="chunk-label">FRASE PREPOSICIONAL</span></span>
+        &nbsp;
+        <span class="chunk chunk-prep">sobre el diseño<span class="chunk-label">FRASE PREPOSICIONAL</span></span>
+        &nbsp;
+        <span class="chunk chunk-prep">de materiales sostenibles.<span class="chunk-label">FRASE PREPOSICIONAL</span></span>
+      </div>
+      <div class="question-area">
+        <div class="question-label">Comprensión inferencial</div>
+        <div class="question-text">¿Cuál es la actitud implícita del autor hacia la comunidad científica?</div>
+        <div class="q-options">
+          <div class="q-option" onclick="answerQ(this, false, 0)">Admiración por su rapidez</div>
+          <div class="q-option" onclick="answerQ(this, true, 0)">Crítica por su lentitud de respuesta</div>
+          <div class="q-option" onclick="answerQ(this, false, 0)">Indiferencia ante su postura</div>
+          <div class="q-option" onclick="answerQ(this, false, 0)">Apoyo incondicional a sus métodos</div>
+        </div>
+      </div>
+
+      <div class="feedback-panel" id="feedback-0"></div>
+      <div class="exercise-nav">
+        <button class="btn btn-ghost" onclick="showBloqueTransition(1)">Siguiente modo →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- MODE 2: Active Parsing                  -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="mode-section" id="mode-1">
+    <div class="exercise-card">
+      <div class="focos-header">
+        <div class="focos-label" id="focos-label">Lectura por focos</div>
+        <div class="focos-speed" id="focos-speed"></div>
+      </div>
+      <div class="focos-area" id="focos-area">
+        <!-- paragraph injected by JS -->
+      </div>
+      <div class="focos-footer" id="focos-footer">
+        <button class="focos-start-btn" id="focos-start-btn" onclick="startFocos()">▶ Iniciar</button>
+        <div class="focos-nav" id="focos-nav" style="display:none">
+          <button class="btn btn-ghost" onclick="showBloqueTransition(2)">Siguiente modo →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- MODE 3: Chunk Flash                     -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="mode-section" id="mode-2">
+    <div class="exercise-card">
+      <div class="instr-banner" id="flash-instruction">
+        <span class="instr-icon">⚡</span>
+        <div class="instr-text">Lee cada <strong>bloque</strong> que aparece. Al terminar, responde la pregunta.</div>
+      </div>
+      <div class="flash-area" id="flash-area">
+        <button class="flash-start-btn" onclick="startFlash()">▶ Iniciar secuencia</button>
+      </div>
+      <div class="feedback-panel" id="feedback-2"></div>
+      <div class="question-area" id="flash-question" style="display:none">
+        <div class="question-label">Pregunta de comprensión</div>
+        <div class="question-text" id="flash-q-text"></div>
+        <div class="q-options" id="flash-q-opts"></div>
+      </div>
+      <div class="exercise-nav">
+        <button class="btn btn-ghost" onclick="showBloqueTransition(3)">Siguiente modo →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- MODE 4: Reconstruction                  -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="mode-section" id="mode-3">
+    <div class="exercise-card">
+      <div class="instr-banner">
+        <span class="instr-icon">🧩</span>
+        <div class="instr-text"><strong>Toca los bloques</strong> en orden para reconstruir la oración.</div>
+      </div>
+      <div class="recon-area">
+        <div class="recon-drop-zone" id="drop-zone" ondragover="dragOver(event)" ondrop="dropChunk(event)" ondragleave="dragLeave(event)">
+          <span class="placeholder" id="drop-placeholder">Toca un bloque del banco para colocarlo aquí</span>
+        </div>
+        <div class="recon-divider" id="bank-divider">Bloques disponibles</div>
+        <div class="chunk-bank" id="chunk-bank">
+          <!-- tiles injected by JS -->
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap: wrap; margin-top: 4px;">
+          <button class="btn btn-primary" onclick="checkRecon()">Verificar orden</button>
+          <button class="btn btn-secondary" onclick="resetRecon()">Reiniciar</button>
+        </div>
+      </div>
+      <div class="feedback-panel" id="feedback-3"></div>
+      <div class="exercise-nav">
+        <button class="session-next-btn btn btn-primary" onclick="completeAndContinue ? completeAndContinue() : (markComplete(), window.location.href='index.html')">Finalizar sesión ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Science note -->
+  <details class="sci-details session-hide">
+  <summary>⚗ Base científica — por qué funciona</summary>
+  <div class="sci-body">El entrenamiento por bloques activa el <strong>priming sintáctico</strong>: la exposición repetida a estructuras frásicas aumenta la probabilidad de reconocerlas automáticamente en lecturas futuras, reduciendo la carga sobre la memoria de trabajo. La investigación de Conti (Applied Linguistics, 2025) muestra que el aprendizaje de bloques léxicos en L1 genera mejoras del <strong>30% en fluidez</strong> versus el aprendizaje palabra por palabra. En español, las perífrasis verbales y las frases preposicionales son los bloques de mayor rendimiento cognitivo por su alta frecuencia y variabilidad interna.</div>
+</details>
+
+</main>
+
+<script>
+// ── Mode switching ──
+function switchMode(n) {
+  document.querySelectorAll('.mode-section').forEach((el,i) => el.classList.toggle('active', i===n));
+  document.querySelectorAll('.mode-tab').forEach((el,i) => el.classList.toggle('active', i===n));
+  if (n===1) prepareFocos();
+  if (n===3) initRecon();
+}
+
+// ── MODE 1: Chunk tap-toggle for mobile ──
+document.querySelectorAll('.chunk').forEach(chunk => {
+  // Touch: toggle label on tap, dismiss on tap elsewhere
+  chunk.addEventListener('touchstart', e => {
+    e.preventDefault(); // prevent ghost click
+    const wasActive = chunk.classList.contains('tapped');
+    // Close all others
+    document.querySelectorAll('.chunk.tapped').forEach(c => c.classList.remove('tapped'));
+    if (!wasActive) chunk.classList.add('tapped');
+  }, { passive: false });
+});
+// Tap elsewhere to dismiss
+document.addEventListener('touchstart', e => {
+  if (!e.target.closest('.chunk')) {
+    document.querySelectorAll('.chunk.tapped').forEach(c => c.classList.remove('tapped'));
+  }
+});
+
+// ── Answer handler ──
+function answerQ(el, correct, mode) {
+  const options = el.closest('.q-options').querySelectorAll('.q-option');
+  options.forEach(o => o.style.pointerEvents = 'none');
+  el.classList.add(correct ? 'correct-ans' : 'wrong-ans');
+  if (!correct) {
+    options.forEach(o => {
+      const onclickAttr = o.getAttribute('onclick') || '';
+      if (onclickAttr.includes('true')) o.classList.add('correct-ans');
+    });
+  }
+  const fb = document.getElementById('feedback-' + mode);
+  if(fb) {
+    fb.className = 'feedback-panel ' + (correct ? 'correct' : 'incorrect');
+    fb.innerHTML = correct
+      ? '<div class="feedback-label">✓ Correcto</div>'
+      : '<div class="feedback-label">✗ Incorrecto</div>La respuesta correcta está resaltada arriba.';
+  }
+  document.getElementById('main-progress').style.width = (35 + (correct ? 15 : 5)) + '%';
+}
+
+// ── MODE 2: Active Parsing ──
+// ── Lectura por Bloques — shared passage pool ──
+// Each passage has: parseSentence, boundaries, flashChunks, reconChunks
+const BLOQUE_POOL = [
+  {
+    parseSentence: [
+      {word:'A',correct:false},{word:'lo',correct:false},{word:'largo',correct:false},{word:'del',correct:false},
+      {word:'siglo',correct:false},{word:'XX,',correct:true},
+      {word:'los',correct:false},{word:'avances',correct:false},{word:'tecnológicos',correct:true},
+      {word:'han',correct:false},{word:'transformado',correct:true},
+      {word:'profundamente',correct:true},
+      {word:'la',correct:false},{word:'forma',correct:false},{word:'en',correct:false},{word:'que',correct:true},
+      {word:'nos',correct:false},{word:'comunicamos.',correct:false},
+    ],
+    boundaries: new Set([5,8,10,11,15]),
+    flashChunks: ['A lo largo del siglo XX,','los avances tecnológicos','han transformado','profundamente','la forma en que','nos comunicamos.'],
+    reconChunks: [{id:'a',text:'A lo largo del siglo XX,'},{id:'b',text:'los avances tecnológicos'},{id:'c',text:'han transformado profundamente'},{id:'d',text:'la forma en que'},{id:'e',text:'nos comunicamos.'}],
+    question: {text:'¿Qué han transformado los avances tecnológicos?', opts:['El clima del planeta','La forma en que nos comunicamos','Los sistemas de transporte','La estructura del lenguaje'], correct:1},
+  },
+  {
+    parseSentence: [
+      {word:'La',correct:false},{word:'memoria',correct:false},{word:'de',correct:false},{word:'trabajo',correct:true},
+      {word:'retiene',correct:false},{word:'información',correct:true},
+      {word:'de',correct:false},{word:'forma',correct:false},{word:'temporal',correct:true},
+      {word:'para',correct:false},{word:'su',correct:false},{word:'uso',correct:false},{word:'inmediato',correct:true},
+      {word:'en',correct:false},{word:'tareas',correct:false},{word:'cognitivas.',correct:false},
+    ],
+    boundaries: new Set([3,5,8,12]),
+    flashChunks: ['La memoria de trabajo','retiene información','de forma temporal','para su uso inmediato','en tareas cognitivas.'],
+    reconChunks: [{id:'a',text:'La memoria de trabajo'},{id:'b',text:'retiene información'},{id:'c',text:'de forma temporal'},{id:'d',text:'para su uso inmediato'},{id:'e',text:'en tareas cognitivas.'}],
+    question: {text:'¿Para qué sirve la memoria de trabajo?', opts:['Para almacenar recuerdos a largo plazo','Para retener información temporalmente en uso inmediato','Para procesar emociones','Para coordinar movimientos'], correct:1},
+  },
+  {
+    parseSentence: [
+      {word:'El',correct:false},{word:'cerebro',correct:false},{word:'humano',correct:true},
+      {word:'procesa',correct:false},{word:'y',correct:false},{word:'reorganiza',correct:true},
+      {word:'la',correct:false},{word:'información',correct:false},{word:'adquirida',correct:true},
+      {word:'durante',correct:false},{word:'las',correct:false},{word:'horas',correct:false},{word:'de',correct:false},{word:'sueño.',correct:false},
+    ],
+    boundaries: new Set([2,5,8]),
+    flashChunks: ['El cerebro humano','procesa y reorganiza','la información adquirida','durante las horas de sueño.'],
+    reconChunks: [{id:'a',text:'El cerebro humano'},{id:'b',text:'procesa y reorganiza'},{id:'c',text:'la información adquirida'},{id:'d',text:'durante las horas de sueño.'}],
+    question: {text:'¿Cuándo reorganiza el cerebro la información?', opts:['Durante el ejercicio físico','Durante la meditación','Durante las horas de sueño','Durante la lectura activa'], correct:2},
+  },
+  {
+    parseSentence: [
+      {word:'Las',correct:false},{word:'ciudades',correct:false},{word:'más',correct:false},{word:'sostenibles',correct:true},
+      {word:'integran',correct:false},{word:'espacios',correct:false},{word:'verdes,',correct:true},
+      {word:'transporte',correct:false},{word:'público',correct:false},{word:'eficiente',correct:true},
+      {word:'y',correct:false},{word:'diseño',correct:false},{word:'centrado',correct:false},{word:'en',correct:false},{word:'las',correct:false},{word:'personas.',correct:false},
+    ],
+    boundaries: new Set([3,6,9]),
+    flashChunks: ['Las ciudades más sostenibles','integran espacios verdes,','transporte público eficiente','y diseño centrado','en las personas.'],
+    reconChunks: [{id:'a',text:'Las ciudades más sostenibles'},{id:'b',text:'integran espacios verdes,'},{id:'c',text:'transporte público eficiente'},{id:'d',text:'y diseño centrado en las personas.'}],
+    question: {text:'¿Qué integran las ciudades más sostenibles?', opts:['Solo energía solar','Espacios verdes, transporte eficiente y diseño centrado en personas','Tecnología avanzada únicamente','Infraestructura digital'], correct:1},
+  },
+  {
+    parseSentence: [
+      {word:'La',correct:false},{word:'lectura',correct:false},{word:'profunda',correct:true},
+      {word:'activa',correct:false},{word:'una',correct:false},{word:'red',correct:false},{word:'neuronal',correct:false},{word:'extensa',correct:true},
+      {word:'que',correct:false},{word:'incluye',correct:false},{word:'áreas',correct:false},{word:'visuales,',correct:true},
+      {word:'lingüísticas',correct:false},{word:'y',correct:false},{word:'emocionales.',correct:false},
+    ],
+    boundaries: new Set([2,7,11]),
+    flashChunks: ['La lectura profunda','activa una red neuronal extensa','que incluye áreas visuales,','lingüísticas y emocionales.'],
+    reconChunks: [{id:'a',text:'La lectura profunda'},{id:'b',text:'activa una red neuronal extensa'},{id:'c',text:'que incluye áreas visuales,'},{id:'d',text:'lingüísticas y emocionales.'}],
+    question: {text:'¿Qué tipo de áreas activa la lectura profunda?', opts:['Solo áreas visuales','Solo áreas lingüísticas','Áreas visuales, lingüísticas y emocionales','Áreas motoras y sensoriales'], correct:2},
+  },
+  {
+    parseSentence: [
+      {word:'El',correct:false},{word:'microbioma',correct:false},{word:'intestinal',correct:true},
+      {word:'produce',correct:false},{word:'neurotransmisores',correct:true},
+      {word:'que',correct:false},{word:'influyen',correct:false},{word:'directamente',correct:true},
+      {word:'en',correct:false},{word:'el',correct:false},{word:'estado',correct:false},{word:'de',correct:false},{word:'ánimo.',correct:false},
+    ],
+    boundaries: new Set([2,4,7]),
+    flashChunks: ['El microbioma intestinal','produce neurotransmisores','que influyen directamente','en el estado de ánimo.'],
+    reconChunks: [{id:'a',text:'El microbioma intestinal'},{id:'b',text:'produce neurotransmisores'},{id:'c',text:'que influyen directamente'},{id:'d',text:'en el estado de ánimo.'}],
+    question: {text:'¿Qué produce el microbioma intestinal?', opts:['Hormonas de crecimiento','Neurotransmisores que influyen en el estado de ánimo','Enzimas digestivas únicamente','Células del sistema inmune'], correct:1},
+  },
+  {
+    parseSentence: [
+      {word:'A',correct:false},{word:'pesar',correct:false},{word:'de',correct:false},{word:'las',correct:false},{word:'dificultades',correct:false},{word:'iniciales,',correct:true},
+      {word:'el',correct:false},{word:'equipo',correct:false},{word:'de',correct:false},{word:'investigación',correct:true},
+      {word:'logró',correct:false},{word:'desarrollar',correct:true},
+      {word:'un',correct:false},{word:'método',correct:false},{word:'innovador',correct:true},
+      {word:'para',correct:false},{word:'el',correct:false},{word:'análisis',correct:false},{word:'de',correct:false},{word:'datos',correct:false},{word:'complejos.',correct:false},
+    ],
+    boundaries: new Set([5,9,11,14]),
+    flashChunks: ['A pesar de las dificultades iniciales,','el equipo de investigación','logró desarrollar','un método innovador','para el análisis de datos complejos.'],
+    reconChunks: [{id:'a',text:'A pesar de las dificultades iniciales,'},{id:'b',text:'el equipo de investigación'},{id:'c',text:'logró desarrollar'},{id:'d',text:'un método innovador'},{id:'e',text:'para el análisis de datos complejos.'}],
+    question: {text:'¿Qué logró desarrollar el equipo de investigación?', opts:['Un nuevo laboratorio','Un método innovador para el análisis de datos','Un algoritmo de inteligencia artificial','Una base de datos global'], correct:1},
+  },
+  {
+    parseSentence: [
+      {word:'La',correct:false},{word:'neuroplasticidad',correct:true},
+      {word:'permite',correct:false},{word:'al',correct:false},{word:'cerebro',correct:true},
+      {word:'reorganizarse',correct:false},{word:'y',correct:false},{word:'formar',correct:false},{word:'nuevas',correct:false},{word:'conexiones',correct:true},
+      {word:'en',correct:false},{word:'respuesta',correct:false},{word:'a',correct:false},{word:'la',correct:false},{word:'experiencia.',correct:false},
+    ],
+    boundaries: new Set([1,4,9]),
+    flashChunks: ['La neuroplasticidad','permite al cerebro','reorganizarse y formar nuevas conexiones','en respuesta a la experiencia.'],
+    reconChunks: [{id:'a',text:'La neuroplasticidad'},{id:'b',text:'permite al cerebro'},{id:'c',text:'reorganizarse y formar nuevas conexiones'},{id:'d',text:'en respuesta a la experiencia.'}],
+    question: {text:'¿Qué le permite la neuroplasticidad al cerebro?', opts:['Crecer físicamente','Reorganizarse y formar nuevas conexiones','Funcionar sin oxígeno','Almacenar más recuerdos'], correct:1},
+  },
+  {
+    parseSentence: [
+      {word:'El',correct:false},{word:'silencio',correct:false},{word:'activo',correct:true},
+      {word:'facilita',correct:false},{word:'la',correct:false},{word:'consolidación',correct:false},{word:'de',correct:false},{word:'recuerdos',correct:true},
+      {word:'y',correct:false},{word:'la',correct:false},{word:'generación',correct:false},{word:'de',correct:false},{word:'nuevas',correct:false},{word:'conexiones',correct:false},{word:'creativas.',correct:false},
+    ],
+    boundaries: new Set([2,7]),
+    flashChunks: ['El silencio activo','facilita la consolidación de recuerdos','y la generación de nuevas conexiones creativas.'],
+    reconChunks: [{id:'a',text:'El silencio activo'},{id:'b',text:'facilita la consolidación de recuerdos'},{id:'c',text:'y la generación de nuevas conexiones creativas.'}],
+    question: {text:'¿Qué facilita el silencio activo?', opts:['El descanso muscular','La consolidación de recuerdos y conexiones creativas','La concentración en tareas específicas','La regulación del ritmo cardíaco'], correct:1},
+  },
+  {
+    parseSentence: [
+      {word:'Los',correct:false},{word:'hábitos',correct:false},{word:'de',correct:false},{word:'lectura',correct:true},
+      {word:'sostenidos',correct:false},{word:'desde',correct:false},{word:'la',correct:false},{word:'infancia',correct:true},
+      {word:'predicen',correct:false},{word:'el',correct:false},{word:'rendimiento',correct:false},{word:'académico',correct:true},
+      {word:'en',correct:false},{word:'etapas',correct:false},{word:'posteriores.',correct:false},
+    ],
+    boundaries: new Set([3,7,11]),
+    flashChunks: ['Los hábitos de lectura','sostenidos desde la infancia','predicen el rendimiento académico','en etapas posteriores.'],
+    reconChunks: [{id:'a',text:'Los hábitos de lectura'},{id:'b',text:'sostenidos desde la infancia'},{id:'c',text:'predicen el rendimiento académico'},{id:'d',text:'en etapas posteriores.'}],
+    question: {text:'¿Qué predicen los hábitos de lectura desde la infancia?', opts:['El coeficiente intelectual','El rendimiento académico en etapas posteriores','La velocidad de escritura','La capacidad atlética'], correct:1},
+  },
+];
+
+// ── Shared rotation — all three modes use the same passage per session ──
+function getCurrentPassage(modeKey, exclude) {
+  exclude = exclude || [];
+  const lsKey = 'em_bloque_' + modeKey + '_q';
+  const ssKey = 'em_bloque_' + modeKey;
+  let idx;
+  try { idx = parseInt(sessionStorage.getItem(ssKey) || '-1'); } catch(e){ idx = -1; }
+  if(idx >= 0 && idx < BLOQUE_POOL.length && !exclude.includes(idx)) return BLOQUE_POOL[idx];
+
+  let q; try{ q=JSON.parse(localStorage.getItem(lsKey)||'[]'); }catch(e){ q=[]; }
+  q = q.filter(i => i < BLOQUE_POOL.length && !exclude.includes(i));
+  if(!q.length){
+    const fresh = BLOQUE_POOL.map((_,i)=>i)
+      .filter(i => !exclude.includes(i))
+      .sort(()=>Math.random()-0.5);
+    q = fresh;
+  }
+  idx = q.shift();
+  try{
+    localStorage.setItem(lsKey, JSON.stringify(q));
+    sessionStorage.setItem(ssKey, String(idx));
+  }catch(e){}
+  return BLOQUE_POOL[idx];
+}
+
+const _parsePassage  = getCurrentPassage('parse', []);
+const _flashPassage  = getCurrentPassage('flash', [BLOQUE_POOL.indexOf(_parsePassage)]);
+const _reconPassage  = getCurrentPassage('recon', [BLOQUE_POOL.indexOf(_parsePassage), BLOQUE_POOL.indexOf(_flashPassage)]);
+// ── MODE 1: Lectura por Focos ──
+// Uses flashChunks from _parsePassage (reusing same passage pool)
+const focosChunks = _parsePassage.flashChunks;
+
+// Speed levels: ms per chunk, decreases as user levels up
+// Age-based reading speed
+function getBaseWpm(age) {
+  age = age || 60;
+  if (age < 30) return 250;
+  if (age < 40) return 230;
+  if (age < 50) return 210;
+  if (age < 60) return 185;
+  if (age < 70) return 160;
+  if (age < 80) return 140;
+  return 120;
+}
+function getUserAge() {
+  try { return parseInt(JSON.parse(localStorage.getItem('em_user')||'{}').age)||60; } catch(e){ return 60; }
+}
+
+const FOCOS_SPEEDS = [1800, 1400, 1100, 850, 650];
+let focosLevel = 0;
+try { focosLevel = Math.min(parseInt(localStorage.getItem('em_focos_level')||'0'), FOCOS_SPEEDS.length-1); } catch(e){}
+// If no saved level, derive starting level from age
+if(!localStorage.getItem('em_focos_level')) {
+  const age = getUserAge();
+  if (age < 40) focosLevel = 2;
+  else if (age < 55) focosLevel = 1;
+  else focosLevel = 0;
+}
+
+let focosTimer = null;
+let focosIdx = 0;
+let focosRunning = false;
+
+
+function prepareFocos() {
+  // Ready screen already explained the mode — just show a clean state
+  const area = document.getElementById('focos-area');
+  area.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:17px;">Toca Iniciar cuando estés listo</div>';
+  document.getElementById('focos-start-btn').style.display = 'block';
+  document.getElementById('focos-nav').style.display = 'none';
+  document.getElementById('focos-speed').textContent = 'Nivel ' + (focosLevel + 1);
+}
+
+function initFocos() {
+  // Build paragraph with each chunk as a span
+  const area = document.getElementById('focos-area');
+  const para = document.createElement('div');
+  para.className = 'focos-para';
+  para.id = 'focos-para';
+
+  focosChunks.forEach((chunk, i) => {
+    const span = document.createElement('span');
+    span.className = 'focos-chunk dim';
+    span.id = 'fc-' + i;
+    span.textContent = chunk + (i < focosChunks.length - 1 ? ' ' : '');
+    para.appendChild(span);
+  });
+
+  area.innerHTML = '';
+  area.appendChild(para);
+
+  const speedMs = FOCOS_SPEEDS[focosLevel];
+  const wpm = Math.round(60000 / speedMs * 3); // approx words per minute
+  document.getElementById('focos-speed').textContent = 'Nivel ' + (focosLevel + 1);
+}
+
+function startFocos() {
+  document.getElementById('focos-start-btn').style.display = 'none';
+  focosIdx = 0;
+  focosRunning = true;
+  // Brief countdown
+  const area = document.getElementById('focos-area');
+  area.innerHTML = '<div style="font-family:Poppins,sans-serif;font-size:72px;font-weight:300;color:var(--violet);text-align:center;width:100%;">3</div>';
+  let count = 3;
+  const cd = setInterval(() => {
+    count--;
+    if(count > 0) {
+      area.innerHTML = '<div style="font-family:Poppins,sans-serif;font-size:72px;font-weight:300;color:var(--violet);text-align:center;width:100%;">' + count + '</div>';
+    } else {
+      clearInterval(cd);
+      initFocos();
+      runFocosStep();
+    }
+  }, 900);
+}
+
+function runFocosStep() {
+  if(!focosRunning || focosIdx >= focosChunks.length) {
+    finishFocos();
+    return;
+  }
+  // Dim all, light up current
+  focosChunks.forEach((_, i) => {
+    const el = document.getElementById('fc-' + i);
+    if(!el) return;
+    if(i < focosIdx) { el.className = 'focos-chunk done'; }
+    else if(i === focosIdx) { el.className = 'focos-chunk lit'; }
+    else { el.className = 'focos-chunk dim'; }
+  });
+
+  // Scroll active chunk into view on mobile
+  const activeEl = document.getElementById('fc-' + focosIdx);
+  if(activeEl) activeEl.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  const speedMs = FOCOS_SPEEDS[focosLevel];
+  focosIdx++;
+  focosTimer = setTimeout(runFocosStep, speedMs);
+}
+
+function finishFocos() {
+  focosRunning = false;
+  // Light all chunks
+  focosChunks.forEach((_, i) => {
+    const el = document.getElementById('fc-' + i);
+    if(el) el.className = 'focos-chunk lit';
+  });
+
+  // Advance level
+  if(focosLevel < FOCOS_SPEEDS.length - 1) {
+    focosLevel++;
+    try { localStorage.setItem('em_focos_level', String(focosLevel)); } catch(e){}
+  }
+
+  // Show comprehension question after brief pause
+  setTimeout(() => {
+    const q = _parsePassage.question;
+    if(!q) {
+      document.getElementById('focos-nav').style.display = 'flex';
+      return;
+    }
+    // Clear the paragraph area to declutter — focus entirely on the question
+    const area = document.getElementById('focos-area');
+    if(area) area.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:15px;">✓ Secuencia completada</div>';
+
+    const footer = document.getElementById('focos-footer');
+    const qDiv = document.createElement('div');
+    qDiv.className = 'focos-question';
+    qDiv.innerHTML = '<div class="focos-q-text">' + q.text + '</div><div class="focos-q-opts" id="focos-q-opts"></div>';
+    footer.insertBefore(qDiv, footer.firstChild);
+
+    q.opts.forEach((o, i) => {
+      const d = document.createElement('div');
+      d.className = 'focos-opt';
+      d.textContent = o;
+      d.onclick = () => {
+        document.querySelectorAll('.focos-opt').forEach(el => el.style.pointerEvents='none');
+        if(i === q.correct) {
+          d.style.cssText += 'border-color:var(--teal-b);background:var(--teal-d);color:var(--teal);';
+        } else {
+          d.style.cssText += 'border-color:rgba(255,107,91,0.3);color:var(--coral);';
+          document.querySelectorAll('.focos-opt')[q.correct].style.cssText += 'border-color:var(--teal-b);background:var(--teal-d);color:var(--teal);';
+        }
+        setTimeout(() => {
+          document.getElementById('focos-nav').style.display = 'flex';
+        }, 600);
+      };
+      document.getElementById('focos-q-opts').appendChild(d);
+    });
+  }, 600);
+}
+
+
+// ── MODE 3: Chunk Flash ──
+const flashChunks = _flashPassage.flashChunks;
+let flashIdx = 0, flashTimer = null;
+
+function startFlash() {
+  if(flashTimer) { clearInterval(flashTimer); flashTimer = null; }
+  flashIdx = 0;
+  const instr = document.getElementById('flash-instruction');
+  if(instr) instr.style.display = 'none';
+  const area = document.getElementById('flash-area');
+  area.innerHTML = `
+    <div class="flash-counter" id="flash-ctr">Bloque 1 de ${flashChunks.length}</div>
+    <div class="flash-chunk" id="flash-text" style="font-family:'Lora',serif;font-size:clamp(20px,5vw,28px);color:var(--text);padding:14px 22px;background:var(--violet-d);border:1.5px solid var(--violet-b);border-radius:14px;">${flashChunks[0]}</div>
+    <div class="flash-progress-bar"><div class="flash-progress-fill" id="flash-pb" style="width:${100/flashChunks.length}%"></div></div>
+    <div style="font-size:14px;color:var(--text3);margin-top:4px;">Velocidad adaptativa</div>
+  `;
+  flashTimer = setInterval(advanceFlash, 1100);
+}
+
+function advanceFlash() {
+  flashIdx++;
+  if (flashIdx >= flashChunks.length) {
+    clearInterval(flashTimer);
+    document.getElementById('flash-area').innerHTML = `
+      <div style="font-size:17px;font-weight:600;color:var(--teal)">✓ Secuencia completada</div>
+      <div style="font-size:15px;color:var(--text3);margin-top:4px;">Responde la pregunta de comprensión</div>
+    `;
+    showFlashQuestion();
+    return;
+  }
+  const textEl = document.getElementById('flash-text');
+  if (textEl) {
+    textEl.style.transition = 'none';
+    textEl.style.opacity = '0';
+    textEl.textContent = '';
+    setTimeout(() => { textEl.textContent = flashChunks[flashIdx]; textEl.style.opacity = '1'; }, 200);
+    document.getElementById('flash-ctr').textContent = `Bloque ${flashIdx+1} de ${flashChunks.length}`;
+    document.getElementById('flash-pb').style.width = ((flashIdx+1)/flashChunks.length*100) + '%';
+  }
+}
+
+// ── MODE 4: Reconstruction ──
+// Uses tap-to-place instead of drag — works on both desktop and mobile
+const reconChunks = _reconPassage.reconChunks;
+const correctOrder = reconChunks.map(c => c.id);
+let dropOrder = [];
+let draggingId = null; // kept for desktop drag fallback
+
+function initRecon() {
+  dropOrder = [];
+  const bank = document.getElementById('chunk-bank');
+  const dropZone = document.getElementById('drop-zone');
+  if(!bank || !dropZone) return;
+  bank.innerHTML = '';
+  dropZone.innerHTML = '<span class="placeholder" id="drop-placeholder">Toca un bloque para colocarlo aquí</span>';
+  const fb3 = document.getElementById('feedback-3'); if(fb3) fb3.className='feedback-panel';
+  if(!reconChunks || !reconChunks.length) return;
+
+  const shuffled = [...reconChunks].sort(() => Math.random() - 0.5);
+  shuffled.forEach(c => {
+    const tile = makeBankTile(c);
+    bank.appendChild(tile);
+  });
+}
+
+function makeBankTile(c) {
+  const tile = document.createElement('div');
+  tile.className = 'chunk-tile';
+  tile.textContent = c.text;
+  tile.dataset.id = c.id;
+  // Desktop drag
+  tile.draggable = true;
+  tile.addEventListener('dragstart', e => { draggingId = c.id; e.dataTransfer.effectAllowed = 'move'; });
+  // Mobile & desktop tap-to-place
+  tile.addEventListener('click', () => placeChunk(c.id));
+  return tile;
+}
+
+function placeChunk(id) {
+  if (dropOrder.includes(id)) return;
+  const bankTile = document.querySelector(`#chunk-bank [data-id="${id}"]`);
+  if (!bankTile) return;
+  bankTile.remove();
+
+  dropOrder.push(id);
+  const placeholder = document.getElementById('drop-placeholder');
+  if (placeholder) placeholder.remove();
+
+  const chunk = reconChunks.find(c => c.id === id);
+  const dz = document.getElementById('drop-zone');
+  const tile = document.createElement('div');
+  tile.className = 'chunk-tile in-drop';
+  tile.textContent = chunk.text;
+  tile.dataset.id = id;
+  tile.title = 'Toca para devolver al banco';
+  tile.style.cursor = 'pointer';
+  tile.addEventListener('click', () => returnToBank(id, tile));
+  dz.appendChild(tile);
+}
+
+// Desktop drag support (unchanged)
+function dragOver(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('drag-over'); }
+function dragLeave(e) { document.getElementById('drop-zone').classList.remove('drag-over'); }
+function dropChunk(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag-over');
+  if (!draggingId) return;
+  placeChunk(draggingId);
+  draggingId = null;
+}
+
+function returnToBank(id, tile) {
+  dropOrder = dropOrder.filter(x => x !== id);
+  tile.remove();
+  if (!document.querySelector('#drop-zone .chunk-tile')) {
+    document.getElementById('drop-zone').innerHTML = '<span class="placeholder" id="drop-placeholder">Toca un bloque para colocarlo aquí</span>';
+  }
+  const chunk = reconChunks.find(c => c.id === id);
+  document.getElementById('chunk-bank').appendChild(makeBankTile(chunk));
+}
+
+function checkRecon() {
+  const fb = document.getElementById('feedback-3');
+  if (dropOrder.length < correctOrder.length) {
+    fb.className = 'feedback-panel info';
+    fb.innerHTML = '<div class="feedback-label">Incompleto</div>Toca todos los bloques del banco para colocarlos antes de verificar.';
+    return;
+  }
+  const isCorrect = JSON.stringify(dropOrder) === JSON.stringify(correctOrder);
+  if (isCorrect) {
+    fb.className = 'feedback-panel correct';
+    const fullSentence = correctOrder.map(id => reconChunks.find(c=>c.id===id).text).join(' ');
+    fb.innerHTML = '<div class="feedback-label">✓ Perfecto</div>Reconstruiste la oración correctamente: <em style="color:var(--teal)">' + fullSentence + '</em>';
+    document.getElementById('main-progress').style.width = '90%';
+    // Reveal finalizar button
+    document.querySelectorAll('#mode-3 .session-next-btn, #mode-3 .btn-primary[onclick*="Finalizar"], #mode-3 .btn-primary[onclick*="completeAndContinue"]').forEach(b=>{ b.style.display='block'; });
+    markComplete();
+  } else {
+    fb.className = 'feedback-panel incorrect';
+    fb.innerHTML = '<div class="feedback-label">Orden incorrecto</div>Pista: el marcador "A pesar de las dificultades iniciales" siempre va al inicio. El sujeto ("el equipo de investigación") precede al verbo. Las frases preposicionales van al final.';
+  }
+}
+
+function resetRecon() { initRecon(); }
+
+function finishSession() {
+  markComplete();
+  document.getElementById('main-progress').style.width = '100%';
+  const _sc=document.getElementById('streak-count'); if(_sc) _sc.textContent='8';
+  // Navigate away — don't use alert() which blocks and loops
+  if(typeof completeAndContinue === 'function') {
+    completeAndContinue();
+  } else {
+    setTimeout(() => { window.location.href = 'index.html'; }, 800);
+  }
+}
+
+// ── Show session navigation UI ──
+function showSessionUI() {
+  if(!isInSession()) return;
+  updateSessionBtnLabels();
+  // Show the next button
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.style.cssText = 'display:block!important';
+  });
+  // Hide the repeat/reset buttons
+  document.querySelectorAll('.session-hide').forEach(b => {
+    b.style.cssText = 'display:none!important';
+  });
+}
+
+// ── Wake Lock: prevent screen sleep during exercise ──
+let _wakeLock = null;
+async function requestWakeLock() {
+  if(!('wakeLock' in navigator)) return;
+  try {
+    _wakeLock = await navigator.wakeLock.request('screen');
+  } catch(e) {}
+}
+function releaseWakeLock() {
+  if(_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
+}
+// Re-acquire on tab visibility change
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible') requestWakeLock();
+});
+
+let _rdyBloqueMode = 0;
+function selectBloqueMode(n, el){
+  _rdyBloqueMode = n;
+  document.querySelectorAll('[id^="rdy-mode-"]').forEach(b=>{
+    b.style.borderColor='var(--border2)';
+    b.style.color='var(--text2)';
+    b.style.background='var(--card)';
+  });
+  el.style.borderColor='var(--violet)';
+  el.style.color='var(--violet)';
+  el.style.background='var(--violet-d)';
+}
+
+
+// ── Lectura por Bloques mode transitions ──
+function showBloqueTransition(toMode) {
+  const transitions = {
+    2: { icon: '⚡', title: 'Flash por <em style="color:var(--teal)">Bloques</em>', desc: 'Los bloques aparecen uno a uno. Léelos como unidades completas — sin contexto.' },
+    3: { icon: '🧩', title: '<em style="color:var(--teal)">Reconstrucción</em>', desc: 'Los bloques aparecen desordenados. Tócalos en el orden correcto.' },
+  };
+  const t = transitions[toMode];
+  if(!t) { switchMode(toMode); return; }
+
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;gap:16px;';
+  ov.innerHTML = `
+    <div style="font-size:48px;">${t.icon}</div>
+    <div style="font-family:'Poppins',sans-serif;font-size:34px;font-weight:300;color:var(--text);">${t.title}</div>
+    <div style="font-size:17px;color:var(--text2);line-height:1.7;max-width:320px;">${t.desc}</div>
+    <button id="bloque-trans-btn" style="width:100%;max-width:320px;padding:18px;background:var(--violet-deep);color:#fff;border:none;border-radius:14px;font-family:'Fredoka','Poppins',sans-serif;font-size:18px;font-weight:600;cursor:pointer;margin-top:8px;">Continuar →</button>
+  `;
+  document.body.appendChild(ov);
+  document.getElementById('bloque-trans-btn').onclick = () => {
+    ov.remove();
+    switchMode(toMode);
+    if(toMode === 2) {
+      const instr = document.getElementById('flash-instruction');
+      if(instr) instr.style.display = 'none';
+      startFlash();
+    }
+  };
+}
+
+
+function showFlashQuestion() {
+  const q = _flashPassage.question;
+  if(!q) return;
+  document.getElementById('flash-q-text').textContent = q.text;
+  const optsEl = document.getElementById('flash-q-opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const d = document.createElement('div');
+    d.className = 'q-option';
+    d.textContent = o;
+    d.onclick = () => answerQ(d, i === q.correct, 2);
+    optsEl.appendChild(d);
+  });
+  document.getElementById('flash-question').style.display = '';
+}
+
+</script>
+
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  </a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente en Forma — Actualización por Categorías</title>
+<script src="brand.js"></script>
+<script>try{const u=JSON.parse(localStorage.getItem("em_user")||"{}");if(u.profile==="child")document.title="Mente en Forma — ¡Categorías!";}catch(e){}</script>
+<style>
+:root {
+  --bg:#F8F7FF; --bg2:#F0EEF8; --card:#FFFFFF; --card2:#F4F2FC;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --text:#1A1830; --text2:#4A4468; --text3:#5C5880;
+  /* Brand violet — primary accent */
+  --violet:#6C5CE7; --violet-d:rgba(108,92,231,0.10); --violet-b:rgba(108,92,231,0.25);
+  --violet-deep:#534AB7;
+  /* Teal — action/success/interactive */
+  --teal:#0A7A6A; --teal-d:rgba(10,122,106,0.10); --teal-b:rgba(10,122,106,0.25);
+  /* Supporting palette */
+  --gold:#C9A84C; --gold-l:rgba(201,168,76,0.12); --gold-b:rgba(201,168,76,0.30);
+  --amber:#F5A623; --amber-d:rgba(245,166,35,0.12); --amber-b:rgba(245,166,35,0.28);
+  --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
+  --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
+  --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --muted:#4A4860;
+  --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
+}
+
+
+/* ════════════════════════
+   CHILD MODE overrides
+   ════════════════════════ */
+body.child-mode {
+  --bg: #F8F7FF;
+}
+body.child-mode .word-big {
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--text);
+}
+body.child-mode .cat-badge {
+  font-size: 13px;
+  padding: 5px 16px;
+  border-radius: 20px;
+}
+body.child-mode .mem-slot .ms-word {
+  font-size: 22px;
+}
+body.child-mode .mem-slot .ms-cat {
+  font-size: 12px;
+}
+body.child-mode .recall-opt {
+  font-size: 17px;
+  padding: 14px 16px;
+}
+body.child-mode .dopt .dv { font-size: 22px; }
+body.child-mode .dopt .dl { font-size: 12px; }
+body.child-mode .dopt .dd { font-size: 13px; }
+body.child-mode .insight {
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: center;
+  padding: 16px 20px;
+}
+body.child-mode .insight strong {
+  font-size: 17px;
+  display: block;
+  margin-bottom: 6px;
+}
+/* Hide hard difficulty in child mode */
+body.child-mode #diff-hard { display: none; }
+/* Bigger round result feedback */
+body.child-mode .round-hint {
+  font-size: 15px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background:var(--bg); color:var(--text);
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  padding-bottom: 60px;
+}
+
+header {
+  width: 100%; background: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
+}
+.logo { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 0.03em; }
+.logo em { color: #F5C842; font-style: normal; }
+.ex-tag {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--teal-l); background: rgba(13,115,119,0.3);
+  border: 1px solid rgba(13,115,119,0.5); padding: 3px 11px; border-radius: 20px;
+}
+.hstats { display: flex; gap: 14px; }
+.hstat { font-size: 12px; color: rgba(255,255,255,0.45); display: flex; gap: 5px; }
+.hstat b { color: #F5C842; }
+
+main { width: 100%; max-width: 680px; padding: 22px 16px 0; display: flex; flex-direction: column; gap: 16px; }
+
+/* Stage dots */
+.sdots { display: flex; gap: 5px; }
+.sdot { flex: 1; height: 3px; border-radius: 2px; background: var(--bg2); transition: background 0.3s; }
+.sdot.done { background: var(--teal); }
+.sdot.active { background: var(--amber); }
+
+/* Cards */
+.card { background: var(--card); border-radius: var(--r); border: 1.5px solid var(--border2); box-shadow: var(--sh); overflow: hidden; display: none; }
+.card.show { display: block; }
+#s1.show { display:flex; flex-direction:column; min-height:100dvh; border-radius:0; border-left:none; border-right:none; border-top:none; }
+
+.chead { padding: 15px 20px 13px; border-bottom: 1.5px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.ctitle { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.csub { font-size: 12px; color: var(--ink2); line-height: 1.55; max-width: 380px; }
+.cpills { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.pill { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; }
+.pt { background: var(--teal-l); color: var(--teal); }
+.pa { background: var(--amber-l); color: var(--amber); }
+.pp { background: var(--purple-l); color: var(--purple); }
+
+.clive { text-align: right; flex-shrink: 0; }
+.clive .cv { font-size: 22px; font-weight: 700; color: var(--teal); line-height: 1; font-variant-numeric: tabular-nums; }
+.clive .cl { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
+
+.prog-bar { height: 3px; background: var(--bg2); }
+.prog-fill { height: 100%; transition: width 0.4s ease, background 0.3s; }
+
+.btn { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; padding: 9px 18px; border-radius: 10px; border: none; cursor: pointer; transition: all 0.15s; }
+.btn-teal { background: var(--teal); color: #fff; }
+.btn-teal:hover { opacity: 0.88; }
+.btn-ghost { background: transparent; color: var(--ink2); border: 1.5px solid var(--border2); }
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.cfooter { padding:14px 20px 28px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; }
+
+/* ════════════════════════
+   TUTORIAL / INTRO
+   ════════════════════════ */
+.tut-step { display: none; flex-direction: column; }
+.tut-step.show { display: flex; }
+.tut-head { padding: 11px 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--amber); background: var(--amber-m); border-bottom: 1.5px solid var(--border); }
+.tut-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 13px; font-size: 13px; color:var(--text); line-height: 1.65; }
+.tut-body strong { color: var(--ink); }
+.tut-rule { background: var(--teal-m); border: 1.5px solid rgba(13,115,119,0.2); border-radius: 10px; padding: 12px 14px; font-size: 13px; color: var(--ink2); line-height: 1.6; }
+.tut-rule strong { color: var(--teal); }
+.tut-footer { padding: 12px 20px; border-top: 1.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+
+/* Category preview in tutorial */
+.cat-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cat-chip {
+  padding: 10px 14px; border-radius: 10px;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.cat-icon { font-size: 20px; }
+.cat-info .cn { font-size: 13px; font-weight: 700; }
+.cat-info .ce { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.cat-chip[data-cat="animals"] { background: var(--teal-m); border-color: rgba(13,115,119,0.3); }
+.cat-chip[data-cat="animals"] .cn { color: var(--teal); }
+.cat-chip[data-cat="professions"] { background: var(--amber-m); border-color: rgba(194,125,11,0.3); }
+.cat-chip[data-cat="professions"] .cn { color: var(--amber); }
+.cat-chip[data-cat="objects"] { background: var(--purple-m); border-color: rgba(109,40,217,0.3); }
+.cat-chip[data-cat="objects"] .cn { color: var(--purple); }
+.cat-chip[data-cat="places"] { background: var(--coral-m); border-color: rgba(192,57,43,0.3); }
+.cat-chip[data-cat="places"] .cn { color: var(--coral); }
+
+/* Example sequence */
+.ex-stream { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 4px 0; }
+.ex-word {
+  padding: 7px 12px; border-radius: 9px; border: 1.5px solid var(--border2);
+  background: var(--card2); font-family: 'Fraunces', serif;
+  font-size: 15px; color: var(--ink2); text-align: center;
+}
+.ex-word.ew-animal { background: var(--teal-m); border-color: rgba(13,115,119,0.3); color: var(--teal); }
+.ex-word.ew-prof { background: var(--amber-m); border-color: rgba(194,125,11,0.3); color: var(--amber); }
+.ex-word.ew-obj { background: var(--purple-m); border-color: rgba(109,40,217,0.3); color: var(--purple); }
+.ex-word.ew-place { background: var(--coral-m); border-color: rgba(192,57,43,0.3); color: var(--coral); }
+.ex-word.latest { font-weight: 700; border-width: 2px; }
+
+/* Difficulty selector */
+.diff-opts { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; padding: 14px 20px 0; }
+.dopt {
+  padding: 11px 8px; border-radius: 11px; border: 1.5px solid var(--border2);
+  background: var(--card2); cursor: pointer; text-align: center; transition: all 0.15s;
+}
+.dopt:hover { border-color: var(--teal); }
+.dopt.dsel { background: var(--teal-m); border-color: var(--teal); }
+.dopt .dv { font-size: 18px; font-weight: 700; color: var(--teal); }
+.dopt .dl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+.dopt .dd { font-size: 11px; color: var(--ink2); margin-top: 4px; line-height: 1.4; }
+
+/* ════════════════════════
+   GAME — word stream
+   ════════════════════════ */
+#stream-phase { display:flex; flex-direction:column; flex:1; }
+.stream-area { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; gap:20px; }
+
+.word-stage {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.cat-badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 3px 12px; border-radius: 20px;
+}
+.cat-badge.cb-animals { background: var(--teal-l); color: var(--teal); }
+.cat-badge.cb-professions { background: var(--amber-l); color: var(--amber); }
+.cat-badge.cb-objects { background: var(--purple-l); color: var(--purple); }
+.cat-badge.cb-places { background: var(--coral-l); color: var(--coral); }
+
+.word-big { font-family:"Poppins",sans-serif; font-size:56px; font-weight:300; color:var(--text); text-align:center; line-height:1.1; letter-spacing:0.01em; }
+.word-big.hidden { opacity: 0; }
+.word-num { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
+
+/* Memory slots — one per category, always visible */
+.memory-slots { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; padding:0 16px; }
+.mem-slot { background:var(--card); border:1px solid var(--border2); border-radius:10px; padding:8px 12px; min-width:90px; text-align:center; }
+.mem-slot .ms-cat { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 5px; }
+.mem-slot .ms-word {
+  font-family: 'Fraunces', serif;
+  font-size: 18px; font-weight: 600; color: var(--muted);
+  min-height: 26px;
+}
+.mem-slot.ms-animals { border-color: rgba(13,115,119,0.25); }
+.mem-slot.ms-animals .ms-cat { color: var(--teal); }
+.mem-slot.ms-animals.updated .ms-word { color: var(--teal); }
+.mem-slot.ms-professions { border-color: rgba(194,125,11,0.25); }
+.mem-slot.ms-professions .ms-cat { color: var(--amber); }
+.mem-slot.ms-professions.updated .ms-word { color: var(--amber); }
+.mem-slot.ms-objects { border-color: rgba(109,40,217,0.25); }
+.mem-slot.ms-objects .ms-cat { color: var(--purple); }
+.mem-slot.ms-objects.updated .ms-word { color: var(--purple); }
+.mem-slot.ms-places { border-color: rgba(192,57,43,0.25); }
+.mem-slot.ms-places .ms-cat { color: var(--coral); }
+.mem-slot.ms-places.updated .ms-word { color: var(--coral); }
+.mem-slot.just-updated { transform: scale(1.03); box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+
+/* Recall phase */
+.recall-area { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
+.recall-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.recall-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.recall-cat {
+  border-radius: 11px; border: 1.5px solid var(--border2);
+  background: var(--card2); overflow: hidden;
+}
+.recall-cat-head {
+  padding: 8px 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.rch-animals { background: var(--teal-m); color: var(--teal); }
+.rch-professions { background: var(--amber-m); color: var(--amber); }
+.rch-objects { background: var(--purple-m); color: var(--purple); }
+.rch-places { background: var(--coral-m); color: var(--coral); }
+.recall-options { padding: 8px; display: flex; flex-direction: column; gap: 5px; }
+.ropt {
+  padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--border);
+  background: var(--card); font-family: 'Fraunces', serif; font-size: 15px;
+  cursor: pointer; color: var(--ink2); transition: all 0.12s;
+}
+.ropt:hover { border-color: var(--ink); color: var(--ink); }
+.ropt.ro-correct { background: var(--green-l); border-color: var(--teal); color: var(--teal); pointer-events: none; }
+.ropt.ro-wrong { background: var(--coral-l); border-color: var(--coral); color: var(--coral); pointer-events: none; }
+.ropt.ro-locked { pointer-events: none; opacity: 0.4; }
+
+/* Results */
+.res-body { padding: 22px 20px; display: flex; flex-direction: column; gap: 14px; }
+.res-top { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.res-box { background: var(--card2); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 12px; text-align: center; }
+.res-box .rv { font-size: 38px; font-weight: 300; color: var(--teal); line-height: 1; }
+.res-box .rl { font-size: 10px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; }
+.res-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.rg { background: var(--card2); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center; }
+.rg .rv { font-size: 16px; font-weight: 700; }
+.rg .rl { font-size: 10px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; margin-top: 2px; }
+.insight { padding: 13px 15px; border-radius: 11px; background: var(--purple-m); border: 1.5px solid rgba(109,40,217,0.15); font-size: 13px; color: var(--ink2); line-height: 1.65; }
+.insight strong { color: var(--purple); }
+.res-btns { display: flex; gap: 10px; justify-content: center; }
+
+/* Sci note */
+.sci { background: var(--card); border: 1.5px solid var(--border2); border-radius: var(--r); padding: 15px 19px; font-size: 12px; color: var(--ink2); line-height: 1.7; box-shadow: var(--sh); }
+.sci-hd { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+
+@keyframes pulse-slot { 0%,100%{opacity:1} 50%{opacity:0.6} }
+.pulsing { animation: pulse-slot 0.6s ease; }
+
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVENESS — applied globally
+   ═══════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Base text scale up */
+  body { font-size: 16px; }
+
+  /* Header: hide XP bar and secondary stats on very small screens */
+  .xp-bar-wrap { display: none !important; }
+  header { padding: 12px 16px !important; }
+
+  /* Main container: full bleed with comfortable padding */
+  main { padding: 16px 12px 0 !important; gap: 14px !important; }
+
+  /* Cards: reduce padding so content breathes */
+  .chead, .card-top { padding: 14px 16px 12px !important; }
+  .ctitle, .card-title { font-size: 17px !important; }
+  .csub, .card-sub { font-size: 14px !important; }
+
+  /* Controls grid: single column on mobile */
+  .controls-grid { grid-template-columns: 1fr !important; padding: 14px 16px !important; }
+
+  /* Question options: bigger tap targets */
+  .q-opt, .qopt, .copt, .ropt { 
+    padding: 14px 16px !important; 
+    font-size: 15px !important; 
+    min-height: 48px !important;
+  }
+
+  /* RSVP word: bigger on mobile */
+  .rsvp-pre, .rsvp-focal, .rsvp-post, .rsvp-word-full { font-size: 36px !important; }
+  .rsvp-phrase { font-size: 22px !important; line-height: 1.4 !important; }
+  .rsvp-viewport { height: 180px !important; padding: 0 16px !important; }
+
+  /* Buttons: full width on mobile where stacked */
+  .cfooter, .q-footer, .drill-footer { 
+    padding: 12px 14px !important; 
+    flex-wrap: wrap !important; 
+    gap: 8px !important;
+  }
+  .btn { font-size: 14px !important; padding: 11px 16px !important; min-height: 44px !important; }
+  .btn-sm { font-size: 13px !important; padding: 10px 14px !important; }
+  .start-btn { font-size: 16px !important; padding: 16px !important; }
+
+  /* Memory slots: 2 col max */
+  .memory-slots { grid-template-columns: 1fr 1fr !important; }
+
+  /* Recall grid: single col on narrow phones */
+  .recall-grid { grid-template-columns: 1fr !important; }
+
+  /* Word flash display */
+  .word-big { font-size: 34px !important; }
+  .mem-item { font-size: 38px !important; }
+
+  /* n-back grid cells */
+  .vis-grid { width: 192px !important; gap: 6px !important; }
+  .cell { width: 56px !important; height: 56px !important; }
+
+  /* Letter display */
+  .letter-display { font-size: 42px !important; }
+
+  /* Mode/tab grids */
+  .mode-grid { grid-template-columns: 1fr !important; }
+  .mode-tabs { grid-template-columns: 1fr !important; }
+  .task-tabs { grid-template-columns: 1fr !important; }
+
+  /* Pillar section padding on index */
+  .pillar, .section-label, .divider { padding-left: 16px !important; padding-right: 16px !important; }
+
+  /* Results boxes */
+  .res-top, .res-grid { gap: 8px !important; }
+  .res-box .rv, .res-big .rv { font-size: 32px !important; }
+
+  /* Sentence display in Contrarreloj */
+  .sentence-display { font-size: 16px !important; line-height: 1.8 !important; }
+  .reading-area { padding: 18px 16px 14px !important; }
+
+  /* Recall slots in Memoria Activa */
+  .recall-slot { min-width: 44px !important; height: 46px !important; font-size: 12px !important; }
+  .recall-area { padding: 14px 14px 16px !important; }
+  .keyboard { gap: 5px !important; }
+  .key { padding: 10px 5px !important; font-size: 14px !important; }
+
+  /* Equation display */
+  .equation-display { font-size: 26px !important; }
+
+  /* Sent display in Contrarreloj */
+  .sent-display { font-size: 18px !important; }
+
+  /* Tutorial steps */
+  .tut-body { padding: 14px 16px !important; font-size: 14px !important; }
+  .tut-footer { padding: 12px 16px !important; }
+  .tut-head { padding: 10px 16px !important; }
+
+  /* Stats header: smaller */
+  .hstats { gap: 10px !important; }
+  .hstat { font-size: 11px !important; }
+  .hstat b { font-size: 12px !important; }
+
+  /* Science note collapsible */
+  .sci-toggle-btn { font-size: 13px !important; }
+}
+
+/* Collapsible science note */
+.sci-details {
+  background: var(--card, #fff);
+  border: 1.5px solid var(--border2, rgba(0,0,0,0.12));
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.sci-details summary {
+  padding: 13px 18px;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; list-style: none;
+  display: flex; align-items: center; justify-content: space-between;
+  color: var(--muted, #888); letter-spacing: 0.03em;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.sci-details summary::-webkit-details-marker { display: none; }
+.sci-details summary::after {
+  content: '▸';
+  font-size: 11px; transition: transform 0.2s;
+  color: var(--muted, #888);
+}
+.sci-details[open] summary::after { transform: rotate(90deg); }
+.sci-details[open] summary {
+  border-bottom: 1.5px solid var(--border, rgba(0,0,0,0.08));
+}
+.sci-details-body {
+  padding: 14px 18px 16px;
+  font-size: 13px; color:var(--text); line-height: 1.7;
+}
+@media (max-width: 640px) {
+  .sci-details summary { font-size: 14px !important; padding: 14px 16px !important; }
+  .sci-details-body { font-size: 14px !important; padding: 14px 16px 16px !important; }
+}
+
+body::before{display:none;}
+
+/* ── Shared design system classes ── */
+.logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
+.logo em{color:var(--gold);font-style:italic;}
+.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.hdr-back:hover{color:var(--text2);}
+.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:13px;}
+.instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
+.instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
+.instr-text strong{color:var(--text);font-weight:600;}
+.card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary::-webkit-details-marker{display:none;}
+.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details[open] summary::after{transform:rotate(90deg);}
+.sci-details[open] summary{border-bottom:1px solid var(--border);}
+.sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
+.sci-body strong,.sci-details-body strong{color:var(--text);}
+
+
+/* ── Ready Screen ── */
+.ready-screen {
+  position:fixed; inset:0; z-index:200;
+  background:var(--bg);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:32px 24px; text-align:center;
+  overflow:hidden;
+}
+.ready-screen.hidden { display:none; }
+.ready-screen::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
+@keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-title {
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(32px,8vw,48px); font-weight:300;
+  color:var(--text); line-height:1.1; margin-bottom:12px;
+}
+.ready-title em { color:var(--teal); font-style:italic; }
+.ready-sub{font-size:19px;color:var(--text2);line-height:1.65;text-align:center;margin-bottom:24px;max-width:320px;}
+.ready-sub strong { color:var(--text); font-weight:600; }
+
+/* Animation preview box */
+.ready-preview {
+  width:100%; max-width:340px;
+  background:var(--card); border:1px solid var(--border2);
+  border-radius:16px; overflow:hidden;
+  margin-bottom:28px; min-height:110px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.preview-label {
+  position:absolute; top:10px; left:14px;
+  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  text-transform:uppercase; color:var(--text3);
+}
+.preview-inner {
+  padding:20px 24px; width:100%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+
+.ready-step-text strong { color:var(--text); font-weight:600; }
+
+.ready-btn {
+  width:100%; padding:17px;
+  background:var(--teal); color:var(--bg);
+  border:none; border-radius:13px; cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  font-size:17px; font-weight:700; letter-spacing:0.02em;
+  transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+  margin-bottom:14px;
+}
+.ready-btn:hover { opacity:0.88; transform:translateY(-1px); }
+.ready-btn:active { transform:translateY(0); }
+.ready-hint {
+  font-size:16px; color:var(--text3); line-height:1.5;
+}
+
+@media(max-width:600px) {
+  .ready-screen { padding:24px 16px; }
+  .ready-title { font-size:34px; }
+  .ready-sub { font-size:16px; }
+  .ready-steps { flex-direction:column; gap:8px; }
+  .ready-btn { font-size:16px; padding:16px; }
+}
+
+
+/* ── Brand logo ── */
+.logo, .brand-name {
+  font-family: 'Fredoka','Poppins',sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text); letter-spacing: -0.01em;
+  display: flex; align-items: center;
+}
+.logo em, .brand-name em {
+  color: var(--violet); font-style: italic;
+}
+/* ── Primary button — violet ── */
+.btn-teal, .ready-btn {
+  background: var(--violet-deep) !important;
+  color: #fff !important;
+}
+.btn-teal:hover, .ready-btn:hover {
+  background: var(--violet) !important;
+  opacity: 1 !important;
+}
+/* Keep teal for success/feedback states */
+.btn-teal.btn-success { background: var(--teal) !important; }
+
+
+/* Session next button — shown only during session flow */
+.session-next-btn {
+  display: none;
+  width: 100%;
+  padding: 16px;
+  background: var(--violet-deep);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-family: 'Fredoka', 'Poppins',sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.session-next-btn:hover { background: var(--violet); }
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<main>
+
+<!-- First-time intro screen -->
+<div id="first-intro" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:200;
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 28px;text-align:center;">
+  <div style="width:88px;height:88px;border-radius:28px;background:var(--amber-d);
+    border:1.5px solid var(--amber-b);display:flex;align-items:center;justify-content:center;
+    font-size:42px;margin-bottom:28px;box-shadow:0 0 40px rgba(245,166,35,0.15);">🧠</div>
+  <div style="font-size:14px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+    color:var(--amber);margin-bottom:10px;">Ejercicio 2 de 3</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,7vw,40px);
+    font-weight:300;color:var(--text);line-height:1.2;margin-bottom:16px;">
+    Actualización por <em style="color:var(--amber);font-style:italic;">Categorías</em>
+  </div>
+  <div style="font-size:16px;color:var(--text2);line-height:1.7;max-width:300px;margin-bottom:12px;">
+    Ahora un ejercicio que entrena tu <strong style="color:var(--text);">memoria de trabajo</strong> — la capacidad de mantener y actualizar información mientras piensas.
+  </div>
+  <div style="font-size:16px;color:var(--text3);margin-bottom:36px;">~3 minutos · Sin tiempo límite</div>
+  <button onclick="dismissFirstIntro()" style="width:100%;max-width:340px;padding:18px;
+    background:var(--amber);color:#0C0C10;border:none;border-radius:14px;
+    font-family:'Fredoka','DM Sans',sans-serif;font-size:18px;font-weight:600;
+    cursor:pointer;letter-spacing:0.01em;">
+    ▶ Comenzar
+  </button>
+</div>
+
+<div class="ready-screen" id="ready-screen">
+  <div class="ready-inner">
+    <div class="ready-title">Actualización por <em>Categorías</em></div>
+    <div class="ready-sub">Recuerda solo la última palabra de cada categoría.</div>
+
+    
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:28px;">
+      <div id="rdy-slot-a" style="width:110px;background:var(--teal-d);border:1px solid var(--teal-b);border-radius:10px;padding:10px 12px;text-align:center;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">🐾 Animales</div>
+        <div id="rdy-slot-a-word" style="font-family:'Poppins',sans-serif;font-size:20px;color:var(--text);min-height:28px;transition:opacity 0.2s;">–</div>
+      </div>
+      <div id="rdy-slot-b" style="width:110px;background:var(--amber-d);border:1px solid var(--amber-b);border-radius:10px;padding:10px 12px;text-align:center;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">💼 Oficios</div>
+        <div id="rdy-slot-b-word" style="font-family:'Poppins',sans-serif;font-size:20px;color:var(--text);min-height:28px;transition:opacity 0.2s;">–</div>
+      </div>
+    </div>
+    <button class="ready-btn" onclick="dismissReady()">▶ Empecemos</button>
+    <div class="ready-hint">Empieza fácil — 2 categorías · 8 palabras</div>
+  </div>
+</div>
+<script>
+(function(){
+  const seq=[
+    {cat:'a',word:'perro'},{cat:'b',word:'médico'},
+    {cat:'a',word:'águila'},{cat:'b',word:'piloto'},
+    {cat:'a',word:'cebra'}
+  ];
+  let si=0;
+  const sw=document.getElementById('rdy-stream-word');
+  const sc=document.getElementById('rdy-stream-cat');
+  const sa=document.getElementById('rdy-slot-a-word');
+  const sb=document.getElementById('rdy-slot-b-word');
+  if(!sw) return;
+  function next(){
+    const item=seq[si%seq.length];
+    sw.style.opacity='0';
+    setTimeout(()=>{
+      sw.textContent=item.word; sw.style.opacity='1';
+      sc.textContent=item.cat==='a'?'🐾 Animales':'💼 Oficios';
+      if(item.cat==='a'){ sa.textContent=item.word; sa.style.color='var(--teal)'; setTimeout(()=>sa.style.color='var(--text)',600); }
+      else { sb.textContent=item.word; sb.style.color='var(--amber)'; setTimeout(()=>sb.style.color='var(--text)',600); }
+      si++;
+    },120);
+    setTimeout(()=>{ sw.style.opacity='0'; sc.textContent=''; setTimeout(next,400); },1100);
+  }
+  setTimeout(next,500);
+})();
+function dismissFirstIntro() {
+  document.getElementById('first-intro').style.display = 'none';
+  document.getElementById('ready-screen').classList.remove('hidden');
+}
+
+function dismissReady(){
+  document.getElementById('ready-screen').classList.add('hidden');
+  if(typeof requestWakeLock==='function') requestWakeLock();
+  startGame();
+}
+
+// ── Session completion tracking ──
+function markComplete() {
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const all = JSON.parse(localStorage.getItem('em_completions') || '{}');
+    if(!all[today]) all[today] = [];
+    if(!all[today].includes('cats')) all[today].push('cats');
+    localStorage.setItem('em_completions', JSON.stringify(all));
+  } catch(e) {}
+  showSessionUI();
+}
+
+function completeAndContinue() {
+  markComplete();
+  setTimeout(() => goNextOrHome('index.html'), 1200);
+}
+
+
+// ── Session navigation ──
+function getSessionNext() {
+  try {
+    const q = JSON.parse(localStorage.getItem('em_session_queue')||'null');
+    if(!q) return null;
+    const today = new Date().toISOString().slice(0,10);
+    if(q.date !== today) return null; // stale queue
+
+    // Get completed today
+    const all = JSON.parse(localStorage.getItem('em_completions')||'{}');
+    const done = all[today] || [];
+
+    // Find next uncompleted in queue
+    const remaining = q.keys.filter(k => !done.includes(k));
+    if(remaining.length === 0) return 'done'; // all finished
+
+    const urls = {
+      flash:'lectura_flash_rsvp.html', bloques:'lectura_por_bloques_prototype.html',
+      contra:'contrarreloj.html', vision:'vision_paralela.html',
+      saltos:'saltos_visuales.html', memoria:'memoria_activa.html',
+      cats:'actualizacion_categorias.html', continua:'actualizacion_continua.html',
+    };
+    const isFirst = new URLSearchParams(window.location.search).get('first') === '1';
+    const suffix = isFirst ? '?session=1&first=1' : '?session=1';
+    return urls[remaining[0]] ? urls[remaining[0]] + suffix : null;
+  } catch(e) { return null; }
+}
+
+function isInSession() {
+  return new URLSearchParams(window.location.search).get('session') === '1';
+}
+
+function goNextOrHome(homeUrl) {
+  if(!isInSession()) { window.location.href = homeUrl; return; }
+  const next = getSessionNext();
+  if(!next || next === 'done') {
+    window.location.href = 'index.html?done=session';
+  } else {
+    window.location.href = next;
+  }
+}
+
+
+// Update session button labels to reflect position in queue
+function updateSessionBtnLabels() {
+  if(!isInSession()) return;
+  const next = getSessionNext();
+  const isLast = !next || next === 'done';
+  const label = isLast ? 'Finalizar sesión →' : 'Siguiente ejercicio →';
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.textContent = label;
+  });
+}
+
+</script>
+
+
+  <div class="sdots" style="display:none;">
+    <div class="sdot active" id="sd0"></div>
+    <div class="sdot" id="sd1"></div>
+    <div class="sdot" id="sd2"></div>
+  </div>
+
+  <!-- ══════════════════════
+       STAGE 0: Tutorial
+       ══════════════════════ -->
+    <div class="card show" id="s0">
+    <!-- Adult s0 -->
+    <div id="s0-adult">
+      <div style="padding:20px 20px 14px;border-bottom:1px solid var(--border);">
+        <div style="font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);margin-bottom:4px;">Actualización por <em style="color:var(--teal);font-style:italic;">Categorías</em></div>
+        <div style="font-size:15px;color:var(--text2);line-height:1.6;">Recuerda <strong style="color:var(--text);">solo la última palabra</strong> de cada categoría. ¿Cuántas categorías quieres entrenar?</div>
+      </div>
+      <div style="padding:16px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <div class="dopt dsel" id="diff-easy" onclick="setDiff('easy')" style="text-align:center;padding:14px 8px;">
+          <div style="font-size:26px;font-weight:300;color:var(--teal);font-family:'Poppins',sans-serif;">2</div>
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">categorías</div>
+          <div style="font-size:15px;color:var(--text2);margin-top:6px;line-height:1.4;">Para empezar</div>
+        </div>
+        <div class="dopt" id="diff-medium" onclick="setDiff('medium')" style="text-align:center;padding:14px 8px;">
+          <div style="font-size:26px;font-weight:300;color:var(--teal);font-family:'Poppins',sans-serif;">3</div>
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">categorías</div>
+          <div style="font-size:15px;color:var(--text2);margin-top:6px;line-height:1.4;">Desafío medio</div>
+        </div>
+        <div class="dopt" id="diff-hard" onclick="setDiff('hard')" style="text-align:center;padding:14px 8px;">
+          <div style="font-size:26px;font-weight:300;color:var(--teal);font-family:'Poppins',sans-serif;">4</div>
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">categorías</div>
+          <div style="font-size:15px;color:var(--text2);margin-top:6px;line-height:1.4;">Máxima dificultad</div>
+        </div>
+      </div>
+      <div style="padding:0 20px 18px;">
+        <button class="btn btn-teal btn-wide" style="font-size:16px;" onclick="startGame()">▶ Comenzar</button>
+      </div>
+    </div>
+
+    <!-- Child s0 — friendly fallback -->
+    <div id="s0-child" style="display:none;padding:40px 28px;text-align:center;">
+      <div style="font-size:64px;margin-bottom:16px;line-height:1;">🧠</div>
+      <div style="font-family:'Fredoka',sans-serif;font-size:34px;font-weight:600;color:var(--violet);margin-bottom:10px;">¡Juego de Categorías!</div>
+      <div style="font-size:16px;color:var(--text2);line-height:1.7;margin-bottom:32px;">Vas a ver palabras una por una.<br>¡Recuerda la <strong style="color:var(--text);">última palabra</strong> de cada grupo!</div>
+      <button onclick="startGame()" style="width:100%;padding:20px;background:linear-gradient(135deg,var(--violet-deep),#6c5ce7);color:#fff;border:none;border-radius:18px;font-family:'Fredoka',sans-serif;font-size:22px;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgba(83,74,183,0.4);">¡Empezar! 🚀</button>
+    </div>
+  </div>
+
+  <!-- STAGE 1: Stream + Recall -->
+  <div class="card" id="s1">
+    <div class="chead" style="padding:12px 20px;">
+      <div style="font-size:16px;color:var(--text3);">Recuerda la última de cada categoría</div>
+      <div class="clive"><div class="cv" id="g-prog">1/12</div><div class="cl">palabra</div></div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="g-fill" style="width:0%;background:var(--amber)"></div></div>
+
+    <!-- Streaming phase -->
+    <div id="stream-phase">
+      <div class="stream-area">
+        <div class="word-stage">
+          <div class="cat-badge" id="word-cat-badge">–</div>
+          <div class="word-big" id="word-display">·</div>
+          <div class="word-num" id="word-num"></div>
+        </div>
+        <!-- Live memory slots -->
+        <div class="memory-slots" id="memory-slots">
+          <div class="mem-slot ms-animals" id="ms-animals">
+            <div class="ms-cat">🐾 Animales</div>
+            <div class="ms-word" id="msw-animals">–</div>
+          </div>
+          <div class="mem-slot ms-professions" id="ms-professions">
+            <div class="ms-cat">💼 Profesiones</div>
+            <div class="ms-word" id="msw-professions">–</div>
+          </div>
+          <div class="mem-slot ms-objects" id="ms-objects">
+            <div class="ms-cat">🔧 Objetos</div>
+            <div class="ms-word" id="msw-objects">–</div>
+          </div>
+          <div class="mem-slot ms-places" id="ms-places">
+            <div class="ms-cat">📍 Lugares</div>
+            <div class="ms-word" id="msw-places">–</div>
+          </div>
+        </div>
+      </div>
+      <div class="cfooter">
+        <div style="font-size:12px;color:var(--muted)">Las ranuras muestran la última palabra guardada de cada categoría</div>
+        <button class="btn btn-ghost btn-sm" onclick="abortGame()">✕ Salir</button>
+      </div>
+    </div>
+
+    <!-- Recall phase (hidden until stream ends) -->
+    <div id="recall-phase" style="display:none">
+      <div style="padding:14px 20px 10px;background:var(--amber-m);border-bottom:1.5px solid var(--border)">
+        <div style="font-size:13px;font-weight:700;color:var(--amber)">¿Cuál fue la última palabra de cada categoría?</div>
+        <div style="font-size:12px;color:var(--ink2);margin-top:2px">Elige una respuesta por categoría</div>
+      </div>
+      <div class="recall-area">
+        <div class="recall-grid" id="recall-grid"></div>
+      </div>
+      <div class="cfooter">
+        <div style="font-size:12px;color:var(--muted)" id="recall-hint">Responde las <span id="recall-remaining">4</span> categorías para continuar</div>
+        <button class="btn btn-teal" id="next-round-btn" style="display:none" onclick="nextRound()">Siguiente ronda →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       STAGE 2: Results
+       ══════════════════════ -->
+  <div class="card" id="s2">
+    <div class="chead">
+      <div><div class="ctitle">Resultados</div></div>
+    </div>
+    <div class="res-body" id="res-body"></div>
+  </div>
+
+  <details class="sci-details session-hide">
+  <summary>⚗ Base científica — actualización por categorías</summary>
+  <div class="sci-details-body">Esta tarea es la medida de <em>updating</em> del modelo de Miyake et al. (2000), el framework más citado de funciones ejecutivas. <strong>El updating fue el predictor más fuerte de razonamiento fluido y comprensión lectora</strong> entre los tres componentes ejecutivos (updating, shifting, inhibición). La tarea de categorías es más accesible que el n-back porque la regla es natural ("guarda solo la última"), el estímulo es verbal-semántico (activando directamente redes de lectura), y no requiere decisiones de respuesta rápida — pero mantiene el mismo proceso de actualización continua que hace al n-back efectivo.</div>
+</details>
+
+</main>
+
+<script>
+// ─────────────────────────────
+// Content
+// ─────────────────────────────
+const CATEGORIES = {
+  animals:     { label: 'Animales',     icon: '🐾', cls: 'cb-animals',     rch: 'rch-animals',
+    words: ['perro','águila','cebra','lobo','rana','delfín','puma','cigüeña','nutria','halcón',
+            'lince','cobra','orca','alce','buitre','zorro','topo','cuervo','jaguar','flamenco',
+            'camello','pingüino','murciélago','cóndor','hipopótamo','rinoceronte','tortuga',
+            'cocodrilo','pulpo','tiburón','guepardo','búho','avestruz','gorila','castor',
+            'mapache','ornitorrinco','salamandra','pelícano','armadillo'] },
+  professions: { label: 'Profesiones',  icon: '💼', cls: 'cb-professions',  rch: 'rch-professions',
+    words: ['médico','piloto','chef','físico','juez','pintor','sastre','geólogo','locutor','árbitro',
+            'notario','herrero','cirujano','botánico','filósofo','marino','hortelano','mecánico',
+            'arquitecto','ingeniero','enfermero','abogado','contador','psicólogo','biólogo',
+            'astrónomo','periodista','diplomático','diseñador','economista','sociólogo',
+            'farmacéutico','veterinario','arqueólogo','coreógrafo','urbanista','neurólogo',
+            'climatólogo','genetista','epidemiólogo'] },
+  objects:     { label: 'Objetos',      icon: '🔧', cls: 'cb-objects',      rch: 'rch-objects',
+    words: ['llave','espejo','mapa','ancla','frasco','compás','linterna','navaja','bisturí','veleta',
+            'prisma','tornillo','palanca','embudo','cincel','candado','pistón','péndulo',
+            'termómetro','microscopio','telescopio','brújula','balanza','sextante','escalpelo',
+            'cronómetro','diapasón','catalejo','manómetro','destornillador','calibrador',
+            'estetoscopio','altímetro','barómetro','higrómetro','podómetro','metrónomo',
+            'astrolabio','teodolito','amperímetro'] },
+  places:      { label: 'Lugares',      icon: '📍', cls: 'cb-places',       rch: 'rch-places',
+    words: ['plaza','faro','cueva','claustro','delta','marisma','alcázar','islote','páramo','meandro',
+            'vertiente','zaguán','cenote','arrecife','colina','pantano','meseta','farallón',
+            'volcán','glaciar','estuario','acantilado','sabana','tundra','bahía','cañón',
+            'laguna','archipiélago','cordillera','manantial','oasis','atolón','fiordo','estepa',
+            'selva','ciénaga','otero','cabo','promontorio','anfiteatro'] },
+};
+let CAT_KEYS = Object.keys(CATEGORIES); // will be recomputed after child swap if needed
+
+// ─────────────────────────────
+// CHILD MODE content
+// ─────────────────────────────
+const CATEGORIES_CHILD = {
+  animals: { label: 'Animales', icon: '🐾', cls: 'cb-animals', rch: 'rch-animals',
+    words: ['perro','gato','vaca','rana','pato','oso','lobo','pez','león','tigre',
+            'mono','cerdo','cabra','burro','oveja','pollo','conejo','caballo','elefante','jirafa',
+            'cebra','cocodrilo','pingüino','delfín','tortuga','loro','búho','zorro','ratón','pájaro'] },
+  fruits:  { label: 'Frutas',   icon: '🍎', cls: 'cb-objects',  rch: 'rch-objects',
+    words: ['manzana','pera','uva','mango','piña','fresa','melón','kiwi','naranja','limón',
+            'sandía','plátano','cereza','durazno','ciruela','papaya','coco','higo','frambuesa','mandarina',
+            'guayaba','maracuyá','lichi','membrillo','mora','nectarina','arándano','albaricoque','pomelo','tamarindo'] },
+  colors:  { label: 'Colores',  icon: '🎨', cls: 'cb-professions', rch: 'rch-professions',
+    words: ['rojo','azul','verde','negro','blanco','rosa','morado','naranja','amarillo','gris',
+            'café','turquesa','violeta','dorado','plateado','beige','celeste','magenta','oliva','carmesí',
+            'índigo','coral','lima','lavanda','ocre','cian','esmeralda','escarlata','ámbar','marfil'] },
+  places:  { label: 'Lugares',  icon: '📍', cls: 'cb-places',    rch: 'rch-places',
+    words: ['parque','playa','bosque','lago','montaña','ciudad','pueblo','río','jardín','escuela',
+            'tienda','mercado','hospital','iglesia','museo','aeropuerto','granja','castillo','isla','cueva',
+            'estadio','biblioteca','acuario','zoológico','faro','puente','plaza','piscina','campo','volcán'] },
+};
+
+const DIFF_CATS_CHILD = {
+  easy:   ['animals','fruits'],
+  medium: ['animals','fruits','colors'],
+};
+
+const DIFF_LENGTHS_CHILD = { easy: 4, medium: 6, hard: 8 };
+
+const CHILD_FEEDBACK = [
+  { min: 85, msg: '🌟 <strong>¡Increíble!</strong> ¡Tu memoria es súper poderosa! Sigue entrenando así.' },
+  { min: 65, msg: '🎉 <strong>¡Muy bien!</strong> Lo estás haciendo genial. ¡Con práctica vas a ser un campeón!' },
+  { min: 0,  msg: '💪 <strong>¡Buen intento!</strong> Cada vez que practicas tu cerebro se hace más fuerte. ¡Inténtalo de nuevo!' },
+];
+
+// ─────────────────────────────
+// Core game state (declared early so child init can override)
+// ─────────────────────────────
+let difficulty = 'easy';
+let streamLength = 8;
+let totalRounds = 3;
+
+// ─────────────────────────────
+// Profile detection
+// ─────────────────────────────
+let activeCats = ['animals','professions']; // default easy — overridden by child init
+let userProfile = 'adult';
+try {
+  const u = JSON.parse(localStorage.getItem('em_user') || '{}');
+  userProfile = u.profile || 'adult';
+} catch(e) {}
+
+const isChild = userProfile === 'child';
+
+if (isChild) {
+  document.body.classList.add('child-mode');
+  // Swap category data
+  // Replace CATEGORIES entirely with child versions
+  for (const k of Object.keys(CATEGORIES)) delete CATEGORIES[k];
+  Object.assign(CATEGORIES, CATEGORIES_CHILD);
+  // Rebuild CAT_KEYS from child categories
+  CAT_KEYS.length = 0;
+  CAT_KEYS.push(...Object.keys(CATEGORIES_CHILD));
+  // Update difficulty maps
+  Object.assign(DIFF_CATS, DIFF_CATS_CHILD);
+  Object.assign(DIFF_LENGTHS, DIFF_LENGTHS_CHILD);
+  // Set child defaults
+  streamLength = 4;
+  totalRounds = 2;
+  activeCats = DIFF_CATS_CHILD['easy'];
+  // In child mode: start game directly (DOM is already parsed at this point)
+  // Use setTimeout(0) to ensure all other init code has run first
+  document.getElementById('s0-adult').style.display = 'none';
+  document.getElementById('s0-child').style.display = '';
+  setTimeout(() => { startGame(); }, 0);
+}
+
+
+// ─────────────────────────────
+// State
+// ─────────────────────────────
+let roundIdx = 0;
+let streamIdx = 0;
+let sequence = [];       // [{cat, word}]
+let currentMemory = {};  // {animals: word, professions: word, ...}
+let roundResults = [];   // [{cat, correct: bool}] per round
+let streamTimer = null;
+let recallAnswered = 0;
+let recallCorrect = 0;
+let totalAnswered = 0;
+let totalCorrect = 0;
+
+const WORD_SHOW_MS = 1400;
+const WORD_GAP_MS  = 400;
+
+const DIFF_LENGTHS = { easy: 8, medium: 12, hard: 16 };
+
+// ─────────────────────────────
+// Stage & tutorial nav
+// ─────────────────────────────
+function setStage(n) {
+  ['s0','s1','s2'].forEach((id,i)=>document.getElementById(id).classList.toggle('show',i===n));
+  ['sd0','sd1','sd2'].forEach((id,i)=>{
+    const d=document.getElementById(id);
+    d.classList.remove('active','done');
+    if(i<n) d.classList.add('done'); else if(i===n) d.classList.add('active');
+  });
+}
+
+function tutStep(n) {
+  document.querySelectorAll('.tut-step').forEach(el=>el.classList.remove('show'));
+  const s=document.getElementById('tut-'+n);
+  if(s) s.classList.add('show');
+}
+
+function setDiff(d) {
+  difficulty=d;
+  streamLength=DIFF_LENGTHS[d];
+  document.querySelectorAll('.dopt').forEach(el=>el.classList.remove('dsel'));
+  document.getElementById('diff-'+d).classList.add('dsel');
+  // s0-words element removed — difficulty display handled by dopt cards
+}
+
+// ─────────────────────────────
+// Session start
+// ─────────────────────────────
+// Active categories depends on difficulty
+// easy=2 cats, medium=3 cats, hard=4 cats
+const DIFF_CATS = {
+  easy: ['animals','professions'],
+  medium: ['animals','professions','objects'],
+  hard: ['animals','professions','objects','places'],
+};
+function startGame() {
+  requestWakeLock();
+  activeCats = DIFF_CATS[difficulty] || CAT_KEYS;
+  roundIdx=0; totalAnswered=0; totalCorrect=0; roundResults=[];
+  const hr=document.getElementById('hdr-round'); if(hr) hr.textContent='1/'+totalRounds;
+  // Update recall-remaining to reflect active cat count
+  const rr=document.getElementById('recall-remaining');
+  if(rr) rr.textContent=activeCats.length;
+  setStage(1);
+  startRound();
+}
+
+function startRound() {
+  streamIdx=0; recallAnswered=0; recallCorrect=0;
+  currentMemory={animals:null,professions:null,objects:null,places:null};
+  sequence=buildSequence(streamLength);
+
+  const gt=document.getElementById('g-title'); if(gt) gt.textContent='Observa y actualiza';
+  const gp=document.getElementById('g-prog'); if(gp) gp.textContent='1/'+streamLength;
+  const gf=document.getElementById('g-fill'); if(gf){ gf.style.width='0%'; gf.style.background='var(--amber)'; }
+  const hrr=document.getElementById('hdr-round'); if(hrr) hrr.textContent=(roundIdx+1)+'/'+totalRounds;
+  const sp=document.getElementById('stream-phase'); if(sp) sp.style.display='';
+  const rp=document.getElementById('recall-phase'); if(rp) rp.style.display='none';
+  const nb=document.getElementById('next-round-btn'); if(nb) nb.style.display='none';
+  const rr=document.getElementById('recall-remaining'); if(rr) rr.textContent=activeCats.length;
+
+  // Show only active memory slots, hide inactive ones
+  CAT_KEYS.forEach(cat=>{
+    const slot=document.getElementById('ms-'+cat);
+    const slotWord=document.getElementById('msw-'+cat);
+    if(slot) slot.style.display = activeCats.includes(cat) ? '' : 'none';
+    if(slotWord) slotWord.textContent='–';
+    if(slot) slot.classList.remove('updated','just-updated');
+  });
+
+  updateWordDisplay('','','1 de '+streamLength);
+  setTimeout(showNextWord, 600);
+}
+
+function buildSequence(len) {
+  const seq=[];
+  // Each active category appears at least twice
+  activeCats.forEach(cat=>{
+    const pool=shuffle([...CATEGORIES[cat].words]);
+    seq.push({cat,word:pool[0]});
+    seq.push({cat,word:pool[1]});
+  });
+  // Fill remainder from active cats only
+  while(seq.length<len) {
+    const cat=activeCats[Math.floor(Math.random()*activeCats.length)];
+    const used=seq.filter(s=>s.cat===cat).map(s=>s.word);
+    const avail=CATEGORIES[cat].words.filter(w=>!used.includes(w));
+    if(avail.length) seq.push({cat, word:avail[Math.floor(Math.random()*avail.length)]});
+  }
+  return shuffle(seq).slice(0,len);
+}
+
+// ─────────────────────────────
+// Stream
+// ─────────────────────────────
+function showNextWord() {
+  if(streamIdx>=sequence.length) { endStream(); return; }
+
+  const {cat,word}=sequence[streamIdx];
+  const catData=CATEGORIES[cat];
+
+  updateWordDisplay(catData.cls, word, (streamIdx+1)+' de '+streamLength);
+  const prog=document.getElementById('g-prog');
+  const fill=document.getElementById('g-fill');
+  if(prog) prog.textContent=(streamIdx+1)+'/'+streamLength;
+  if(fill) fill.style.width=((streamIdx+1)/streamLength*100)+'%';
+
+  // Update live memory slot
+  currentMemory[cat]=word;
+  const slot=document.getElementById('ms-'+cat);
+  const slotWord=document.getElementById('msw-'+cat);
+  if(slot && slotWord) {
+    slotWord.textContent=word;
+    slot.classList.add('updated','just-updated','pulsing');
+    setTimeout(()=>{ if(slot) slot.classList.remove('just-updated','pulsing'); },600);
+  }
+
+  streamIdx++;
+  streamTimer=setTimeout(()=>{
+    hideWordDisplay();
+    streamTimer=setTimeout(showNextWord, WORD_GAP_MS);
+  }, WORD_SHOW_MS);
+}
+
+function updateWordDisplay(badgeCls, word, numText) {
+  const badge=document.getElementById('word-cat-badge');
+  const disp=document.getElementById('word-display');
+  const num=document.getElementById('word-num');
+  if(!badge||!disp||!num) return; // guard: elements may not exist if stream was aborted
+  badge.className='cat-badge '+(badgeCls||'');
+  // Only look up category label when badgeCls is a non-empty string
+  const catKey = badgeCls ? badgeCls.replace('cb-','') : '';
+  badge.textContent = catKey && CATEGORIES[catKey] ? CATEGORIES[catKey].label : '';
+  disp.textContent=word||'·';
+  disp.className='word-big'+(word?'':' hidden');
+  num.textContent=numText||'';
+}
+
+function hideWordDisplay() {
+  const disp=document.getElementById('word-display');
+  const badge=document.getElementById('word-cat-badge');
+  if(disp) disp.classList.add('hidden');
+  if(badge) badge.textContent='';
+}
+
+function endStream() {
+  hideWordDisplay();
+  // Transition to recall
+  setTimeout(()=>{
+    document.getElementById('stream-phase').style.display='none';
+    buildRecallUI();
+    document.getElementById('recall-phase').style.display='';
+    (document.getElementById('g-title')||{textContent:''}).textContent ='¿Cuál fue la última?';
+    document.getElementById('g-fill').style.width='100%';
+    document.getElementById('g-fill').style.background='var(--teal)';
+  }, 300);
+}
+
+// ─────────────────────────────
+// Recall
+// ─────────────────────────────
+function buildRecallUI() {
+  const grid=document.getElementById('recall-grid');
+  grid.innerHTML='';
+  recallAnswered=0;
+
+  activeCats.forEach(cat=>{
+    const catData=CATEGORIES[cat];
+    const correct=currentMemory[cat];
+    if(!correct) return;
+
+    const seenInCat=sequence.filter(s=>s.cat===cat).map(s=>s.word);
+    const distPool=seenInCat.filter(w=>w!==correct);
+    const unseenPool=shuffle(CATEGORIES[cat].words.filter(w=>!seenInCat.includes(w)));
+    while(distPool.length<2) distPool.push(unseenPool[distPool.length]||CATEGORIES[cat].words[distPool.length]);
+    const opts=shuffle([correct,...distPool.slice(0,2)]);
+
+    const block=document.createElement('div');
+    block.className='recall-cat';
+    const head=document.createElement('div');
+    head.className=`recall-cat-head ${catData.rch}`;
+    head.textContent=`${catData.icon} ${catData.label}`;
+    const optWrap=document.createElement('div');
+    optWrap.className='recall-options'; optWrap.id='ro-'+cat;
+
+    opts.forEach(w=>{
+      const d=document.createElement('div');
+      d.className='ropt'; d.textContent=w; d.dataset.word=w;
+      d.addEventListener('click',()=>recallAnswer(cat,w,correct,optWrap));
+      optWrap.appendChild(d);
+    });
+    block.appendChild(head); block.appendChild(optWrap);
+    grid.appendChild(block);
+  });
+}
+
+function recallAnswer(cat, chosen, correct, optWrap) {
+  const opts=optWrap.querySelectorAll('.ropt');
+  opts.forEach(o=>{
+    o.classList.add('ro-locked');
+    if(o.dataset.word===correct) o.classList.add('ro-correct');
+  });
+  const hit=chosen===correct;
+  if(!hit) {
+    opts.forEach(o=>{ if(o.dataset.word===chosen) o.classList.add('ro-wrong'); });
+  }
+
+  recallAnswered++;
+  if(hit) recallCorrect++;
+  totalAnswered++;
+  if(hit) totalCorrect++;
+
+  roundResults.push({cat,correct:hit});
+  const hdrAcc=document.getElementById('hdr-acc');
+  if(hdrAcc) hdrAcc.textContent=Math.round(totalCorrect/totalAnswered*100)+'%';
+  const rem=document.getElementById('recall-remaining');
+  if(rem) rem.textContent=Math.max(0,activeCats.length-recallAnswered);
+
+  if(recallAnswered===activeCats.length) {
+    const isLastRound=roundIdx>=totalRounds-1;
+    const hint=document.getElementById('recall-hint');
+    const btn=document.getElementById('next-round-btn');
+    if(hint) hint.textContent=isLastRound ? '¡Sesión completada!' : `Ronda ${roundIdx+1} de ${totalRounds} completada`;
+    if(btn) { btn.textContent=isLastRound ? 'Ver resultados →' : 'Siguiente ronda →'; btn.style.display=''; }
+  }
+}
+
+function nextRound() {
+  roundIdx++;
+  if(roundIdx>=totalRounds) { endSession(); return; }
+  document.getElementById('g-fill').style.background='var(--amber)';
+  startRound();
+}
+
+function abortGame() { clearTimeout(streamTimer); setStage(0); }
+
+// ─────────────────────────────
+// Results
+// ─────────────────────────────
+function endSession() {
+  markComplete();
+  clearTimeout(streamTimer);
+  const acc=totalAnswered>0?Math.round(totalCorrect/totalAnswered*100):0;
+
+  // Per-category breakdown
+  const catAcc={};
+  CAT_KEYS.forEach(cat=>{
+    const rr=roundResults.filter(r=>r.cat===cat);
+    catAcc[cat]=rr.length>0?Math.round(rr.filter(r=>r.correct).length/rr.length*100):0;
+  });
+
+  let insight;
+  if (isChild) {
+    const cf = CHILD_FEEDBACK.find(f => acc >= f.min) || CHILD_FEEDBACK[CHILD_FEEDBACK.length-1];
+    insight = cf.msg;
+  } else {
+    if(acc>=85) insight=`<strong>Actualización excelente.</strong> Tu memoria de trabajo actualiza información con alta eficacia. Prueba el nivel Difícil (16 palabras) o añade una ronda extra en la próxima sesión.`;
+    else if(acc>=65) insight=`<strong>Progreso sólido.</strong> La actualización mejora con práctica diaria. Mantén la dificultad actual durante 3–4 sesiones antes de avanzar.`;
+    else insight=`<strong>En construcción.</strong> La actualización por categorías mejora rápidamente con práctica. Intenta con 8 palabras si la sesión se siente abrumadora — el proceso de descarte es la habilidad que entrenas.`;
+  }
+
+  document.getElementById('res-body').innerHTML=`
+    <div class="res-top">
+      <div class="res-box"><div class="rv">${acc}%</div><div class="rl">Precisión global</div></div>
+      <div class="res-box"><div class="rv">${totalCorrect}/${totalAnswered}</div><div class="rl">Respuestas correctas</div></div>
+    </div>
+    <div class="res-grid">
+      ${CAT_KEYS.map(cat=>`<div class="rg"><div class="rv" style="color:${catAcc[cat]>=67?'var(--teal)':'var(--coral)'}">${catAcc[cat]}%</div><div class="rl">${CATEGORIES[cat].icon} ${CATEGORIES[cat].label}</div></div>`).join('')}
+    </div>
+    <div class="insight">${insight}</div>
+    <div class="res-btns">
+      <button class="btn btn-ghost session-hide" onclick="setStage(0)">← Cambiar dificultad</button>
+      <button class="session-next-btn" onclick="completeAndContinue()" style="display:none;width:100%;padding:16px;background:var(--violet-deep);color:#fff;border:none;border-radius:13px;font-family:'Fredoka','Poppins',sans-serif;font-size:17px;font-weight:600;cursor:pointer;margin-top:8px;">Siguiente ejercicio →</button>
+      <button class="btn btn-teal" onclick="startGame()">Repetir sesión →</button>
+    </div>
+  `;
+  setStage(2);
+  markComplete();
+  if(isInSession()){
+    document.querySelectorAll('.session-next-btn').forEach(b=>{b.style.display='block';});
+    document.querySelectorAll('.session-hide').forEach(b=>{b.style.display='none';});
+  }
+}
+
+// ─────────────────────────────
+// Utils
+// ─────────────────────────────
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+setStage(0);
+
+// ── Show session navigation UI ──
+function showSessionUI() {
+  if(!isInSession()) return;
+  updateSessionBtnLabels();
+  // Show the next button
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.style.cssText = 'display:block!important';
+  });
+  // Hide the repeat/reset buttons
+  document.querySelectorAll('.session-hide').forEach(b => {
+    b.style.cssText = 'display:none!important';
+  });
+}
+
+// ── Wake Lock: prevent screen sleep during exercise ──
+let _wakeLock = null;
+async function requestWakeLock() {
+  if(!('wakeLock' in navigator)) return;
+  try {
+    _wakeLock = await navigator.wakeLock.request('screen');
+  } catch(e) {}
+}
+function releaseWakeLock() {
+  if(_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
+}
+// Re-acquire on tab visibility change
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible') requestWakeLock();
+});
+
+// ── Ready screen preview animation ──
+(function startCatPreview(){
+  const slotA = document.getElementById('rdy-slot-a-word');
+  const slotB = document.getElementById('rdy-slot-b-word');
+  if(!slotA || !slotB) return;
+  const animales = ['águila','cebra','tigre','oso','puma'];
+  const oficios  = ['médico','piloto','chef','pintor','juez'];
+  let i = 0;
+  function tick(){
+    const a = animales[i % animales.length];
+    const b = oficios[i % oficios.length];
+    slotA.style.opacity = '0';
+    slotB.style.opacity = '0';
+    setTimeout(function(){
+      slotA.textContent = a;
+      slotB.textContent = b;
+      slotA.style.opacity = '1';
+      slotB.style.opacity = '1';
+      i++;
+    }, 200);
+  }
+  tick();
+  setInterval(tick, 1800);
+})();
+
+// First-time intro
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('first') === '1') {
+    document.getElementById('ready-screen').classList.add('hidden');
+    document.getElementById('first-intro').style.display = 'flex';
+  }
+})();
+
+</script>
+
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  </a>
+</div>
+
+<!-- Child mode UI label updates -->
+<script>
+// Child label updates already handled by auto-start
+</script>
+</body>
+</html>

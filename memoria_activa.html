@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente en Forma — Memoria Activa</title>
+<script src="brand.js"></script>
+<style>
+:root {
+  --bg:#F8F7FF; --bg2:#F0EEF8; --card:#FFFFFF; --card2:#F4F2FC;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --text:#1A1830; --text2:#4A4468; --text3:#5C5880;
+  --violet:#6C5CE7; --violet-d:rgba(108,92,231,0.10); --violet-b:rgba(108,92,231,0.25);
+  --violet-deep:#534AB7;
+  --teal:#0A7A6A; --teal-d:rgba(10,122,106,0.10); --teal-b:rgba(10,122,106,0.25);
+  --gold:#C9A84C; --gold-l:rgba(201,168,76,0.12); --gold-b:rgba(201,168,76,0.30);
+  --amber:#F5A623; --amber-d:rgba(245,166,35,0.12); --amber-b:rgba(245,166,35,0.28);
+  --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
+  --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
+  --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --ink:var(--text); --ink2:var(--text2); --muted:#4A4860;
+  --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background:var(--bg); color:var(--text);
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  padding-bottom: 60px;
+}
+
+header {
+  width: 100%; background: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 26px;
+}
+.logo { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 0.03em; }
+.logo em { color: #F5C842; font-style: normal; }
+.ex-tag {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--teal-l); background: rgba(14,116,144,0.3);
+  border: 1px solid rgba(14,116,144,0.5); padding: 3px 11px; border-radius: 20px;
+}
+.hstats { display: flex; gap: 14px; }
+.hstat { font-size: 12px; color: rgba(255,255,255,0.45); display: flex; gap: 5px; align-items: center; }
+.hstat b { color: #F5C842; }
+
+main { width: 100%; max-width: 680px; padding: 24px 16px 0; display: flex; flex-direction: column; gap: 18px; }
+
+/* Stage dots */
+.sdots { display: flex; gap: 5px; }
+.sdot { flex: 1; height: 4px; border-radius: 2px; background: var(--bg2); transition: background 0.35s; }
+.sdot.done { background: var(--teal); }
+.sdot.active { background: var(--amber); }
+
+/* Card */
+.card { background: var(--card); border-radius: var(--r); border: 1.5px solid var(--border2); box-shadow: var(--sh); overflow: hidden; display: none; }
+.card.show { display: block; }
+#stage-1.show, #stage-2.show, #stage-recall.show { min-height:100dvh; border-radius:0; border-left:none; border-right:none; border-top:none; display:flex; flex-direction:column; }
+
+.chead { padding: 16px 22px 14px; border-bottom: 1.5px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.ctitle { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.csub { font-size: 12px; color: var(--ink2); line-height: 1.55; max-width: 360px; }
+.cpills { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.pill { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; }
+.pt { background: var(--teal-l); color: var(--teal); }
+.pa { background: var(--amber-l); color: var(--amber); }
+.pp { background: var(--purple-l); color: var(--purple); }
+.pg { background: var(--green-l); color: var(--green); }
+
+.clive { text-align: right; flex-shrink: 0; }
+.clive .cv { font-size: 24px; font-weight: 700; color: var(--teal); line-height: 1; font-variant-numeric: tabular-nums; }
+.clive .cl { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
+
+.prog-bar { height: 3px; background: var(--bg2); }
+.prog-fill { height: 100%; transition: width 0.4s ease, background 0.3s; }
+
+/* Mode tabs */
+.mode-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.mtab {
+  padding: 11px 10px; border-radius: 11px;
+  border: 1.5px solid var(--border2); background: var(--card);
+  cursor: pointer; text-align: center;
+  font-size: 11px; font-weight: 700; color: var(--muted);
+  letter-spacing: 0.04em; text-transform: uppercase; transition: all 0.18s;
+}
+.mtab:hover { border-color:var(--teal);color:var(--text);background:var(--teal-d); }
+.mtab.mactive { background: var(--purple-m); border-color:var(--teal);color:var(--text);background:var(--teal-d); }
+.mtab .micon { font-size: 20px; display: block; margin-bottom: 4px; }
+
+/* Buttons */
+.btn {
+  font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700;
+  padding: 9px 18px; border-radius: 10px; border: none; cursor: pointer;
+  letter-spacing: 0.02em; transition: all 0.15s;
+}
+.btn-ink { background: var(--ink); color: #fff; }
+.btn-ink:hover { background: var(--purple); }
+.btn-teal { background: var(--teal); color: #fff; }
+.btn-teal:hover { opacity: 0.88; }
+.btn-ghost { background: transparent; color: var(--ink2); border: 1.5px solid var(--border2); }
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+.btn-sm { padding: 7px 13px; font-size: 12px; }
+
+.cfooter { padding:14px 20px 28px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; }
+
+/* ══════════════════════════════
+   PHASE 1 — Processing task
+   ══════════════════════════════ */
+.proc-area { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; }
+
+/* Operation span: equation */
+.equation-display {
+  font-family: 'Poppins',sans-serif;
+  font-size: 52px; font-weight: 300; color: var(--text);
+  text-align: center; letter-spacing: -0.01em; margin-bottom: 36px;
+}
+.equation-q { font-size: 16px; color: var(--ink2); text-align: center; margin-top: -4px; }
+.tf-btns { display: flex; gap: 12px; }
+.tf-btn {
+  width: 140px; padding: 18px; border-radius: 14px;
+  border: 1.5px solid var(--border2); background: var(--card2);
+  font-family: 'Fredoka', 'Poppins',sans-serif; font-size: 18px; font-weight: 600;
+  cursor: pointer; text-align: center; transition: all 0.14s; color: var(--text2);
+}
+.tf-btn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-m); }
+.tf-btn.tf-correct { background: var(--green-m); border-color: var(--green); color: var(--green); pointer-events: none; }
+.tf-btn.tf-wrong { background: var(--coral-m); border-color: var(--coral); color: var(--coral); pointer-events: none; }
+.tf-btn.tf-locked { pointer-events: none; opacity: 0.4; }
+
+/* Reading span: sentence judgment */
+.sent-display {
+  font-family: 'Crimson Pro', serif;
+  font-size: 20px; line-height: 1.7; color: var(--ink);
+  text-align: center; max-width: 480px;
+  padding: 14px 0;
+}
+.sent-q { font-size: 13px; color: var(--ink2); text-align: center; }
+
+/* ══════════════════════════════
+   PHASE 2 — Memory item flash
+   ══════════════════════════════ */
+.mem-flash-wrap {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+  padding: 24px;
+}
+.mem-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.mem-item {
+  font-family: 'Fredoka', 'Poppins',sans-serif;
+  font-size: 52px; font-weight: 600; color: var(--violet);
+  letter-spacing: 0.06em; min-height: 60px;
+}
+.mem-item.hidden { opacity: 0; }
+.mem-progress {
+  display: flex; gap: 7px;
+}
+.mem-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--border2); transition: background 0.2s;
+}
+.mem-dot.seen { background: var(--purple); }
+
+/* ══════════════════════════════
+   PHASE 3 — Recall
+   ══════════════════════════════ */
+.recall-area { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; gap:20px; }
+.recall-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.recall-slots { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; justify-content: center; }
+.recall-slot {
+  min-width: 52px; height: 52px; padding: 0 10px; border-radius: 10px;
+  border: 1.5px solid var(--border2); background: var(--card2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700;
+  color: var(--ink); transition: all 0.15s; letter-spacing: 0.03em;
+  position: relative;
+}
+.recall-slot.active-slot { border-color: var(--purple); background: var(--purple-m); }
+.recall-slot.slot-filled { border-color:var(--teal);color:var(--text);background:var(--teal-d); }
+.recall-slot.slot-correct { border-color: var(--teal); background: var(--teal-m); color: var(--teal); }
+.recall-slot.slot-wrong { border-color: var(--coral); background: var(--coral-m); color: var(--coral); }
+.recall-slot.slot-partial { border-color: var(--amber); background: var(--amber-m); color: var(--amber); }
+
+.recall-slot .slot-reveal {
+  position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; font-family: 'Poppins', sans-serif; font-weight: 700;
+  color: var(--teal); white-space: nowrap; opacity: 0; transition: opacity 0.2s;
+}
+.recall-slot.slot-wrong .slot-reveal { opacity: 1; }
+
+.keyboard { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; max-width: 420px; margin: 0 auto; }
+.key {
+  padding: 11px 6px; border-radius: 9px;
+  border: 1.5px solid var(--border2); background: var(--card2);
+  font-family: 'Crimson Pro', serif; font-size: 20px; font-weight: 500;
+  cursor: pointer; text-align: center; transition: all 0.12s; color: var(--ink);
+}
+.key:hover { border-color:var(--teal);color:var(--text);background:var(--teal-d); background: var(--purple-m); }
+.key.key-used { opacity: 0.3; pointer-events: none; }
+.key.key-backspace { font-size: 17px; font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--ink2); }
+.key.key-submit { background: var(--teal); color: #fff; border-color: var(--teal); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; }
+.key.key-submit:hover { opacity: 0.88; }
+
+/* ══════════════════════════════
+   Results
+   ══════════════════════════════ */
+.res-body { padding: 24px 22px; display: flex; flex-direction: column; gap: 16px; }
+.res-top { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.res-box { background: var(--card2); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 12px; text-align: center; }
+.res-box .rv { font-size: 36px; font-weight: 300; color: var(--teal); line-height: 1; }
+.res-box .rl { font-size: 11px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; }
+.res-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.rg { background: var(--card2); border: 1.5px solid var(--border); border-radius: 11px; padding: 11px 10px; text-align: center; }
+.rg .rv { font-size: 18px; font-weight: 700; color: var(--ink); }
+.rg .rl { font-size: 10px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
+.insight { padding: 14px 16px; border-radius: 11px; background: var(--purple-m); border: 1.5px solid rgba(109,40,217,0.15); font-size: 13px; color: var(--ink2); line-height: 1.65; }
+.insight strong { color: var(--purple); }
+.res-btns { display: flex; gap: 10px; justify-content: center; }
+
+/* Partial credit visualisation */
+.trial-history { display: flex; gap: 5px; flex-wrap: wrap; padding: 0 22px 16px; }
+.th-pill {
+  padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.th-full { background: var(--green-l); color: var(--green); }
+.th-partial { background: var(--amber-l); color: var(--amber); }
+.th-zero { background: var(--coral-l); color: var(--coral); }
+
+/* Progress banner */
+.adapt-banner { display: none; padding: 7px 18px; margin: 0 22px 10px; border-radius: 9px; font-size: 12px; font-weight: 700; text-align: center; }
+.adapt-banner.up { background: var(--teal-m); color: var(--teal); border: 1px solid rgba(14,116,144,0.2); display: block; }
+.adapt-banner.down { background: var(--coral-m); color: var(--coral); border: 1px solid rgba(190,18,60,0.2); display: block; }
+
+/* Science note */
+.sci { background: var(--card); border: 1.5px solid var(--border2); border-radius: var(--r); padding: 16px 20px; font-size: 12px; color: var(--ink2); line-height: 1.7; box-shadow: var(--sh); }
+.sci-hd { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVENESS — applied globally
+   ═══════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Base text scale up */
+  body { font-size: 16px; }
+
+  /* Header: hide XP bar and secondary stats on very small screens */
+  .xp-bar-wrap { display: none !important; }
+  header { padding: 12px 16px !important; }
+
+  /* Main container: full bleed with comfortable padding */
+  main { padding: 16px 12px 0 !important; gap: 14px !important; }
+
+  /* Cards: reduce padding so content breathes */
+  .chead, .card-top { padding: 14px 16px 12px !important; }
+  .ctitle, .card-title { font-size: 17px !important; }
+  .csub, .card-sub { font-size: 14px !important; }
+
+  /* Controls grid: single column on mobile */
+  .controls-grid { grid-template-columns: 1fr !important; padding: 14px 16px !important; }
+
+  /* Question options: bigger tap targets */
+  .q-opt, .qopt, .copt, .ropt { 
+    padding: 14px 16px !important; 
+    font-size: 15px !important; 
+    min-height: 48px !important;
+  }
+
+  /* RSVP word: bigger on mobile */
+  .rsvp-pre, .rsvp-focal, .rsvp-post, .rsvp-word-full { font-size: 36px !important; }
+  .rsvp-phrase { font-size: 22px !important; line-height: 1.4 !important; }
+  .rsvp-viewport { height: 180px !important; padding: 0 16px !important; }
+
+  /* Buttons: full width on mobile where stacked */
+  .cfooter, .q-footer, .drill-footer { 
+    padding: 12px 14px !important; 
+    flex-wrap: wrap !important; 
+    gap: 8px !important;
+  }
+  .btn { font-size: 14px !important; padding: 11px 16px !important; min-height: 44px !important; }
+  .btn-sm { font-size: 13px !important; padding: 10px 14px !important; }
+  .start-btn { font-size: 16px !important; padding: 16px !important; }
+
+  /* Memory slots: 2 col max */
+  .memory-slots { grid-template-columns: 1fr 1fr !important; }
+
+  /* Recall grid: single col on narrow phones */
+  .recall-grid { grid-template-columns: 1fr !important; }
+
+  /* Word flash display */
+  .word-big { font-size: 34px !important; }
+  .mem-item { font-size: 38px !important; }
+
+  /* n-back grid cells */
+  .vis-grid { width: 192px !important; gap: 6px !important; }
+  .cell { width: 56px !important; height: 56px !important; }
+
+  /* Letter display */
+  .letter-display { font-size: 42px !important; }
+
+  /* Mode/tab grids */
+  .mode-grid { grid-template-columns: 1fr !important; }
+  .mode-tabs { grid-template-columns: 1fr !important; }
+  .task-tabs { grid-template-columns: 1fr !important; }
+
+  /* Pillar section padding on index */
+  .pillar, .section-label, .divider { padding-left: 16px !important; padding-right: 16px !important; }
+
+  /* Results boxes */
+  .res-top, .res-grid { gap: 8px !important; }
+  .res-box .rv, .res-big .rv { font-size: 32px !important; }
+
+  /* Sentence display in Contrarreloj */
+  .sentence-display { font-size: 16px !important; line-height: 1.8 !important; }
+  .reading-area { padding: 18px 16px 14px !important; }
+
+  /* Recall slots in Memoria Activa */
+  .recall-slot { min-width: 44px !important; height: 46px !important; font-size: 12px !important; }
+  .recall-area { padding: 14px 14px 16px !important; }
+  .keyboard { gap: 5px !important; }
+  .key { padding: 10px 5px !important; font-size: 14px !important; }
+
+  /* Equation display */
+  .equation-display { font-size: 26px !important; }
+
+  /* Sent display in Contrarreloj */
+  .sent-display { font-size: 18px !important; }
+
+  /* Tutorial steps */
+  .tut-body { padding: 14px 16px !important; font-size: 14px !important; }
+  .tut-footer { padding: 12px 16px !important; }
+  .tut-head { padding: 10px 16px !important; }
+
+  /* Stats header: smaller */
+  .hstats { gap: 10px !important; }
+  .hstat { font-size: 11px !important; }
+  .hstat b { font-size: 12px !important; }
+
+  /* Science note collapsible */
+  .sci-toggle-btn { font-size: 13px !important; }
+}
+
+/* Collapsible science note */
+.sci-details {
+  background: var(--card, #fff);
+  border: 1.5px solid var(--border2, rgba(0,0,0,0.12));
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.sci-details summary {
+  padding: 13px 18px;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; list-style: none;
+  display: flex; align-items: center; justify-content: space-between;
+  color: var(--muted, #888); letter-spacing: 0.03em;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.sci-details summary::-webkit-details-marker { display: none; }
+.sci-details summary::after {
+  content: '▸';
+  font-size: 11px; transition: transform 0.2s;
+  color: var(--muted, #888);
+}
+.sci-details[open] summary::after { transform: rotate(90deg); }
+.sci-details[open] summary {
+  border-bottom: 1.5px solid var(--border, rgba(0,0,0,0.08));
+}
+.sci-details-body {
+  padding: 14px 18px 16px;
+  font-size: 13px; color:var(--text); line-height: 1.7;
+}
+@media (max-width: 640px) {
+  .sci-details summary { font-size: 14px !important; padding: 14px 16px !important; }
+  .sci-details-body { font-size: 14px !important; padding: 14px 16px 16px !important; }
+}
+
+body::before{display:none;}
+
+/* ── Shared design system classes ── */
+.logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
+.logo em{color:var(--gold);font-style:italic;}
+.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.hdr-back:hover{color:var(--text2);}
+.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:13px;}
+.instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
+.instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
+.instr-text strong{color:var(--text);font-weight:600;}
+.card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary::-webkit-details-marker{display:none;}
+.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details[open] summary::after{transform:rotate(90deg);}
+.sci-details[open] summary{border-bottom:1px solid var(--border);}
+.sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
+.sci-body strong,.sci-details-body strong{color:var(--text);}
+
+
+/* ── Ready Screen ── */
+.ready-screen {
+  position:fixed; inset:0; z-index:200;
+  background:var(--bg);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:32px 24px; text-align:center;
+  overflow:hidden;
+}
+.ready-screen.hidden { display:none; }
+.ready-screen::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
+@keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-title {
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(32px,8vw,48px); font-weight:300;
+  color:var(--text); line-height:1.1; margin-bottom:12px;
+}
+.ready-title em { color:var(--teal); font-style:italic; }
+.ready-sub{font-size:19px;color:var(--text2);line-height:1.65;text-align:center;margin-bottom:24px;max-width:320px;}
+.ready-sub strong { color:var(--text); font-weight:600; }
+
+/* Animation preview box */
+.ready-preview {
+  width:100%; max-width:340px;
+  background:var(--card); border:1px solid var(--border2);
+  border-radius:16px; overflow:hidden;
+  margin-bottom:28px; min-height:110px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.preview-label {
+  position:absolute; top:10px; left:14px;
+  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  text-transform:uppercase; color:var(--text3);
+}
+.preview-inner {
+  padding:20px 24px; width:100%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+
+.ready-step-text strong { color:var(--text); font-weight:600; }
+
+.ready-btn {
+  width:100%; padding:17px;
+  background:var(--teal); color:var(--bg);
+  border:none; border-radius:13px; cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  font-size:17px; font-weight:700; letter-spacing:0.02em;
+  transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+  margin-bottom:14px;
+}
+.ready-btn:hover { opacity:0.88; transform:translateY(-1px); }
+.ready-btn:active { transform:translateY(0); }
+.ready-hint {
+  font-size:16px; color:var(--text3); line-height:1.5;
+}
+
+@media(max-width:600px) {
+  .ready-screen { padding:24px 16px; }
+  .ready-title { font-size:34px; }
+  .ready-sub { font-size:16px; }
+  .ready-steps { flex-direction:column; gap:8px; }
+  .ready-btn { font-size:16px; padding:16px; }
+}
+
+
+/* ── Brand logo ── */
+.logo, .brand-name {
+  font-family: 'Fredoka','Poppins',sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text); letter-spacing: -0.01em;
+  display: flex; align-items: center;
+}
+.logo em, .brand-name em {
+  color: var(--violet); font-style: italic;
+}
+/* ── Primary button — violet ── */
+.btn-teal, .ready-btn {
+  background: var(--violet-deep) !important;
+  color: #fff !important;
+}
+.btn-teal:hover, .ready-btn:hover {
+  background: var(--violet) !important;
+  opacity: 1 !important;
+}
+/* Keep teal for success/feedback states */
+.btn-teal.btn-success { background: var(--teal) !important; }
+
+
+/* Session next button — shown only during session flow */
+.session-next-btn {
+  display: none;
+  width: 100%;
+  padding: 16px;
+  background: var(--violet-deep);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-family: 'Fredoka', 'Poppins',sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.session-next-btn:hover { background: var(--violet); }
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<main>
+
+<div class="ready-screen" id="ready-screen">
+  <div class="ready-inner">
+    <div class="ready-title">Memoria <em>Activa</em></div>
+    <div class="ready-sub">Recuerda palabras mientras resuelves pequeños problemas.</div>
+    <div style="width:100%;margin-bottom:28px;text-align:center;">
+      <div id="rdy-mem-anim" style="min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+        <div id="rdy-mem-eq" style="font-family:'Poppins',sans-serif;font-size:32px;color:var(--text);transition:opacity 0.25s;"></div>
+        <div id="rdy-mem-word" style="font-family:'Poppins',sans-serif;font-size:28px;color:var(--teal);letter-spacing:0.08em;transition:opacity 0.25s;display:none;"></div>
+        <div id="rdy-mem-label" style="font-size:15px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;"></div>
+      </div>
+    </div>
+    <button class="ready-btn" onclick="dismissReady()">▶ Empecemos</button>
+    <div class="ready-hint">Puntuación de crédito parcial — cada palabra cuenta</div>
+  </div>
+</div>
+<script>
+function dismissReady(){
+  document.getElementById('ready-screen').classList.add('hidden');
+  // startSession calls setStage(1) and requestWakeLock internally
+  startSession();
+}
+
+// Mode transition between span types
+function showSpanTransition(){
+  let ov=document.getElementById('span-transition');
+  if(!ov){
+    ov=document.createElement('div');
+    ov.id='span-transition';
+    ov.style.cssText='position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;text-align:center;';
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML=`
+    <div style="font-family:'Poppins',sans-serif;font-size:36px;font-weight:300;color:var(--text);margin-bottom:4px;">¡Bien hecho!</div>
+    <div style="font-size:16px;color:var(--text2);max-width:320px;line-height:1.65;margin-bottom:8px;">Ahora inténtalo con <strong style="color:var(--text);">oraciones</strong> en lugar de ecuaciones. Mismo objetivo — recuerda las palabras en orden.</div>
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:16px 20px;max-width:300px;font-size:14px;color:var(--text2);line-height:1.6;">
+      <em style="color:var(--teal);">"El cielo es azul"</em> → ¿Es verdad? → Recuerda: <strong>azul</strong>
+    </div>
+    <button onclick="document.getElementById('span-transition').style.display='none';startReadingSpan();" style="width:100%;max-width:300px;padding:15px;background:var(--teal);color:var(--bg);border:none;border-radius:12px;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;">▶ Continuar</button>
+  `;
+  ov.style.display='flex';
+}
+
+
+// ── Session completion tracking ──
+function markComplete() {
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const all = JSON.parse(localStorage.getItem('em_completions') || '{}');
+    if(!all[today]) all[today] = [];
+    if(!all[today].includes('memoria')) all[today].push('memoria');
+    localStorage.setItem('em_completions', JSON.stringify(all));
+  } catch(e) {}
+  showSessionUI();
+}
+
+function completeAndContinue() {
+  markComplete();
+  setTimeout(() => goNextOrHome('index.html'), 1200);
+}
+
+
+// ── Session navigation ──
+function getSessionNext() {
+  try {
+    const q = JSON.parse(localStorage.getItem('em_session_queue')||'null');
+    if(!q) return null;
+    const today = new Date().toISOString().slice(0,10);
+    if(q.date !== today) return null; // stale queue
+
+    // Get completed today
+    const all = JSON.parse(localStorage.getItem('em_completions')||'{}');
+    const done = all[today] || [];
+
+    // Find next uncompleted in queue
+    const remaining = q.keys.filter(k => !done.includes(k));
+    if(remaining.length === 0) return 'done'; // all finished
+
+    const urls = {
+      flash:'lectura_flash_rsvp.html', bloques:'lectura_por_bloques_prototype.html',
+      contra:'contrarreloj.html', vision:'vision_paralela.html',
+      saltos:'saltos_visuales.html', memoria:'memoria_activa.html',
+      cats:'actualizacion_categorias.html', continua:'actualizacion_continua.html',
+    };
+    return urls[remaining[0]] ? urls[remaining[0]] + '?session=1' : null;
+  } catch(e) { return null; }
+}
+
+function isInSession() {
+  return new URLSearchParams(window.location.search).get('session') === '1';
+}
+
+function goNextOrHome(homeUrl) {
+  if(!isInSession()) { window.location.href = homeUrl; return; }
+  const next = getSessionNext();
+  if(!next || next === 'done') {
+    window.location.href = 'index.html?done=session';
+  } else {
+    window.location.href = next;
+  }
+}
+
+
+// Update session button labels to reflect position in queue
+function updateSessionBtnLabels() {
+  if(!isInSession()) return;
+  const next = getSessionNext();
+  const isLast = !next || next === 'done';
+  const label = isLast ? 'Finalizar sesión →' : 'Siguiente ejercicio →';
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.textContent = label;
+  });
+}
+
+
+// ── Memoria Activa ready screen animation ──
+(function startMemAnim(){
+  const eqEl  = document.getElementById('rdy-mem-eq');
+  const wdEl  = document.getElementById('rdy-mem-word');
+  const lbEl  = document.getElementById('rdy-mem-label');
+  if(!eqEl) return;
+
+  const steps = [
+    { type:'eq',   text:'3 × 7 = 21', label:'¿Verdadero o falso?' },
+    { type:'word', text:'LUNA',        label:'Memoriza esta palabra' },
+    { type:'eq',   text:'8 + 5 = 14', label:'¿Verdadero o falso?' },
+    { type:'word', text:'CAMPO',       label:'Memoriza esta palabra' },
+    { type:'recall',text:'LUNA · CAMPO', label:'¿En qué orden aparecieron?' },
+  ];
+  let i = 0;
+
+  function showStep(){
+    const s = steps[i % steps.length];
+    // Fade out
+    eqEl.style.opacity = '0';
+    wdEl.style.opacity = '0';
+    setTimeout(()=>{
+      lbEl.textContent = s.label;
+      if(s.type === 'word'){
+        eqEl.style.display = 'none';
+        wdEl.style.display = 'block';
+        wdEl.textContent = s.text;
+        wdEl.style.opacity = '1';
+      } else if(s.type === 'recall'){
+        eqEl.style.display = 'block';
+        wdEl.style.display = 'none';
+        eqEl.style.fontSize = '22px';
+        eqEl.style.color = 'var(--violet)';
+        eqEl.textContent = s.text;
+        eqEl.style.opacity = '1';
+      } else {
+        eqEl.style.display = 'block';
+        wdEl.style.display = 'none';
+        eqEl.style.fontSize = '36px';
+        eqEl.style.fontFamily = "'Poppins',sans-serif";
+        eqEl.style.fontWeight = '300';
+        eqEl.style.color = 'var(--text)';
+        eqEl.textContent = s.text;
+        eqEl.style.opacity = '1';
+      }
+      i++;
+    }, 250);
+  }
+
+  showStep();
+  setInterval(showStep, 1800);
+})();
+
+</script>
+
+
+  <div class="sdots" style="display:none;">
+    <div class="sdot active" id="sd0"></div>
+    <div class="sdot" id="sd1"></div>
+    <div class="sdot" id="sd2"></div>
+  </div>
+
+  <!-- Mode selector -->
+  <div class="mode-tabs" style="display:none;">
+    <div class="mtab mactive" id="tab-op" onclick="setMode('operation')">
+      <span class="micon">✕÷</span>Amplitud de operación
+    </div>
+    <div class="mtab" id="tab-rs" onclick="setMode('reading')">
+      <span class="micon">📖</span>Amplitud de lectura
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       STAGE 0: Settings / Intro
+       ══════════════════════════ -->
+  <div class="card show" id="stage-0">
+    <div class="chead">
+      <div>
+        <div class="ctitle" id="s0-title">Amplitud de operación</div>
+        <div class="csub" id="s0-sub">Verifica cada ecuación (verdadero/falso), luego memoriza la palabra que aparece. Al final de cada ronda, recuerda todas las palabras en orden.</div>
+        <div class="cpills">
+          <span class="pill pt">Complex span</span>
+          <span class="pill pa">Amplitud adaptativa</span>
+          <span class="pill pp">Puntuación parcial</span>
+        </div>
+      </div>
+      <div class="clive"><div class="cv" id="s0-setsize">3</div><div class="cl">tamaño inicial</div></div>
+    </div>
+
+    <div style="padding:20px 24px 8px">
+      <div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:16px" id="s0-desc">
+        <strong>Cómo funciona:</strong> Verás una ecuación matemática. Responde verdadero o falso rápidamente. Luego aparecerá una palabra — memorízala. Esto se repite 3–5 veces por ronda. Al terminar, escribe todas las palabras en orden usando el teclado de pantalla.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px">
+        <div style="background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:700;color:var(--purple)">3–5</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">palabras por ronda</div>
+        </div>
+        <div style="background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+          <div style="font-size:20px;font-weight:700;color:var(--teal)">5</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">rondas por sesión</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cfooter">
+      <div style="font-size:12px;color:var(--muted)">~3 minutos · Nivel se ajusta entre sesiones</div>
+      <button class="btn btn-teal" onclick="startSession()">▶ Iniciar sesión</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       STAGE 1: Trial
+       ══════════════════════════ -->
+  <div class="card" id="stage-1">
+    <div class="chead" style="padding:12px 20px;">
+      <div style="font-size:16px;color:var(--text3);">Responde · memoriza · recuerda</div>
+      <div class="clive"><div class="cv" id="trial-counter">1/5</div><div class="cl">ronda</div></div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="trial-fill" style="width:0%;background:var(--amber)"></div></div>
+
+    <!-- Processing task -->
+    <div class="proc-area" id="proc-area"></div>
+
+    <!-- Memory item flash (shown after processing judgment) -->
+    <div class="mem-flash-wrap" id="mem-flash" style="display:none">
+      <div class="mem-label">Memoriza esta palabra</div>
+      <div class="mem-item" id="mem-word"></div>
+      <div class="mem-progress" id="mem-dots"></div>
+    </div>
+
+    <div class="adapt-banner" id="adapt-banner"></div>
+
+    <div class="cfooter" id="trial-footer">
+      <div style="font-size:12px;color:var(--muted)" id="trial-hint">Responde la ecuación para continuar</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       STAGE 1b: Recall
+       ══════════════════════════ -->
+  <div class="card" id="stage-recall">
+    <div class="chead" style="padding:12px 20px;">
+      <div style="font-size:14px;color:var(--text3);">Escribe en orden</div>
+      <div class="clive"><div class="cv" id="recall-set">3</div><div class="cl">palabras</div></div>
+    </div>
+    <div class="recall-area">
+      <div class="recall-label">Posición de recuerdo</div>
+      <div class="recall-slots" id="recall-slots"></div>
+      <div class="keyboard" id="keyboard"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       STAGE 2: Results
+       ══════════════════════════ -->
+  <div class="card" id="stage-2">
+    <div class="chead">
+      <div><div class="ctitle">Resultados de sesión</div></div>
+    </div>
+    <div class="trial-history" id="trial-history"></div>
+    <div class="res-body" id="res-body"></div>
+  </div>
+
+  <details class="sci-details session-hide">
+  <summary>⚗ Puntuación de crédito parcial (Conway et al., 2005)</summary>
+  <div class="sci-details-body">A diferencia del método todo-o-nada, el crédito parcial te asigna puntos por cada palabra recordada <em>en la posición correcta</em>, aunque la ronda no sea perfecta. Ejemplo: si la secuencia es MESA-LUNA-CIELO y recuerdas MESA-CIELO-_, obtienes 1 punto (solo MESA en posición correcta). Este método tiene mayor fiabilidad, mejor correlación con comprensión lectora (r=.42) y más sensibilidad para detectar mejoras reales (Unsworth & Engle, 2007). La amplitud de operación automatizada predice comprensión lectora, razonamiento fluido, y atención ejecutiva.</div>
+</details>
+
+</main>
+
+<script>
+// ────────────────────────────────────
+// Content banks
+// ────────────────────────────────────
+const EQUATIONS = [
+  { eq:'4 × 7 = 28', ans: true },  { eq:'9 + 6 = 16', ans: false },
+  { eq:'36 ÷ 6 = 6', ans: true },  { eq:'5 × 8 = 42', ans: false },
+  { eq:'13 − 5 = 8', ans: true },  { eq:'7 + 9 = 15', ans: false },
+  { eq:'6 × 6 = 36', ans: true },  { eq:'48 ÷ 8 = 7', ans: false },
+  { eq:'15 − 7 = 8', ans: true },  { eq:'3 × 9 = 28', ans: false },
+  { eq:'72 ÷ 9 = 8', ans: true },  { eq:'11 + 8 = 20', ans: false },
+  { eq:'8 × 4 = 32', ans: true },  { eq:'25 − 8 = 18', ans: false },
+  { eq:'56 ÷ 7 = 8', ans: true },  { eq:'6 + 7 = 14', ans: false },
+  { eq:'9 × 9 = 81', ans: true },  { eq:'42 ÷ 6 = 8', ans: false },
+  { eq:'17 − 9 = 8', ans: true },  { eq:'4 × 6 = 25', ans: false },
+  { eq:'3 × 7 = 21', ans: true },  { eq:'64 ÷ 8 = 9', ans: false },
+  { eq:'18 + 7 = 25', ans: true }, { eq:'5 × 7 = 36', ans: false },
+  { eq:'45 ÷ 9 = 5', ans: true },  { eq:'16 − 9 = 8', ans: false },
+  { eq:'7 × 8 = 56', ans: true },  { eq:'27 ÷ 3 = 8', ans: false },
+  { eq:'24 − 6 = 18', ans: true }, { eq:'9 + 8 = 16', ans: false },
+  { eq:'6 × 9 = 54', ans: true },  { eq:'35 ÷ 5 = 8', ans: false },
+  { eq:'22 − 7 = 15', ans: true }, { eq:'4 × 9 = 37', ans: false },
+  { eq:'81 ÷ 9 = 9', ans: true },  { eq:'13 + 9 = 21', ans: false },
+  { eq:'5 × 6 = 30', ans: true },  { eq:'63 ÷ 7 = 8', ans: false },
+  { eq:'19 − 8 = 11', ans: true }, { eq:'8 × 7 = 54', ans: false },
+];
+const SENTENCES = [
+  { s:'El mar siempre está en movimiento.', ans: true },
+  { s:'Los pájaros respiran bajo el agua.', ans: false },
+  { s:'La lluvia cae de las nubes hacia la tierra.', ans: true },
+  { s:'El sol sale por el oeste cada mañana.', ans: false },
+  { s:'Las plantas necesitan luz para crecer.', ans: true },
+  { s:'Los peces viven en el desierto.', ans: false },
+  { s:'El cerebro humano procesa información constantemente.', ans: true },
+  { s:'La luna genera su propia luz.', ans: false },
+  { s:'El oxígeno es esencial para la respiración.', ans: true },
+  { s:'Los volcanes se forman en el fondo del mar únicamente.', ans: false },
+  { s:'La memoria se consolida durante el sueño.', ans: true },
+  { s:'Los diamantes son más blandos que el papel.', ans: false },
+  { s:'El agua se expande al congelarse.', ans: true },
+  { s:'Los humanos usan el cien por ciento del cerebro a la vez.', ans: false },
+  { s:'La velocidad de la luz supera la del sonido.', ans: true },
+  { s:'Las abejas producen miel a partir del agua de lluvia.', ans: false },
+  { s:'El corazón humano late sin descanso toda la vida.', ans: true },
+  { s:'Los elefantes son el animal terrestre más rápido.', ans: false },
+  { s:'La atmósfera protege la Tierra de los rayos solares.', ans: true },
+  { s:'El ADN es idéntico en todas las células del cuerpo.', ans: false },
+  { s:'Los árboles absorben dióxido de carbono del aire.', ans: true },
+  { s:'El fuego necesita agua para mantenerse encendido.', ans: false },
+  { s:'El sistema nervioso transmite señales eléctricas.', ans: true },
+  { s:'Los humanos tienen cuatro pulmones.', ans: false },
+  { s:'La gravedad mantiene los planetas en órbita.', ans: true },
+  { s:'El sonido viaja más rápido que la luz.', ans: false },
+  { s:'El hipocampo está relacionado con la formación de memorias.', ans: true },
+  { s:'Las plantas carnívoras obtienen energía del suelo únicamente.', ans: false },
+  { s:'La corteza terrestre está en constante movimiento.', ans: true },
+  { s:'Los humanos pueden sobrevivir semanas sin agua.', ans: false },
+];
+// Memory words — Spanish domain-relevant vocabulary
+const MEM_WORDS = [
+  'LUNA','MESA','CIELO','LIBRO','AGUA','MANO','NOCHE','VIENTO','CAMPO','TIEMPO',
+  'MUNDO','FLOR','CLAVE','MARCO','FONDO','RITMO','ORDEN','SABOR','CALMA','FORMA',
+  'PLUMA','ROCA','BORDE','TINTE','CUEVA','RUIDO','PRISA','TURNO','NUDO','PALMA',
+  'BRISA','HUESO','CARTA','LLAMA','MONTE','PAUSA','RASGO','SUELO','TRAMO','VUELO',
+  'BOSQUE','CAUCE','CUMBRE','FIEBRE','HERIDA','IMAGEN','JUICIO','LECHO','MEZCLA','NIEBLA',
+  'ÓPTICA','PATRÓN','QUILLA','UMBRAL','VÁLVULA','XERÓF','YACIMIENTO','ZAFIRO','ABISMO','BRECHA',
+];
+const RECALL_ALPHABET = 'ABCDEFGHIJKLMNOPRSTUVZ';
+
+// ────────────────────────────────────
+// State
+// ────────────────────────────────────
+let mode = 'operation'; // 'operation' | 'reading'
+let setSize = 3;        // adaptive: items per trial
+let trialIdx = 0;       // current trial (0–9)
+const TOTAL_TRIALS = 5;
+
+// Per-trial
+let trialWords = [];       // words to memorize this trial
+let wordIdx = 0;           // which word in the trial sequence we're on
+let procIdx = 0;           // which processing item we're on
+let procCorrect = 0;       // processing accuracy for the session
+let procTotal = 0;
+
+// Per-session accumulation
+let allTrialResults = [];  // [{target:[], recalled:[], partialScore, setSize}]
+let sessionPartialTotal = 0;
+let sessionPossibleTotal = 0;
+
+// Recall state
+let recallInput = [];      // words the user has recalled so far (first letters only — use full word)
+let recallTarget = [];
+
+// Used equation/sentence indices (avoid repeats)
+let usedEqIdx = [], usedSentIdx = [];
+
+// ────────────────────────────────────
+// Stage navigation
+// 0=intro, 1=trial, 2=recall, 3=results
+// ────────────────────────────────────
+const STAGE_IDS = ['stage-0','stage-1','stage-recall','stage-2'];
+function setStage(n) {
+  STAGE_IDS.forEach((id,i) => {
+    document.getElementById(id).classList.toggle('show', i===n);
+  });
+  // Dot mapping: intro→dot0, trial→dot1, recall→dot1, results→dot2
+  const dotIdx = n===3 ? 2 : (n===1||n===2) ? 1 : 0;
+  ['sd0','sd1','sd2'].forEach((id,i) => {
+    const d = document.getElementById(id);
+    d.classList.remove('active','done');
+    if(dotIdx > i) d.classList.add('done');
+    else if(dotIdx === i) d.classList.add('active');
+  });
+}
+
+// ────────────────────────────────────
+// Mode switching — always resets to intro screen
+// ────────────────────────────────────
+function setMode(m) {
+  mode = m;
+  trialIdx=0; sessionPartialTotal=0; sessionPossibleTotal=0;
+  allTrialResults=[]; procCorrect=0; procTotal=0;
+  usedEqIdx=[]; usedSentIdx=[];
+  setSize=3; wordIdx=0; procIdx=0;
+  recallInput=[]; recallTarget=[];
+  // Guard all element refs — some elements removed in UI cleanup
+  const _guard = (id, prop, val) => { const el=document.getElementById(id); if(el) el[prop]=val; };
+  _guard('tab-op','className', m==='operation' ? 'mtab mactive' : 'mtab');
+  _guard('tab-rs','className', m==='reading' ? 'mtab mactive' : 'mtab');
+  _guard('s0-setsize','textContent', setSize);
+}
+
+// ────────────────────────────────────
+// Session start
+// ────────────────────────────────────
+function startSession() {
+  requestWakeLock();
+  trialIdx=0; sessionPartialTotal=0; sessionPossibleTotal=0;
+  allTrialResults=[]; procCorrect=0; procTotal=0;
+  usedEqIdx=[]; usedSentIdx=[];
+  document.getElementById('adapt-banner').className='adapt-banner';
+  setStage(1);
+  startTrial();
+}
+
+// ────────────────────────────────────
+// Trial
+// ────────────────────────────────────
+function startTrial() {
+  if(trialIdx >= TOTAL_TRIALS) { endSession(); return; }
+  wordIdx=0; procIdx=0;
+  document.getElementById('trial-counter').textContent=(trialIdx+1)+'/'+TOTAL_TRIALS;
+  document.getElementById('trial-fill').style.width=((trialIdx)/TOTAL_TRIALS*100)+'%';
+  document.getElementById('trial-hint').textContent = mode==='operation' ? 'Responde la ecuación para continuar' : '¿Tiene sentido la oración?';
+
+  // Generate this trial's memory words (random sample of setSize, no repeats within trial)
+  const available = MEM_WORDS.filter(w=>!trialWords.includes(w));
+  trialWords = shuffle(MEM_WORDS).slice(0, setSize);
+  document.getElementById('adapt-banner').className='adapt-banner';
+  showProcessingItem();
+}
+
+function pickUnused(pool, usedArr) {
+  // If pool exhausted, reset and start again
+  if(usedArr.length >= pool.length) usedArr.length = 0;
+  let idx;
+  let attempts = 0;
+  do {
+    idx = Math.floor(Math.random() * pool.length);
+    attempts++;
+    if(attempts > pool.length * 3) { usedArr.length = 0; break; }
+  } while(usedArr.includes(idx));
+  usedArr.push(idx);
+  return pool[idx];
+}
+
+function showProcessingItem() {
+  const area = document.getElementById('proc-area');
+  const memFlash = document.getElementById('mem-flash');
+  memFlash.style.display='none';
+  area.style.display='flex';
+
+  if(mode==='operation') {
+    const eq = pickUnused(EQUATIONS, usedEqIdx);
+    area.innerHTML=`
+      <div class="equation-display">${eq.eq}</div>
+      <div class="tf-btns">
+        <div class="tf-btn" onclick="answerProc(this, true, ${eq.ans})">Verdadero</div>
+        <div class="tf-btn" onclick="answerProc(this, false, ${!eq.ans})">Falso</div>
+      </div>
+    `;
+  } else {
+    const sent = pickUnused(SENTENCES, usedSentIdx);
+    area.innerHTML=`
+      <div class="sent-display">"${sent.s}"</div>
+      <div class="tf-btns" style="margin-top:32px;">
+        <div class="tf-btn" onclick="answerProc(this, true, ${sent.ans})">Sí</div>
+        <div class="tf-btn" onclick="answerProc(this, false, ${!sent.ans})">No</div>
+      </div>
+    `;
+  }
+}
+
+function answerProc(btn, chosen, isCorrect) {
+  procTotal++;
+  const btns = btn.parentElement.querySelectorAll('.tf-btn');
+  btns.forEach(b=>b.classList.add('tf-locked'));
+  btn.classList.add(isCorrect ? 'tf-correct' : 'tf-wrong');
+  if(isCorrect) procCorrect++;
+
+  setTimeout(showMemItem, 350);
+}
+
+function showMemItem() {
+  const area = document.getElementById('proc-area');
+  const memFlash = document.getElementById('mem-flash');
+  area.style.display='none';
+  memFlash.style.display='flex';
+
+  const word = trialWords[wordIdx];
+  const wordEl = document.getElementById('mem-word');
+  wordEl.textContent = word;
+  wordEl.className = 'mem-item';
+
+  // Build position dots
+  const dots = document.getElementById('mem-dots');
+  dots.innerHTML='';
+  for(let i=0;i<setSize;i++){
+    const d=document.createElement('div');
+    d.className='mem-dot'+(i<=wordIdx?' seen':'');
+    dots.appendChild(d);
+  }
+
+  // Hide after 900ms
+  setTimeout(()=>{
+    wordEl.className='mem-item hidden';
+    wordIdx++;
+    setTimeout(()=>{
+      if(wordIdx < setSize) {
+        showProcessingItem();
+      } else {
+        startRecall();
+      }
+    }, 200);
+  }, 900);
+}
+
+// ────────────────────────────────────
+// Recall phase
+// ────────────────────────────────────
+function startRecall() {
+  recallInput = [];
+  recallTarget = [...trialWords];
+  document.getElementById('recall-set').textContent = setSize;
+  setStage(2); // show recall card
+  buildRecallUI();
+}
+
+function buildRecallUI() {
+  // Slots — one per word position
+  const slots = document.getElementById('recall-slots');
+  slots.innerHTML='';
+  for(let i=0;i<setSize;i++){
+    const s=document.createElement('div');
+    s.className='recall-slot'+(i===0?' active-slot':'');
+    s.id='slot-'+i;
+    s.innerHTML='<span class="slot-reveal"></span>';
+    slots.appendChild(s);
+  }
+
+  // Word tiles: all words from THIS trial's pool, shuffled — full word visible
+  // User taps to place in next available slot; tapped tiles become inactive
+  const keys = document.getElementById('keyboard');
+  keys.innerHTML='';
+  keys.style.gridTemplateColumns='repeat(3, 1fr)';
+  keys.style.maxWidth='400px';
+
+  const shuffledWords = shuffle([...trialWords]);
+  shuffledWords.forEach(word => {
+    const k = document.createElement('div');
+    k.className='key'; 
+    k.textContent=word;
+    k.dataset.word=word;
+    k.style.cssText='font-size:15px;padding:12px 8px;font-family:"Crimson Pro",serif;letter-spacing:0.05em;';
+    k.addEventListener('click', ()=>recallWordTap(k, word));
+    keys.appendChild(k);
+  });
+
+  // Backspace
+  const bk=document.createElement('div');
+  bk.className='key key-backspace'; bk.textContent='⌫';
+  bk.style.cssText='font-size:16px;';
+  bk.addEventListener('click', recallBackspace);
+  keys.appendChild(bk);
+
+  // Submit
+  const sb=document.createElement('div');
+  sb.className='key key-submit'; sb.textContent='Confirmar';
+  sb.style.gridColumn='span 2';
+  sb.addEventListener('click', submitRecall);
+  keys.appendChild(sb);
+}
+
+function recallWordTap(btn, word) {
+  if(recallInput.length >= setSize) return;
+  if(btn.classList.contains('key-used')) return;
+
+  recallInput.push(word);
+  btn.classList.add('key-used');
+
+  const slotIdx = recallInput.length - 1;
+  const slot = document.getElementById('slot-'+slotIdx);
+  slot.textContent = word;
+  slot.classList.add('slot-filled');
+  slot.classList.remove('active-slot');
+  // Restore slot-reveal span for scoring phase
+  const rev = document.createElement('span');
+  rev.className='slot-reveal';
+  slot.appendChild(rev);
+
+  if(recallInput.length < setSize) {
+    document.getElementById('slot-'+recallInput.length).classList.add('active-slot');
+  }
+}
+
+function recallBackspace() {
+  if(!recallInput.length) return;
+  const removed = recallInput.pop();
+  const idx = recallInput.length;
+
+  // Clear the slot
+  const slot = document.getElementById('slot-'+idx);
+  slot.textContent='';
+  slot.innerHTML='<span class="slot-reveal"></span>';
+  slot.classList.remove('slot-filled');
+  slot.classList.add('active-slot');
+  if(idx+1 < setSize) document.getElementById('slot-'+(idx+1)).classList.remove('active-slot');
+
+  // Re-enable the word tile that was just removed
+  const tile = document.querySelector(`#keyboard .key[data-word="${removed}"]`);
+  if(tile) tile.classList.remove('key-used');
+}
+
+function submitRecall() {
+  // Pad with blanks if incomplete
+  while(recallInput.length < setSize) recallInput.push('');
+
+  // Partial-credit scoring: count each position
+  let partialScore = 0;
+  recallTarget.forEach((target,i)=>{
+    const recalled = recallInput[i];
+    const slot = document.getElementById('slot-'+i);
+    slot.textContent = recalled || '–';
+    if(recalled === target) {
+      partialScore++;
+      slot.className='recall-slot slot-correct';
+    } else if(recalled && recalled !== '') {
+      slot.className='recall-slot slot-wrong';
+      // Show what was correct
+      const reveal = slot.querySelector('.slot-reveal');
+      if(reveal) { reveal.textContent = target; reveal.style.opacity='1'; }
+    } else {
+      slot.className='recall-slot slot-wrong';
+      const reveal = slot.querySelector('.slot-reveal');
+      if(reveal) { reveal.textContent = target; reveal.style.opacity='1'; }
+    }
+  });
+
+  // Record result
+  allTrialResults.push({
+    target: [...recallTarget],
+    recalled: [...recallInput],
+    partialScore,
+    setSize,
+  });
+  sessionPartialTotal += partialScore;
+  sessionPossibleTotal += setSize;
+
+  const acc = Math.round(sessionPartialTotal/sessionPossibleTotal*100);
+  const _ha=document.getElementById('hdr-acc'); if(_ha) _ha.textContent=acc+'%';
+
+  trialIdx++;
+  document.getElementById('trial-fill').style.width=((trialIdx)/TOTAL_TRIALS*100)+'%';
+
+  setTimeout(()=>{
+    setStage(1);
+    if(trialIdx < TOTAL_TRIALS) startTrial();
+    else endSession();
+  }, 1800);}
+
+// ────────────────────────────────────
+// End session
+// ────────────────────────────────────
+function startReadingSpan() {
+  // Called from transition card "Continuar" button
+  setMode('reading');
+  startSession();
+}
+
+function endSession() {
+  releaseWakeLock();
+  // If we just finished operation span, show transition to reading span
+  if (mode === 'operation') {
+    showSpanTransition();
+    return;
+  }
+  // Otherwise show real results (reading span just finished)
+  markComplete();
+  const acc = sessionPossibleTotal>0 ? Math.round(sessionPartialTotal/sessionPossibleTotal*100) : 0;
+  const spanScore = (sessionPartialTotal/TOTAL_TRIALS).toFixed(1);
+  const procAcc = procTotal>0 ? Math.round(procCorrect/procTotal*100) : 0;
+
+  const _hs=document.getElementById('hdr-span'); if(_hs) _hs.textContent=spanScore;
+  const _ha=document.getElementById('hdr-acc'); if(_ha) _ha.textContent=acc+'%';
+
+  // Build trial history pills
+  const hist = document.getElementById('trial-history'); if(!hist) { setStage(3); return; }
+  hist.innerHTML='<div style="font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);width:100%;margin-bottom:4px">Historial de rondas</div>';
+  allTrialResults.forEach((r,i)=>{
+    const pct = r.partialScore/r.setSize;
+    const cls = pct===1?'th-full':pct>=0.5?'th-partial':'th-zero';
+    const lbl = pct===1?'✓':pct>=0.5?`${r.partialScore}/${r.setSize}`:'0';
+    hist.innerHTML+=`<div class="th-pill ${cls}">R${i+1}: ${lbl}</div>`;
+  });
+
+  // Recommend next-session set size based on overall accuracy
+  let nextSetSize = setSize;
+  if(acc >= 80 && setSize < 6) nextSetSize = setSize + 1;
+  else if(acc < 50 && setSize > 2) nextSetSize = setSize - 1;
+
+  let insight;
+  if(acc>=80) insight=`<strong>Sesión excelente.</strong> Tu puntuación de amplitud (${spanScore}) muestra una capacidad sólida de mantenimiento bajo interferencia. La próxima sesión comenzará con <strong>${nextSetSize} palabras</strong> por ronda.`;
+  else if(acc>=60) insight=`<strong>Progreso sólido.</strong> La memoria de trabajo mejora con práctica consistente. Mantén ${setSize} palabras por ronda — la próxima sesión usará el mismo nivel.`;
+  else insight=`<strong>En construcción.</strong> Estás recordando algunos ítems en posición correcta — eso ya es entrenamiento válido. La próxima sesión comenzará con <strong>${nextSetSize} palabras</strong> para consolidar antes de avanzar.`;
+
+  // Persist recommended set size for next session
+  setSize = nextSetSize;
+
+  document.getElementById('res-body').innerHTML=`
+    <div class="res-top">
+      <div class="res-box"><div class="rv">${spanScore}</div><div class="rl">Amplitud parcial media</div></div>
+      <div class="res-box"><div class="rv">${acc}%</div><div class="rl">Precisión global</div></div>
+    </div>
+    <div class="res-grid">
+      <div class="rg"><div class="rv">${sessionPartialTotal}/${sessionPossibleTotal}</div><div class="rl">Ítems correctos</div></div>
+      <div class="rg"><div class="rv">${procAcc}%</div><div class="rl">Tarea de proceso</div></div>
+      <div class="rg"><div class="rv">${setSize}</div><div class="rl">Amplitud actual</div></div>
+    </div>
+    <div class="insight">${insight}</div>
+    <div class="res-btns">
+      <button class="btn btn-ghost session-hide" onclick="resetSession()">← Reiniciar</button>
+      <a href="index.html" class="btn btn-ghost session-hide" style="text-decoration:none;text-align:center;">🏠 Inicio</a>
+      <button class="session-next-btn" onclick="completeAndContinue()">Siguiente ejercicio →</button>
+    </div>
+  `;
+  setStage(3);
+  markComplete();
+  if(isInSession()) document.querySelectorAll('.session-next-btn').forEach(b=>{b.style.display='';});
+}
+
+function resetSession() {
+  setStage(0);
+}
+
+// ────────────────────────────────────
+// Utils
+// ────────────────────────────────────
+function shuffle(arr) { return [...arr].sort(()=>Math.random()-0.5); }
+
+// Init
+setStage(0);
+
+// ── Show session navigation UI ──
+function showSessionUI() {
+  if(!isInSession()) return;
+  updateSessionBtnLabels();
+  // Show the next button
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.style.cssText = 'display:block!important';
+  });
+  // Hide the repeat/reset buttons
+  document.querySelectorAll('.session-hide').forEach(b => {
+    b.style.cssText = 'display:none!important';
+  });
+}
+
+// ── Wake Lock: prevent screen sleep during exercise ──
+// Re-acquire on tab visibility change
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible') requestWakeLock();
+});
+
+let _wakeLock = null;
+async function requestWakeLock() {
+  if(!('wakeLock' in navigator)) return;
+  try { _wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {}
+}
+function releaseWakeLock() {
+  if(_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
+}
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible') requestWakeLock();
+});
+
+// ── Session completion tracking ──
+function markComplete() {
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const all = JSON.parse(localStorage.getItem('em_completions') || '{}');
+    if(!all[today]) all[today] = [];
+    if(!all[today].includes('memoria')) all[today].push('memoria');
+    localStorage.setItem('em_completions', JSON.stringify(all));
+  } catch(e) {}
+}
+
+function getSessionNext() {
+  try {
+    const q = JSON.parse(localStorage.getItem('em_session_queue')||'null');
+    if(!q) return null;
+    const today = new Date().toISOString().slice(0,10);
+    if(q.date !== today) return null;
+    const all = JSON.parse(localStorage.getItem('em_completions')||'{}');
+    const done = all[today] || [];
+    const remaining = q.keys.filter(k => !done.includes(k));
+    if(remaining.length === 0) return 'done';
+    const urls = {
+      flash:'lectura_flash_rsvp.html', bloques:'lectura_por_bloques_prototype.html',
+      contra:'contrarreloj.html', vision:'vision_paralela.html',
+      saltos:'saltos_visuales.html', memoria:'memoria_activa.html',
+      cats:'actualizacion_categorias.html', continua:'actualizacion_continua.html',
+    };
+    return urls[remaining[0]] ? urls[remaining[0]] + '?session=1' : null;
+  } catch(e) { return null; }
+}
+
+function isInSession() {
+  return new URLSearchParams(window.location.search).get('session') === '1';
+}
+
+function goNextOrHome(homeUrl) {
+  if(!isInSession()) { window.location.href = homeUrl; return; }
+  const next = getSessionNext();
+  window.location.href = (!next || next === 'done') ? 'index.html?done=session' : next;
+}
+
+function completeAndContinue() {
+  markComplete();
+  setTimeout(() => goNextOrHome('index.html'), 400);
+}
+
+function showSessionOverlay() {
+  if(!isInSession()) return;
+  const existing = document.getElementById('ma-session-overlay');
+  if(existing) existing.remove();
+  const next = getSessionNext();
+  const isLast = !next || next === 'done';
+  const btnLabel = isLast ? 'Finalizar sesi\u00f3n \u2192' : 'Siguiente ejercicio \u2192';
+  const ov = document.createElement('div');
+  ov.id = 'ma-session-overlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;';
+  const inner = document.createElement('div');
+  inner.style.cssText = 'width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center;gap:16px;';
+  const icon = document.createElement('div');
+  icon.style.cssText = 'font-size:48px;margin-bottom:4px;';
+  icon.textContent = '\u2713';
+  const title = document.createElement('div');
+  title.style.cssText = "font-family:'Poppins',sans-serif;font-size:30px;font-weight:300;color:var(--text);";
+  title.textContent = 'Memoria Activa';
+  const sub = document.createElement('div');
+  sub.style.cssText = 'font-size:15px;color:var(--text2);';
+  sub.textContent = 'Ejercicio completado';
+  const btn = document.createElement('button');
+  btn.style.cssText = "width:100%;padding:16px;background:var(--violet-deep);color:#fff;border:none;border-radius:13px;font-family:'Fredoka','Poppins',sans-serif;font-size:17px;font-weight:600;cursor:pointer;";
+  btn.textContent = btnLabel;
+  btn.onclick = completeAndContinue;
+  inner.appendChild(icon);
+  inner.appendChild(title);
+  inner.appendChild(sub);
+  inner.appendChild(btn);
+  ov.appendChild(inner);
+  document.body.appendChild(ov);
+}
+
+
+// ── Memoria Activa pool rotation ──
+function _maShuffled(arr) {
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function _maNextFromPool(key, pool) {
+  let q; try { q=JSON.parse(localStorage.getItem(key)||'[]'); } catch(e){ q=[]; }
+  q = q.filter(i=>i<pool.length);
+  if(!q.length) {
+    const last = (() => { try { return parseInt(localStorage.getItem(key+'_l')||'-1'); } catch(e){ return -1; } })();
+    const fresh = _maShuffled(pool.map((_,i)=>i));
+    if(fresh[0]===last && fresh.length>1) fresh.push(fresh.shift());
+    q = fresh;
+  }
+  const n = q.shift();
+  try { localStorage.setItem(key,JSON.stringify(q)); localStorage.setItem(key+'_l',String(n)); } catch(e){}
+  return pool[n];
+}
+function nextMemWord() { return _maNextFromPool('em_ma_words', MEM_WORDS); }
+function nextEquation() { return _maNextFromPool('em_ma_eq', EQUATIONS); }
+function nextSentence() { return _maNextFromPool('em_ma_sent', SENTENCES); }
+
+</script>
+
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  </a>
+</div>
+
+</body>
+</html>

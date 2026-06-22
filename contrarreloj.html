@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente en Forma — Lectura Adaptativa</title>
+<script src="brand.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F8F7FF; --bg2:#F0EEF8; --card:#FFFFFF; --card2:#F4F2FC;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --text:#1A1830; --text2:#4A4468; --text3:#5C5880;
+  --violet:#6C5CE7; --violet-d:rgba(108,92,231,0.10); --violet-b:rgba(108,92,231,0.25);
+  --violet-deep:#534AB7;
+  --teal:#0A7A6A; --teal-d:rgba(10,122,106,0.10); --teal-b:rgba(10,122,106,0.25);
+  --gold:#C9A84C; --amber:#F5A623;
+  --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12);
+  --green:#4ECB9A; --green-d:rgba(78,203,154,0.12);
+  --r:14px; --sh:0 2px 16px rgba(0,0,0,0.32);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;
+  min-height:100dvh;overscroll-behavior:none;}
+
+/* ── Ready screen ── */
+#ready-screen {
+  position:fixed;inset:0;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 28px;text-align:center;gap:0;z-index:100;
+}
+#ready-screen.hidden{display:none;}
+.ready-title{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;
+  color:var(--text);margin-bottom:10px;}
+.ready-title em{color:var(--teal);font-style:italic;}
+.ready-sub{font-size:16px;color:var(--text2);line-height:1.6;margin-bottom:28px;max-width:320px;}
+.ready-steps{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin-bottom:28px;}
+.ready-step{display:flex;align-items:flex-start;gap:14px;background:var(--card);
+  border:1px solid var(--border2);border-radius:13px;padding:14px 16px;text-align:left;}
+.ready-step-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.ready-step-title{font-size:14px;color:var(--text);font-weight:600;margin-bottom:3px;}
+.ready-step-desc{font-size:16px;color:var(--text3);line-height:1.55;}
+.ready-btn{width:100%;max-width:340px;padding:18px;background:var(--violet-deep);
+  color:#fff;border:none;border-radius:14px;
+  font-family:'Fredoka','DM Sans',sans-serif;font-size:18px;font-weight:600;cursor:pointer;}
+
+/* ── Stage layout ── */
+.stage{display:flex;flex-direction:column;position:fixed;inset:0;
+  background:var(--bg);z-index:10;
+  opacity:0;pointer-events:none;
+  -webkit-transform:translateZ(0);transform:translateZ(0);}
+.stage.show{opacity:1;pointer-events:auto;}
+
+/* ── Stage header ── */
+.stage-header{padding:14px 20px 0;display:flex;align-items:center;
+  justify-content:space-between;flex-shrink:0;}
+.stage-label{font-size:16px;color:var(--text3);}
+.stage-step{font-size:13px;color:var(--teal);font-family:'Fredoka',sans-serif;}
+
+/* ── Progress bar ── */
+.prog-bar-wrap{height:3px;background:var(--border);flex-shrink:0;margin-top:10px;}
+.prog-bar-fill{height:100%;background:var(--teal);width:100%;transition:width linear;}
+
+/* ── Reading area ── */
+.reading-area{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:20px 24px 12px;overflow-y:auto;}
+.reading-text{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,5.5vw,30px);
+  line-height:1.75;color:var(--text);text-align:center;font-weight:400;
+  max-width:520px;}
+.fw{display:inline;white-space:pre-wrap;}
+
+/* ── Stage footer ── */
+.stage-footer{padding:14px 24px 32px;border-top:1px solid var(--border);flex-shrink:0;background:var(--bg);}
+.stage-hint{font-size:15px;color:var(--text3);text-align:center;margin-bottom:12px;}
+.btn-primary{width:100%;padding:17px;background:var(--violet-deep);color:#fff;
+  border:none;border-radius:14px;font-family:'Fredoka','DM Sans',sans-serif;
+  font-size:18px;font-weight:600;cursor:pointer;}
+.btn-ghost{padding:12px 20px;background:transparent;color:var(--text2);
+  border:1.5px solid var(--border2);border-radius:12px;
+  font-family:'DM Sans',sans-serif;font-size:15px;cursor:pointer;}
+
+/* ── Comprehension question ── */
+.q-screen{flex:1;display:flex;flex-direction:column;
+  justify-content:center;padding:28px 24px;gap:20px;}
+.q-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;
+  color:var(--text);line-height:1.5;text-align:center;}
+.q-opts{display:flex;flex-direction:column;gap:10px;}
+.q-opt{padding:15px 18px;border-radius:13px;border:1.5px solid var(--border2);
+  background:var(--card);font-size:16px;color:var(--text2);
+  cursor:pointer;transition:all 0.12s;}
+.q-opt.correct{border-color:var(--teal-b);background:var(--teal-d);color:var(--teal);}
+.q-opt.wrong{border-color:rgba(224,92,92,0.3);background:var(--coral-d);color:var(--coral);}
+.q-opt.locked{pointer-events:none;}
+.q-feedback{font-size:14px;color:var(--text3);text-align:center;min-height:18px;}
+
+/* ── Results ── */
+.results-area{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:28px 24px;gap:16px;}
+.result-wpm{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:300;
+  color:var(--teal);line-height:1;}
+.result-wpm-label{font-size:16px;color:var(--text3);text-transform:uppercase;
+  letter-spacing:0.10em;margin-top:4px;}
+.result-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:340px;}
+.result-card{background:var(--card);border:1px solid var(--border2);border-radius:13px;
+  padding:14px;text-align:center;}
+.result-card-val{font-size:24px;font-weight:600;font-family:'Fredoka',sans-serif;}
+.result-card-lbl{font-size:14px;color:var(--text3);text-transform:uppercase;
+  letter-spacing:0.08em;margin-top:3px;}
+.result-insight{background:var(--violet-d);border:1px solid var(--violet-b);
+  border-radius:13px;padding:16px;font-size:14px;color:var(--text2);
+  line-height:1.65;width:100%;max-width:340px;}
+.result-btns{display:flex;gap:10px;width:100%;max-width:340px;}
+
+/* ── Sci foldable ── */
+.sci-details.session-hide{display:none;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- READY SCREEN                            -->
+<!-- ═══════════════════════════════════════ -->
+<div id="ready-screen">
+  <div class="ready-title">Lectura <em>Adaptativa</em></div>
+  <div class="ready-sub">Dos párrafos. El primero a tu ritmo — el segundo contra el tiempo. Una pregunta al final de cada uno.</div>
+  <div class="ready-steps">
+    <div class="ready-step">
+      <div class="ready-step-icon">📖</div>
+      <div>
+        <div class="ready-step-title">Lee a tu ritmo</div>
+        <div class="ready-step-desc">Toca <strong>Listo</strong> al terminar.</div>
+      </div>
+    </div>
+    <div class="ready-step">
+      <div class="ready-step-icon">⏱</div>
+      <div>
+        <div class="ready-step-title">Lee antes de que desaparezca</div>
+        <div class="ready-step-desc">El texto se desvanece — lee con atención.</div>
+      </div>
+    </div>
+  </div>
+  <button class="ready-btn" onclick="dismissReady()">▶ Empecemos</button>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STAGE 0: Baseline read (free pace)      -->
+<!-- ═══════════════════════════════════════ -->
+<div class="stage" id="stage-0">
+  <div class="stage-header">
+    <div class="stage-label">Lee a tu ritmo natural</div>
+    <div class="stage-step">Párrafo 1 de 2</div>
+  </div>
+  <div class="prog-bar-wrap"><div class="prog-bar-fill" id="pb0" style="display:none"></div></div>
+  <div class="reading-area">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(22px,5.5vw,30px);
+      line-height:1.75;color:var(--text);text-align:center;font-weight:400;max-width:520px;" id="text-0"></div>
+  </div>
+  <div class="stage-footer">
+    <div class="stage-hint">Lee con atención — habrá una pregunta</div>
+    <button class="btn-primary" id="listo-0" onclick="finishBaseline()">Listo →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STAGE 1: Baseline question              -->
+<!-- ═══════════════════════════════════════ -->
+<div class="stage" id="stage-1">
+  <div class="stage-header">
+    <div class="stage-label">Comprensión</div>
+    <div class="stage-step">Párrafo 1</div>
+  </div>
+  <div class="prog-bar-wrap"></div>
+  <div class="q-screen">
+    <div class="q-text" id="q-text-0"></div>
+    <div class="q-opts" id="q-opts-0"></div>
+    <div class="q-feedback" id="q-fb-0"></div>
+  </div>
+  <div class="stage-footer">
+    <button class="btn-primary" id="next-1" onclick="setStage(2)" style="display:none">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STAGE 1b: Timed intro                   -->
+<!-- ═══════════════════════════════════════ -->
+<div class="stage" id="stage-1b">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;padding:40px 28px;text-align:center;gap:20px;">
+    <div style="font-size:48px;">⏱</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:34px;
+      font-weight:300;color:var(--text);">Ahora <em style="color:var(--teal)">contra el tiempo</em></div>
+    <div style="font-size:16px;color:var(--text2);line-height:1.7;max-width:300px;">
+      Leerás un segundo párrafo. El texto se irá <strong style="color:var(--text);">desvaneciendo</strong> 
+      mientras lees — termina antes de que desaparezca.
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:12px;
+      padding:14px 20px;font-size:14px;color:var(--text3);max-width:300px;line-height:1.6;">
+      No hay barra visible — el texto mismo es el reloj.
+    </div>
+  </div>
+  <div class="stage-footer">
+    <button class="btn-primary" onclick="startTimed()">Estoy listo →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STAGE 2: Timed read                     -->
+<!-- ═══════════════════════════════════════ -->
+<div class="stage" id="stage-2">
+  <div class="stage-header">
+    <div class="stage-label" id="stage2-label">Lee antes de que desaparezca</div>
+    <div class="stage-step">Párrafo 2 de 2</div>
+  </div>
+  <div class="prog-bar-wrap" style="display:none"><div class="prog-bar-fill" id="pb2"></div></div>
+  <div class="reading-area">
+    <div class="reading-text" id="text-2"></div>
+  </div>
+  <div class="stage-footer">
+    <div class="stage-hint" id="hint-2">La barra marca el tiempo — lee con atención</div>
+    <button class="btn-primary" id="listo-2" onclick="finishTimed()" style="display:none">Listo →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STAGE 3: Timed question                 -->
+<!-- ═══════════════════════════════════════ -->
+<div class="stage" id="stage-3">
+  <div class="stage-header">
+    <div class="stage-label">Comprensión</div>
+    <div class="stage-step">Párrafo 2</div>
+  </div>
+  <div class="prog-bar-wrap"></div>
+  <div class="q-screen">
+    <div class="q-text" id="q-text-2"></div>
+    <div class="q-opts" id="q-opts-2"></div>
+    <div class="q-feedback" id="q-fb-2"></div>
+  </div>
+  <div class="stage-footer">
+    <button class="btn-primary" id="next-3" onclick="showResults()" style="display:none">Ver resultados →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STAGE 4: Results                        -->
+<!-- ═══════════════════════════════════════ -->
+<div class="stage" id="stage-4">
+  <div class="stage-header">
+    <div class="stage-label">Resultados</div>
+    <div class="stage-step"></div>
+  </div>
+  <div class="prog-bar-wrap"></div>
+  <div class="results-area">
+    <div>
+      <div class="result-wpm" id="result-wpm">—</div>
+      <div class="result-wpm-label">palabras por minuto</div>
+    </div>
+    <div class="result-cards">
+      <div class="result-card">
+        <div class="result-card-val" id="r-comp" style="color:var(--teal)">—</div>
+        <div class="result-card-lbl">Comprensión</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card-val" id="r-delta" style="color:var(--violet)">—</div>
+        <div class="result-card-lbl">vs. anterior</div>
+      </div>
+    </div>
+    <div class="result-insight" id="result-insight"></div>
+    <div class="result-btns">
+      <button class="btn-ghost" onclick="restartExercise()">← Nuevo texto</button>
+      <button class="btn-primary session-next-btn" onclick="completeAndContinue()" style="display:none;flex:1;">Siguiente →</button>
+      <button class="btn-primary" id="repeat-btn" onclick="restartExercise()" style="flex:1;">Repetir →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mente en Forma wordmark -->
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;
+  justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;
+    color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;
+    opacity:0.6;transition:opacity 0.2s;"
+    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  </a>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// Calibration texts — one simple paragraph per age group
+// Used as the baseline read on first session / onboarding
+// ─────────────────────────────────────────────
+const CALIBRATION = {
+  child: {
+    a: {
+      text: "Los perros son muy listos y aprenden rápido. Les gusta jugar, correr y estar con su familia. Un perro feliz mueve la cola todo el tiempo.",
+      q: "¿Cómo sabe uno que un perro está feliz?",
+      opts: ["Se queda quieto","Mueve la cola","Se esconde","Ladra fuerte"],
+      correct: 1
+    }
+  },
+  teen: {
+    a: {
+      text: "Dormir bien mejora la memoria y el estado de ánimo. Los jóvenes necesitan entre ocho y diez horas de sueño. Estudiar hasta tarde suele ser contraproducente.",
+      q: "¿Cuántas horas de sueño necesitan los jóvenes?",
+      opts: ["Seis horas","Entre ocho y diez horas","Doce horas","Depende del día"],
+      correct: 1
+    }
+  },
+  adult: {
+    a: {
+      text: "Caminar al aire libre mejora el estado de ánimo y despeja la mente. Muchas personas lo hacen por las mañanas para empezar el día con energía. Es un hábito sencillo con grandes beneficios.",
+      q: "¿Para qué sirve caminar por las mañanas?",
+      opts: ["Solo para bajar de peso","Para empezar el día con energía","Para evitar el frío","Para llegar al trabajo"],
+      correct: 1
+    }
+  },
+  senior: {
+    a: {
+      text: "Leer un buen libro antes de dormir ayuda a relajar la mente. Es una costumbre que muchas personas disfrutan desde jóvenes. Los libros abren puertas a otros mundos.",
+      q: "¿Para qué ayuda leer antes de dormir?",
+      opts: ["Para aprender más rápido","Para relajar la mente","Para mejorar la vista","Para recordar más"],
+      correct: 1
+    }
+  }
+};
+
+// ─────────────────────────────────────────────
+// Text pool — 8 paragraph pairs (A = free read, B = timed)
+// Each pair shares a theme; B is slightly harder/longer
+// ─────────────────────────────────────────────
+const PAIRS = [
+  {
+    a: {
+      text: "El sueño no es un estado de reposo pasivo, sino un proceso activo en el que el cerebro consolida recuerdos, elimina toxinas y reorganiza conexiones neuronales. Durante el sueño profundo, el hipocampo transfiere información a la corteza cerebral para su almacenamiento a largo plazo. Dormir menos de siete horas de forma sostenida reduce significativamente la capacidad de aprender y recordar.",
+      q: "¿Qué hace el cerebro durante el sueño profundo?",
+      opts: ["Descansa por completo sin actividad","Transfiere recuerdos al almacenamiento a largo plazo","Produce hormonas de crecimiento exclusivamente","Regula la temperatura corporal"],
+      correct: 1
+    },
+    b: {
+      text: "La privación crónica de sueño no solo deteriora la memoria, sino que altera la regulación emocional, reduce la velocidad de procesamiento y aumenta el riesgo de enfermedades cardiovasculares. El sistema glinfático, activo principalmente durante el sueño, elimina proteínas tóxicas asociadas al Alzheimer. La cultura que glorifica dormir poco como señal de productividad contradice décadas de evidencia científica.",
+      q: "¿Qué sistema elimina toxinas cerebrales durante el sueño?",
+      opts: ["El sistema linfático periférico","El sistema inmunológico","El sistema glinfático","El sistema nervioso autónomo"],
+      correct: 2
+    }
+  },
+  {
+    a: {
+      text: "La atención sostenida es una de las capacidades cognitivas más afectadas por el uso intensivo de tecnología digital. Las plataformas están diseñadas para maximizar el tiempo de pantalla mediante recompensas variables que activan el sistema dopaminérgico, creando patrones similares a los de la dependencia. El resultado es un cerebro entrenado para buscar novedad constante en lugar de profundidad.",
+      q: "¿Cómo afectan las plataformas digitales al sistema dopaminérgico?",
+      opts: ["Lo desactivan progresivamente","Lo estimulan con recompensas variables","No tienen ningún efecto sobre él","Lo regulan de forma positiva"],
+      correct: 1
+    },
+    b: {
+      text: "Recuperar la capacidad de atención sostenida requiere práctica deliberada: períodos de trabajo profundo sin interrupciones, lectura de textos largos y reducción consciente del consumo de contenido fragmentado. La neuroplasticidad garantiza que estos cambios son posibles a cualquier edad. Sin embargo, el entorno digital hace que el esfuerzo sea constante — la atención profunda no se recupera pasivamente.",
+      q: "¿Qué garantiza que la atención puede recuperarse a cualquier edad?",
+      opts: ["El sistema inmunológico","La neuroplasticidad","La reducción del estrés","El descanso suficiente"],
+      correct: 1
+    }
+  },
+  {
+    a: {
+      text: "Las ciudades concentran más de la mitad de la población mundial y generan cerca del setenta por ciento de las emisiones globales de dióxido de carbono. Esta paradoja convierte al urbanismo en una de las disciplinas más críticas del siglo veintiuno. Rediseñar las ciudades para priorizar el transporte público, los espacios verdes y la densidad compacta puede reducir drásticamente la huella ambiental sin sacrificar calidad de vida.",
+      q: "¿Qué porcentaje de emisiones globales generan las ciudades?",
+      opts: ["Cerca del treinta por ciento","Cerca del cincuenta por ciento","Cerca del setenta por ciento","Cerca del noventa por ciento"],
+      correct: 2
+    },
+    b: {
+      text: "El concepto de ciudad de quince minutos propone que todos los servicios esenciales — trabajo, educación, salud, comercio y ocio — estén accesibles a pie o en bicicleta desde cualquier punto de la ciudad. Este modelo reduce la dependencia del automóvil, disminuye las emisiones y fortalece el tejido social de los barrios. Ciudades como París y Bogotá han comenzado a implementarlo con resultados prometedores.",
+      q: "¿Qué propone el modelo de ciudad de quince minutos?",
+      opts: ["Limitar el acceso a vehículos privados","Concentrar servicios en zonas específicas","Hacer accesibles todos los servicios a pie desde cualquier punto","Reducir la densidad urbana"],
+      correct: 2
+    }
+  },
+  {
+    a: {
+      text: "El microbioma intestinal, compuesto por billones de microorganismos, influye directamente en el estado de ánimo, la cognición y el sistema inmunológico. La comunicación entre el intestino y el cerebro ocurre a través del nervio vago y de neurotransmisores como la serotonina, de la cual se estima que el noventa por ciento se produce en el intestino. Una alimentación variada y rica en fibra favorece la diversidad microbiana y el bienestar mental.",
+      q: "¿Dónde se produce la mayor parte de la serotonina?",
+      opts: ["En el cerebro","En el hígado","En el intestino","En el sistema linfático"],
+      correct: 2
+    },
+    b: {
+      text: "Los estudios más recientes asocian la baja diversidad del microbioma con trastornos como la depresión, la ansiedad y el deterioro cognitivo. Los antibióticos, el estrés crónico y la alimentación ultraprocesada reducen significativamente esta diversidad. La psicobiótica — el uso terapéutico de probióticos y prebióticos — emerge como un campo prometedor, aunque la mayoría de las relaciones de causalidad aún están bajo investigación.",
+      q: "¿Qué es la psicobiótica?",
+      opts: ["Una disciplina de psicología conductual","El uso terapéutico de probióticos y prebióticos","Un tipo de terapia cognitiva","Un método de análisis del microbioma"],
+      correct: 1
+    }
+  },
+  {
+    a: {
+      text: "La creatividad no es un rasgo innato reservado a unos pocos, sino una capacidad cognitiva que puede desarrollarse con práctica. Implica la generación de conexiones novedosas entre conceptos aparentemente no relacionados, y depende de la interacción entre la red de control ejecutivo y la red por defecto del cerebro. El descanso, el aburrimiento y la exposición a ideas diversas son condiciones que la favorecen.",
+      q: "¿De qué depende la creatividad según el texto?",
+      opts: ["De la inteligencia innata del individuo","De la interacción entre dos redes cerebrales","Del nivel educativo alcanzado","De la práctica de artes visuales"],
+      correct: 1
+    },
+    b: {
+      text: "El estado de flujo — esa sensación de inmersión total en una actividad desafiante — es una de las condiciones más propicias para la creatividad y el alto rendimiento cognitivo. Se produce cuando el nivel de dificultad de la tarea supera ligeramente las capacidades del individuo, activando una concentración profunda sin ansiedad. Diseñar tareas en esa zona de desafío óptimo es uno de los principios más sólidos del aprendizaje eficaz.",
+      q: "¿Cuándo se produce el estado de flujo?",
+      opts: ["Cuando la tarea es muy fácil y relajante","Cuando la dificultad supera ligeramente las capacidades","Cuando el individuo tiene experiencia previa suficiente","Cuando no hay distracciones externas"],
+      correct: 1
+    }
+  },
+  {
+    a: {
+      text: "La migración es tan antigua como la especie humana, y durante milenios fue la principal estrategia de adaptación y supervivencia. Hoy, más de doscientos ochenta millones de personas viven fuera de su país de nacimiento. Los debates públicos sobre migración suelen ignorar la dimensión más íntima del fenómeno: la negociación constante de identidad que vive quien pertenece a más de un lugar y a ninguno del todo.",
+      q: "¿Cuántas personas viven fuera de su país de nacimiento?",
+      opts: ["Más de cien millones","Más de doscientos millones","Más de doscientos ochenta millones","Más de trescientos millones"],
+      correct: 2
+    },
+    b: {
+      text: "Los migrantes de segunda generación — nacidos en el país de acogida de padres extranjeros — enfrentan una tensión identitaria particular: son considerados extranjeros en el país de sus padres y no del todo locales en el suyo. Esta posición liminal puede ser fuente de conflicto, pero también de una perspectiva única que enriquece las sociedades que saben acogerla. La investigación muestra que las comunidades más diversas son también las más innovadoras.",
+      q: "¿Qué muestra la investigación sobre comunidades diversas?",
+      opts: ["Son más propensas al conflicto social","Son más innovadoras","Tienen mayor dificultad para integrarse","Requieren más recursos públicos"],
+      correct: 1
+    }
+  },
+  {
+    a: {
+      text: "La lectura profunda activa una red neuronal extensa que incluye áreas visuales, lingüísticas y emocionales del cerebro. A diferencia de la lectura superficial en pantallas, que tiende a ser no lineal y fragmentada, la lectura lineal de textos largos entrena la capacidad de inferencia, la empatía narrativa y el pensamiento analítico. Investigadores como Maryanne Wolf advierten que estos circuitos cognitivos pueden atrofiarse con el desuso.",
+      q: "¿Qué diferencia la lectura profunda de la lectura en pantallas?",
+      opts: ["La velocidad de procesamiento","La activación de áreas visuales","La profundidad lineal frente a la fragmentación","El uso de la memoria a largo plazo"],
+      correct: 2
+    },
+    b: {
+      text: "El cerebro no nació para leer — la escritura tiene apenas cinco mil años, un instante en términos evolutivos. Aprender a leer exige reconfigurar circuitos cerebrales diseñados para otras funciones, como el reconocimiento visual de objetos. Este proceso de reconversión neuronal es extraordinariamente plástico en la infancia, pero persiste toda la vida. La lectura no solo transmite información: transforma literalmente la arquitectura del cerebro que la practica.",
+      q: "¿Qué hace el cerebro para aprender a leer?",
+      opts: ["Desarrolla nuevas zonas cerebrales específicas","Reconfigura circuitos diseñados para otras funciones","Activa el sistema límbico emocional","Reduce la actividad en el lóbulo frontal"],
+      correct: 1
+    }
+  },
+  {
+    a: {
+      text: "La economía circular propone reemplazar el modelo lineal de producción — extraer, fabricar, usar y desechar — por un sistema en el que los residuos de un proceso se convierten en recursos de otro. No es solo un principio ambiental: es también una oportunidad económica. Las empresas que han adoptado este modelo han encontrado que la eficiencia en el uso de materiales reduce costos y genera ventajas competitivas sostenibles.",
+      q: "¿Qué propone la economía circular?",
+      opts: ["Reducir la producción industrial global","Convertir residuos de un proceso en recursos de otro","Eliminar el comercio internacional","Centralizar la producción en pocos países"],
+      correct: 1
+    },
+    b: {
+      text: "La transición hacia una economía circular requiere cambios profundos no solo en los procesos productivos, sino en los patrones de consumo y en el diseño de los productos desde su origen. El concepto de diseño para la desmontabilidad — crear productos pensados para ser reparados, reutilizados y reciclados — está ganando terreno en la industria electrónica y textil. Europa lidera la regulación en este ámbito, con legislación que obliga a los fabricantes a garantizar la disponibilidad de piezas de repuesto durante años.",
+      q: "¿Qué es el diseño para la desmontabilidad?",
+      opts: ["Un método para reducir el tamaño de los productos","Crear productos pensados para ser reparados y reciclados","Una técnica de fabricación automatizada","Un sistema de clasificación de residuos"],
+      correct: 1
+    }
+  },
+];
+
+// ─────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────
+let currentPair = null;
+let baselineMs = 0;
+let baselineWpm = 0;
+let timedWpm = 0;
+let baselineCorrect = false;
+let timedCorrect = false;
+let timedTimer = null;
+let timedExpired = false;
+
+// Age-based reading speed baseline
+function getBaseWpm(age) {
+  age = age || 60;
+  if (age < 30) return 250;
+  if (age < 40) return 230;
+  if (age < 50) return 210;
+  if (age < 60) return 185;
+  if (age < 70) return 160;
+  if (age < 80) return 140;
+  return 120;
+}
+function getUserAge() {
+  try { return parseInt(JSON.parse(localStorage.getItem('em_user')||'{}').age)||60; } catch(e){ return 60; }
+}
+// Seed baselineWpm from age so first timed paragraph has a sensible duration
+// (will be overwritten by actual measured speed after calibration read)
+baselineWpm = getBaseWpm(getUserAge());
+
+// ─────────────────────────────────────────────
+// Utilities
+// ─────────────────────────────────────────────
+// Difficulty multiplier: starts at 0.80 (slower than baseline = more time to read)
+// Increases by 0.05 each session up to 1.20 (faster than baseline)
+function getTimedDifficulty() {
+  try {
+    const sessions = parseInt(localStorage.getItem('em_contra_sessions') || '0');
+    const multiplier = 0.80 + (sessions * 0.05);
+    return Math.min(multiplier, 1.20);
+  } catch(e) { return 0.80; }
+}
+
+function incrementTimedDifficulty() {
+  try {
+    const sessions = parseInt(localStorage.getItem('em_contra_sessions') || '0');
+    localStorage.setItem('em_contra_sessions', String(sessions + 1));
+  } catch(e) {}
+}
+
+function countWords(text) {
+  return text.trim().split(/\s+/).length;
+}
+
+function setStage(n) {
+  document.querySelectorAll('.stage').forEach((el, i) => {
+    el.classList.toggle('show', i === n);
+  });
+}
+
+function requestWakeLock() {
+  if('wakeLock' in navigator) {
+    navigator.wakeLock.request('screen').catch(()=>{});
+  }
+}
+
+function releaseWakeLock() {}
+
+// ─────────────────────────────────────────────
+// Session / completion tracking
+// ─────────────────────────────────────────────
+function isInSession() {
+  try { return !!JSON.parse(localStorage.getItem('em_session_queue')); } catch(e){ return false; }
+}
+
+function getSessionNext() {
+  try {
+    const q = JSON.parse(localStorage.getItem('em_session_queue'));
+    if(!q) return null;
+    const done = JSON.parse(localStorage.getItem('em_completions') || '{}');
+    const today = new Date().toISOString().slice(0,10);
+    const todayDone = done[today] || [];
+    const remaining = q.keys.filter(k => !todayDone.includes(k));
+    return remaining.length > 1 ? remaining[1] : 'done';
+  } catch(e){ return null; }
+}
+
+function markComplete() {
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const all = JSON.parse(localStorage.getItem('em_completions') || '{}');
+    if(!all[today]) all[today] = [];
+    if(!all[today].includes('contra')) all[today].push('contra');
+    localStorage.setItem('em_completions', JSON.stringify(all));
+    // Reveal session-next-btn
+    if(isInSession()) {
+      document.querySelectorAll('.session-next-btn').forEach(b => {
+        b.style.display = 'block';
+      });
+      document.getElementById('repeat-btn').style.display = 'none';
+    }
+  } catch(e){}
+}
+
+function completeAndContinue() {
+  markComplete();
+  setTimeout(() => {
+    const next = getSessionNext();
+    if(!next || next === 'done') {
+      window.location.href = 'index.html?done=session';
+    } else {
+      const exercises = {
+        contra: 'contrarreloj.html', lectura_flash: 'lectura_flash_rsvp.html',
+        saltos: 'saltos_visuales.html', memoria: 'memoria_activa.html',
+        cats: 'actualizacion_categorias.html', continua: 'actualizacion_continua.html',
+        vision: 'vision_paralela.html', bloques: 'lectura_por_bloques_prototype.html'
+      };
+      window.location.href = (exercises[next] || 'index.html') + '?session=1';
+    }
+  }, 300);
+}
+
+// ─────────────────────────────────────────────
+// Flow
+// ─────────────────────────────────────────────
+function dismissReady() {
+  document.getElementById('ready-screen').classList.add('hidden');
+  requestWakeLock();
+  loadPair();
+  setStage(0);
+  // Start timing baseline
+  baselineMs = performance.now();
+}
+
+function isCalibrationRun() {
+  // Only calibrate once — if we have a saved WPM, skip calibration entirely
+  try {
+    const wpm = localStorage.getItem('em_contra_wpm');
+    return !wpm;
+  } catch(e){ return true; }
+}
+
+function getUserProfile() {
+  try {
+    const u = JSON.parse(localStorage.getItem('em_user') || '{}');
+    return u.profile || 'adult';
+  } catch(e){ return 'adult'; }
+}
+
+function loadPair() {
+  // Use calibration text on first run / onboarding
+  if(isCalibrationRun()) {
+    const profile = getUserProfile();
+    const cal = CALIBRATION[profile] || CALIBRATION.adult;
+    // Pick a regular pair for the timed paragraph (B)
+    let q; try{ q=JSON.parse(localStorage.getItem('em_contra_q')||'[]'); }catch(e){ q=[]; }
+    q = q.filter(i => i < PAIRS.length);
+    if(!q.length) {
+      const fresh = PAIRS.map((_,i)=>i).sort(()=>Math.random()-0.5);
+      q = fresh;
+    }
+    const idx = q.shift();
+    try{ localStorage.setItem('em_contra_q', JSON.stringify(q)); }catch(e){}
+    currentPair = { a: cal.a, b: PAIRS[idx].b };
+  } else {
+    // Pick unused pair from queue
+    let q; try{ q=JSON.parse(localStorage.getItem('em_contra_q')||'[]'); }catch(e){ q=[]; }
+    q = q.filter(i => i < PAIRS.length);
+    if(!q.length) {
+      const fresh = PAIRS.map((_,i)=>i).sort(()=>Math.random()-0.5);
+      q = fresh;
+    }
+    const idx = q.shift();
+    try{ localStorage.setItem('em_contra_q', JSON.stringify(q)); }catch(e){}
+    currentPair = PAIRS[idx];
+  }
+
+  document.getElementById('text-0').textContent = currentPair.a.text;
+  document.getElementById('text-2').textContent = currentPair.b.text;
+}
+
+function finishBaseline() {
+  const elapsed = performance.now() - baselineMs;
+  baselineMs = elapsed;
+  const words = countWords(currentPair.a.text);
+  baselineWpm = Math.round(words / (elapsed / 60000));
+  // Save WPM for future sessions
+  try{ localStorage.setItem('em_contra_wpm', String(baselineWpm)); }catch(e){}
+  showQuestion(1);
+}
+
+function showQuestion(stage) {
+  setStage(stage);
+  const isBaseline = stage === 1;
+  const data = isBaseline ? currentPair.a : currentPair.b;
+  const qTextEl = document.getElementById(`q-text-${isBaseline ? 0 : 2}`);
+  const qOptsEl = document.getElementById(`q-opts-${isBaseline ? 0 : 2}`);
+  const qFbEl   = document.getElementById(`q-fb-${isBaseline ? 0 : 2}`);
+  const nextBtn  = document.getElementById(isBaseline ? 'next-1' : 'next-3');
+
+  qTextEl.textContent = data.q;
+  qOptsEl.innerHTML = '';
+  qFbEl.textContent = '';
+  nextBtn.style.display = 'none';
+
+  data.opts.forEach((o, i) => {
+    const d = document.createElement('div');
+    d.className = 'q-opt';
+    d.textContent = o;
+    d.onclick = () => {
+      document.querySelectorAll(`#q-opts-${isBaseline ? 0 : 2} .q-opt`).forEach(el => el.classList.add('locked'));
+      const correct = i === data.correct;
+      d.classList.add(correct ? 'correct' : 'wrong');
+      if(!correct) document.querySelectorAll(`#q-opts-${isBaseline ? 0 : 2} .q-opt`)[data.correct].classList.add('correct');
+      if(isBaseline) baselineCorrect = correct; else timedCorrect = correct;
+      qFbEl.textContent = correct ? '✓ Correcto' : 'La respuesta correcta está marcada.';
+      setTimeout(() => { nextBtn.style.display = 'block'; }, 500);
+    };
+    qOptsEl.appendChild(d);
+  });
+}
+
+let _fadeSweepTimer = null;
+let _fadeSweepRAF = null;
+
+function startLineFade(el, duration, onComplete) {
+  // Split text into lines by wrapping each word in a span,
+  // measuring their vertical position, grouping into lines,
+  // then fading each line left-to-right sequentially.
+
+  const text = el.textContent;
+  const words = text.split(/\s+/).filter(Boolean);
+
+  // Wrap each word in a span
+  el.innerHTML = words.map(w => `<span class="fw">${w} </span>`).join('');
+
+  // Measure line groups by top position
+  const spans = Array.from(el.querySelectorAll('.fw'));
+  const lines = [];
+  let currentLineY = null;
+  let currentLine = [];
+
+  spans.forEach(span => {
+    const y = span.getBoundingClientRect().top;
+    if (currentLineY === null || Math.abs(y - currentLineY) > 4) {
+      if (currentLine.length) lines.push(currentLine);
+      currentLine = [span];
+      currentLineY = y;
+    } else {
+      currentLine.push(span);
+    }
+  });
+  if (currentLine.length) lines.push(currentLine);
+
+  if (!lines.length) { if (onComplete) onComplete(); return; }
+
+  const msPerLine = duration / lines.length;
+  let lineIdx = 0;
+
+  function fadeNextLine() {
+    if (lineIdx >= lines.length) {
+      if (onComplete) onComplete();
+      return;
+    }
+    const lineSpans = lines[lineIdx];
+    const lineDuration = msPerLine;
+    const msPerSpan = lineDuration / lineSpans.length;
+
+    lineSpans.forEach((span, i) => {
+      setTimeout(() => {
+        span.style.transition = `opacity ${msPerSpan * 0.8}ms ease`;
+        span.style.opacity = '0';
+      }, i * msPerSpan);
+    });
+
+    lineIdx++;
+    _fadeSweepTimer = setTimeout(fadeNextLine, lineDuration);
+  }
+
+  fadeNextLine();
+}
+
+function stopLineFade(el) {
+  if (_fadeSweepRAF) { cancelAnimationFrame(_fadeSweepRAF); _fadeSweepRAF = null; }
+  if (_fadeSweepTimer) { clearTimeout(_fadeSweepTimer); _fadeSweepTimer = null; }
+  // Hide all spans immediately
+  el.querySelectorAll('.fw').forEach(s => { s.style.transition = 'none'; s.style.opacity = '0'; });
+}
+
+function resetLineFade(el) {
+  if (_fadeSweepRAF) { cancelAnimationFrame(_fadeSweepRAF); _fadeSweepRAF = null; }
+  if (_fadeSweepTimer) { clearTimeout(_fadeSweepTimer); _fadeSweepTimer = null; }
+  // Restore plain text
+  const text = Array.from(el.querySelectorAll('.fw')).map(s => s.textContent).join('').trimEnd();
+  if (text) el.textContent = text;
+  el.style.webkitMaskImage = '';
+  el.style.maskImage = '';
+  el.style.opacity = '1';
+  el.style.transition = 'none';
+}
+
+function startTimed() {
+  setStage(3);
+  timedExpired = false;
+  const textEl = document.getElementById('text-2');
+
+  // Full reset
+  resetLineFade(textEl);
+  void textEl.offsetHeight;
+
+  document.getElementById('listo-2').style.display = 'none';
+  document.getElementById('hint-2').textContent = 'El texto desaparecerá poco a poco — lee con atención';
+
+  // Calculate timed duration: slightly slower than baseline to build confidence
+  // Starts at 85% of natural speed, adapts upward over sessions
+  const words = countWords(currentPair.b.text);
+  const difficultyMultiplier = getTimedDifficulty();
+  const targetMs = Math.round((words / (baselineWpm * difficultyMultiplier)) * 60000);
+  const duration = Math.max(targetMs, 8000); // minimum 8 seconds
+
+  // Double rAF to ensure stage is painted before starting
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    startLineFade(textEl, duration, () => {
+      // Fade complete
+      timedExpired = true;
+      document.getElementById('hint-2').textContent = '¡Tiempo! ¿Recordaste el contenido?';
+      document.getElementById('listo-2').style.display = 'block';
+      document.getElementById('listo-2').textContent = 'Responder pregunta →';
+    });
+  }));
+
+  // Show Listo button halfway through
+  timedTimer = setTimeout(() => {
+    document.getElementById('listo-2').style.display = 'block';
+  }, duration * 0.5);
+}
+
+function finishTimed() {
+  clearTimeout(timedTimer);
+  const textEl = document.getElementById('text-2');
+  stopLineFade(textEl);
+  if(!timedExpired) {
+    timedWpm = baselineWpm;
+  } else {
+    timedWpm = Math.round(baselineWpm * 1.15);
+  }
+  showQuestion(4);
+}
+
+function showResults() {
+  setStage(5);
+  incrementTimedDifficulty(); // ramp up difficulty for next session
+  const compreh = (baselineCorrect ? 1 : 0) + (timedCorrect ? 1 : 0);
+  const compPct = Math.round(compreh / 2 * 100);
+  const displayWpm = Math.max(baselineWpm, 80);
+
+  document.getElementById('result-wpm').textContent = displayWpm;
+  document.getElementById('r-comp').textContent = compPct + '%';
+  document.getElementById('r-comp').style.color = compPct >= 50 ? 'var(--teal)' : 'var(--coral)';
+
+  // Compare to previous session
+  try {
+    const prev = parseInt(localStorage.getItem('em_contra_prev_wpm') || '0');
+    if(prev > 0) {
+      const delta = displayWpm - prev;
+      document.getElementById('r-delta').textContent = (delta >= 0 ? '+' : '') + delta + ' ppm';
+      document.getElementById('r-delta').style.color = delta >= 0 ? 'var(--teal)' : 'var(--coral)';
+    } else {
+      document.getElementById('r-delta').textContent = '—';
+    }
+    localStorage.setItem('em_contra_prev_wpm', String(displayWpm));
+  } catch(e){}
+
+  // Insight
+  let insight = '';
+  if(compPct === 100) {
+    insight = '<strong style="color:var(--violet)">Comprensión perfecta.</strong> Tu lectura es tanto rápida como precisa. La próxima sesión aumentará el ritmo.';
+  } else if(compPct >= 50) {
+    insight = '<strong style="color:var(--violet)">Buen ritmo.</strong> Leíste con velocidad y retuviste lo esencial. Sigue practicando para mejorar la comprensión bajo presión.';
+  } else {
+    insight = '<strong style="color:var(--amber)">Comprensión baja.</strong> El ritmo fue alto pero la retención sufrió. Intenta leer con más atención en los próximos ejercicios.';
+  }
+  document.getElementById('result-insight').innerHTML = insight;
+
+  markComplete();
+}
+
+function restartExercise() {
+  baselineMs = 0; baselineWpm = 0; timedWpm = 0;
+  baselineCorrect = false; timedCorrect = false;
+  clearTimeout(timedTimer);
+  // Reset text visibility
+  document.getElementById('text-2').style.opacity = '1';
+  document.getElementById('ready-screen').classList.remove('hidden');
+  setStage(0);
+}
+
+// Update ready screen messaging
+(function(){
+  if(isCalibrationRun()) {
+    document.querySelector('.ready-sub').textContent = 'Primero leerás un texto corto a tu ritmo — calibramos tu velocidad natural. Luego un párrafo contra el tiempo.';
+    document.querySelectorAll('.ready-step-title')[0].textContent = 'Lee a tu ritmo natural';
+    document.querySelectorAll('.ready-step-desc')[0].textContent = 'Texto corto. Toca Listo al terminar.';
+  } else {
+    document.querySelector('.ready-sub').textContent = 'Lee el párrafo antes de que desaparezca. Luego responde una pregunta de comprensión.';
+  }
+})();
+</script>
+
+</body>
+</html>

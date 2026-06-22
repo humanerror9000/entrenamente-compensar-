@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente en Forma — Actualización Continua</title>
+<script src="brand.js"></script>
+<style>
+:root {
+  --bg:#F8F7FF; --bg2:#F0EEF8; --card:#FFFFFF; --card2:#F4F2FC;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --text:#1A1830; --text2:#4A4468; --text3:#5C5880;
+  /* Brand violet — primary accent */
+  --violet:#6C5CE7; --violet-d:rgba(108,92,231,0.10); --violet-b:rgba(108,92,231,0.25);
+  --violet-deep:#534AB7;
+  /* Teal — action/success/interactive */
+  --teal:#0A7A6A; --teal-d:rgba(10,122,106,0.10); --teal-b:rgba(10,122,106,0.25);
+  /* Supporting palette */
+  --gold:#C9A84C; --gold-l:rgba(201,168,76,0.12); --gold-b:rgba(201,168,76,0.30);
+  --amber:#F5A623; --amber-d:rgba(245,166,35,0.12); --amber-b:rgba(245,166,35,0.28);
+  --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
+  --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
+  --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --muted:#4A4860;
+  --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background:var(--bg); color:var(--text);
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  padding-bottom: 60px;
+}
+
+header {
+  width: 100%; background: var(--bg2);
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
+}
+.logo { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 0.03em; }
+.logo em { color: var(--amber); font-style: normal; }
+.ex-tag {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--teal); background: var(--teal-d);
+  border: 1px solid var(--teal-b); padding: 3px 11px; border-radius: 20px;
+}
+.hstats { display: flex; gap: 16px; }
+.hstat { font-size: 12px; color: var(--text3); display: flex; gap: 5px; align-items: center; }
+.hstat b { color: var(--amber); }
+
+main { width: 100%; max-width: 680px; padding: 22px 16px 0; display: flex; flex-direction: column; gap: 16px; }
+
+/* Progress dots */
+.sdots { display: flex; gap: 5px; }
+.sdot { flex: 1; height: 3px; border-radius: 2px; background: var(--card2); transition: background 0.3s; }
+.sdot.done { background: var(--teal); }
+.sdot.active { background: var(--amber); }
+
+/* Cards */
+.card { background: var(--card); border-radius: var(--r); border: 1px solid var(--border2); overflow: hidden; display: none; }
+.card.show { display: block; }
+#s1.show { display:flex; flex-direction:column; min-height:100dvh; border-radius:0; border-left:none; border-right:none; border-top:none; }
+
+.chead { padding: 15px 20px 13px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.ctitle { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+.csub { font-size: 12px; color: var(--text2); line-height: 1.55; max-width: 360px; }
+.cpills { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+.pill { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; }
+.pt { background: var(--teal-d); color: var(--teal); border: 1px solid var(--teal-b); }
+.pa { background: var(--amber-d); color: var(--amber); border: 1px solid rgba(255,182,39,0.25); }
+.pp { background: var(--purple-d); color: var(--purple); border: 1px solid rgba(167,139,250,0.25); }
+
+.clive { text-align: right; flex-shrink: 0; }
+.clive .cv { font-size: 22px; font-weight: 700; color: var(--teal); line-height: 1; font-variant-numeric: tabular-nums; }
+.clive .cl { font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
+
+.prog-bar { height: 2px; background: var(--card2); }
+.prog-fill { height: 100%; transition: width 0.3s ease, background 0.3s; }
+
+/* Buttons */
+.btn { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: 10px; border: none; cursor: pointer; transition: all 0.15s; }
+.btn-teal { background: var(--teal); color: var(--bg); }
+.btn-teal:hover { opacity: 0.88; }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+.btn-ghost:hover { border-color: var(--border2); color: var(--text); }
+.btn-amber { background: var(--amber); color: var(--bg); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+
+.cfooter { padding:14px 20px 28px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; }
+
+/* ══════════════════
+   MODE SELECTOR
+   ══════════════════ */
+.mode-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.mcard {
+  padding: 14px 10px; border-radius: 12px; border: 1px solid var(--border2);
+  background: var(--card2); cursor: pointer; text-align: center; transition: all 0.18s;
+}
+.mcard:hover { border-color: var(--purple); }
+.mcard.msel { border-color: var(--teal); background: var(--teal-d); }
+.mcard .mico { font-size: 24px; display: block; margin-bottom: 6px; }
+.mcard .mname { font-size: 12px; font-weight: 600; color: var(--text); }
+.mcard .mdesc { font-size: 10px; color: var(--text3); margin-top: 3px; line-height: 1.4; }
+.mcard.msel .mname { color: var(--teal); }
+
+/* n-back level badges */
+.n-selector { display: flex; gap: 8px; justify-content: center; padding: 12px 20px 0; }
+.nbadge {
+  width: 44px; height: 36px; border-radius: 9px; border: 1px solid var(--border2);
+  background: var(--card2); cursor: pointer; text-align: center;
+  font-size: 14px; font-weight: 700; color: var(--text2); transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.nbadge:hover { border-color: var(--amber); color: var(--amber); }
+.nbadge.nsel { border-color: var(--amber); background: var(--amber-d); color: var(--amber); }
+
+/* ══════════════════
+   GAME ARENA
+   ══════════════════ */
+.arena {
+  padding: 20px 24px;
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+}
+
+/* Visual grid (3×3) */
+.vis-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 8px; width: 220px;
+}
+.cell {
+  width: 64px; height: 64px; border-radius: 10px;
+  border: 1px solid var(--border2); background: var(--card2);
+  transition: background 0.1s, border-color 0.1s;
+}
+.cell.lit {
+  background: var(--teal);
+  border-color: var(--teal);
+  box-shadow: 0 0 16px rgba(0,212,200,0.35);
+}
+.cell.match-flash {
+  background: var(--green);
+  border-color: var(--green);
+  box-shadow: 0 0 16px rgba(52,211,153,0.4);
+}
+.cell.miss-flash {
+  background: var(--coral);
+  border-color: var(--coral);
+}
+
+/* Letter stream */
+.letter-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 48px; font-weight: 600;
+  color: var(--amber); letter-spacing: 0.05em;
+  min-height: 68px; display: flex; align-items: center; justify-content: center;
+  min-width: 80px;
+  transition: opacity 0.08s;
+}
+.letter-display.flash-in { opacity: 1; }
+.letter-display.flash-out { opacity: 0; }
+
+/* Dual layout */
+.dual-layout { display: flex; align-items: center; gap: 28px; }
+.dual-sep { width: 1px; height: 100px; background: var(--border2); }
+
+/* Response buttons */
+.response-row { display: flex; gap: 12px; justify-content: center; }
+.resp-btn {
+  padding: 13px 28px; border-radius: 12px; border: 1.5px solid var(--border2);
+  background: var(--card2); cursor: pointer; font-family: 'Poppins', sans-serif;
+  font-size: 14px; font-weight: 600; color: var(--text2); transition: all 0.14s;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.resp-btn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-d); }
+.resp-btn.pressed-correct { border-color: var(--green); background: var(--green-d); color: var(--green); }
+.resp-btn.pressed-wrong { border-color: var(--coral); background: var(--coral-d); color: var(--coral); }
+.resp-btn .rkey { font-size: 10px; opacity: 0.5; font-family: 'JetBrains Mono', monospace; }
+.resp-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Streak / feedback */
+.streak-row { display: flex; gap: 6px; justify-content: center; }
+.streak-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border2); transition: background 0.2s; }
+.streak-dot.hit { background: var(--green); }
+.streak-dot.miss { background: var(--coral); }
+.streak-dot.no-target { background: var(--border2); opacity: 0.3; }
+
+/* Timer ring */
+.timer-wrap { position: relative; width: 48px; height: 48px; }
+.timer-svg { transform: rotate(-90deg); }
+.timer-ring { fill: none; stroke: var(--card2); stroke-width: 3; }
+.timer-prog { fill: none; stroke: var(--teal); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 0.1s linear; }
+.timer-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 13px; font-weight: 700; color: var(--teal); font-variant-numeric: tabular-nums; }
+
+/* N-back indicator */
+.n-indicator {
+  font-size: 11px; font-weight: 700; color: var(--amber);
+  background: var(--amber-d); border: 1px solid rgba(255,182,39,0.2);
+  padding: 3px 10px; border-radius: 20px; letter-spacing: 0.05em;
+}
+
+/* ══════════════════
+   RESULTS
+   ══════════════════ */
+.res-body { padding: 22px 20px; display: flex; flex-direction: column; gap: 14px; }
+.res-top { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.res-box { background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 12px; text-align: center; }
+.res-box .rv { font-size: 38px; font-weight: 300; color: var(--teal); line-height: 1; }
+.res-box .rl { font-size: 10px; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; }
+.res-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.rg { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center; }
+.rg .rv { font-size: 17px; font-weight: 700; }
+.rg .rl { font-size: 10px; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
+.insight { padding: 13px 15px; border-radius: 10px; background: var(--purple-d); border: 1px solid rgba(167,139,250,0.2); font-size: 13px; color: var(--text2); line-height: 1.65; }
+.insight strong { color: var(--purple); }
+.res-btns { display: flex; gap: 10px; justify-content: center; }
+
+/* Sci note */
+.sci { background: var(--card); border: 1px solid var(--border2); border-radius: var(--r); padding: 15px 19px; font-size: 12px; color: var(--text2); line-height: 1.7; }
+.sci-hd { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text3); margin-bottom: 7px; }
+
+/* ══════════════════
+   TUTORIAL
+   ══════════════════ */
+.tut-step { display: none; flex-direction: column; gap: 0; }
+.tut-step.show { display: flex; }
+.tut-head {
+  padding: 12px 20px; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase; color: var(--amber);
+  background: var(--amber-d); border-bottom: 1px solid var(--border);
+}
+.tut-body {
+  padding: 18px 20px; display: flex; flex-direction: column; gap: 12px;
+  font-size: 13px; color:var(--text); line-height: 1.65;
+}
+.tut-body p { color: var(--text2); }
+.tut-body strong { color: var(--text); }
+.tut-rule {
+  background: var(--teal-d); border: 1px solid var(--teal-b);
+  border-radius: 10px; padding: 12px 14px;
+  font-size: 13px; color: var(--text2); line-height: 1.6;
+}
+.tut-rule strong { color: var(--teal); }
+.n-highlight { color: var(--amber); font-weight: 700; font-size: 15px; }
+.tut-footer {
+  padding: 12px 20px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+/* Tutorial example sequence */
+.tut-example { background: var(--card2); border-radius: 10px; padding: 14px 12px; border: 1px solid var(--border); }
+.tut-ex-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; text-align: center; }
+.tut-seq { display: flex; gap: 8px; justify-content: center; align-items: flex-end; }
+.tseq-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.tseq-cell {
+  width: 42px; height: 42px; border-radius: 8px;
+  border: 1px solid var(--border2); background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text3);
+}
+.tseq-cell.lit { background: var(--teal-d); border-color: var(--teal); color: var(--teal); }
+.tseq-cell.match { background: var(--green-d); border-color: var(--green); color: var(--green); }
+.tseq-num { font-size: 11px; font-weight: 600; color: var(--text3); }
+.tseq-arrow { font-size: 10px; color: var(--amber); font-weight: 700; white-space: nowrap; }
+
+/* Timing diagram */
+.tut-timing {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 14px; background: var(--card2); border-radius: 10px; border: 1px solid var(--border);
+}
+.tt-phase { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.tt-dot {
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 1px solid var(--border2); background: var(--card);
+}
+.tt-dot.lit-demo { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 10px rgba(0,212,200,0.3); }
+.tt-dot.resp-demo { background: var(--amber-d); border-color: var(--amber); }
+.tt-label { font-size: 11px; color: var(--text2); text-align: center; line-height: 1.4; }
+.tt-label span { color: var(--text3); font-size: 10px; }
+.tt-arrow { font-size: 18px; color: var(--text3); }
+
+/* Response feedback indicator */
+.resp-feedback {
+  display: flex; gap: 10px; justify-content: center; align-items: center;
+  min-height: 32px;
+}
+.rf-pill {
+  padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.04em; opacity: 0; transition: opacity 0.15s;
+  pointer-events: none;
+}
+.rf-pill.show { opacity: 1; }
+.rf-correct { background: var(--green-d); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+.rf-wrong { background: var(--coral-d); color: var(--coral); border: 1px solid rgba(255,94,91,0.3); }
+.rf-wait { background: var(--card2); color: var(--text3); border: 1px solid var(--border); }
+
+@keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
+.pop { animation: pop 0.18s ease; }
+
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVENESS — applied globally
+   ═══════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Base text scale up */
+  body { font-size: 16px; }
+
+  /* Header: hide XP bar and secondary stats on very small screens */
+  .xp-bar-wrap { display: none !important; }
+  header { padding: 12px 16px !important; }
+
+  /* Main container: full bleed with comfortable padding */
+  main { padding: 16px 12px 0 !important; gap: 14px !important; }
+
+  /* Cards: reduce padding so content breathes */
+  .chead, .card-top { padding: 14px 16px 12px !important; }
+  .ctitle, .card-title { font-size: 17px !important; }
+  .csub, .card-sub { font-size: 14px !important; }
+
+  /* Controls grid: single column on mobile */
+  .controls-grid { grid-template-columns: 1fr !important; padding: 14px 16px !important; }
+
+  /* Question options: bigger tap targets */
+  .q-opt, .qopt, .copt, .ropt { 
+    padding: 14px 16px !important; 
+    font-size: 15px !important; 
+    min-height: 48px !important;
+  }
+
+  /* RSVP word: bigger on mobile */
+  .rsvp-pre, .rsvp-focal, .rsvp-post, .rsvp-word-full { font-size: 36px !important; }
+  .rsvp-phrase { font-size: 22px !important; line-height: 1.4 !important; }
+  .rsvp-viewport { height: 180px !important; padding: 0 16px !important; }
+
+  /* Buttons: full width on mobile where stacked */
+  .cfooter, .q-footer, .drill-footer { 
+    padding: 12px 14px !important; 
+    flex-wrap: wrap !important; 
+    gap: 8px !important;
+  }
+  .btn { font-size: 14px !important; padding: 11px 16px !important; min-height: 44px !important; }
+  .btn-sm { font-size: 13px !important; padding: 10px 14px !important; }
+  .start-btn { font-size: 16px !important; padding: 16px !important; }
+
+  /* Memory slots: 2 col max */
+  .memory-slots { grid-template-columns: 1fr 1fr !important; }
+
+  /* Recall grid: single col on narrow phones */
+  .recall-grid { grid-template-columns: 1fr !important; }
+
+  /* Word flash display */
+  .word-big { font-size: 34px !important; }
+  .mem-item { font-size: 38px !important; }
+
+  /* n-back grid cells */
+  .vis-grid { width: 192px !important; gap: 6px !important; }
+  .cell { width: 56px !important; height: 56px !important; }
+
+  /* Letter display */
+  .letter-display { font-size: 42px !important; }
+
+  /* Mode/tab grids */
+  .mode-grid { grid-template-columns: 1fr !important; }
+  .mode-tabs { grid-template-columns: 1fr !important; }
+  .task-tabs { grid-template-columns: 1fr !important; }
+
+  /* Pillar section padding on index */
+  .pillar, .section-label, .divider { padding-left: 16px !important; padding-right: 16px !important; }
+
+  /* Results boxes */
+  .res-top, .res-grid { gap: 8px !important; }
+  .res-box .rv, .res-big .rv { font-size: 32px !important; }
+
+  /* Sentence display in Contrarreloj */
+  .sentence-display { font-size: 16px !important; line-height: 1.8 !important; }
+  .reading-area { padding: 18px 16px 14px !important; }
+
+  /* Recall slots in Memoria Activa */
+  .recall-slot { min-width: 44px !important; height: 46px !important; font-size: 12px !important; }
+  .recall-area { padding: 14px 14px 16px !important; }
+  .keyboard { gap: 5px !important; }
+  .key { padding: 10px 5px !important; font-size: 14px !important; }
+
+  /* Equation display */
+  .equation-display { font-size: 26px !important; }
+
+  /* Sent display in Contrarreloj */
+  .sent-display { font-size: 18px !important; }
+
+  /* Tutorial steps */
+  .tut-body { padding: 14px 16px !important; font-size: 14px !important; }
+  .tut-footer { padding: 12px 16px !important; }
+  .tut-head { padding: 10px 16px !important; }
+
+  /* Stats header: smaller */
+  .hstats { gap: 10px !important; }
+  .hstat { font-size: 11px !important; }
+  .hstat b { font-size: 12px !important; }
+
+  /* Science note collapsible */
+  .sci-toggle-btn { font-size: 13px !important; }
+}
+
+/* Collapsible science note */
+.sci-details {
+  background: var(--card, #fff);
+  border: 1.5px solid var(--border2, rgba(0,0,0,0.12));
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.sci-details summary {
+  padding: 13px 18px;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; list-style: none;
+  display: flex; align-items: center; justify-content: space-between;
+  color: var(--muted, #888); letter-spacing: 0.03em;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.sci-details summary::-webkit-details-marker { display: none; }
+.sci-details summary::after {
+  content: '▸';
+  font-size: 11px; transition: transform 0.2s;
+  color: var(--muted, #888);
+}
+.sci-details[open] summary::after { transform: rotate(90deg); }
+.sci-details[open] summary {
+  border-bottom: 1.5px solid var(--border, rgba(0,0,0,0.08));
+}
+.sci-details-body {
+  padding: 14px 18px 16px;
+  font-size: 13px; color:var(--text); line-height: 1.7;
+}
+@media (max-width: 640px) {
+  .sci-details summary { font-size: 14px !important; padding: 14px 16px !important; }
+  .sci-details-body { font-size: 14px !important; padding: 14px 16px 16px !important; }
+}
+
+body::before{display:none;}
+
+/* ── Shared design system classes ── */
+.logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
+.logo em{color:var(--gold);font-style:italic;}
+.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.hdr-back:hover{color:var(--text2);}
+.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:13px;}
+.instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
+.instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
+.instr-text strong{color:var(--text);font-weight:600;}
+.card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
+.sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary::-webkit-details-marker{display:none;}
+.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details[open] summary::after{transform:rotate(90deg);}
+.sci-details[open] summary{border-bottom:1px solid var(--border);}
+.sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
+.sci-body strong,.sci-details-body strong{color:var(--text);}
+
+
+/* ── Ready Screen ── */
+.ready-screen {
+  position:fixed; inset:0; z-index:200;
+  background:var(--bg);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:32px 24px; text-align:center;
+  overflow:hidden;
+}
+.ready-screen.hidden { display:none; }
+.ready-screen::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
+@keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-title {
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(32px,8vw,48px); font-weight:300;
+  color:var(--text); line-height:1.1; margin-bottom:12px;
+}
+.ready-title em { color:var(--teal); font-style:italic; }
+.ready-sub{font-size:19px;color:var(--text2);line-height:1.65;text-align:center;margin-bottom:24px;max-width:320px;}
+.ready-sub strong { color:var(--text); font-weight:600; }
+
+/* Animation preview box */
+.ready-preview {
+  width:100%; max-width:340px;
+  background:var(--card); border:1px solid var(--border2);
+  border-radius:16px; overflow:hidden;
+  margin-bottom:28px; min-height:110px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.preview-label {
+  position:absolute; top:10px; left:14px;
+  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  text-transform:uppercase; color:var(--text3);
+}
+.preview-inner {
+  padding:20px 24px; width:100%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+
+.ready-step-text strong { color:var(--text); font-weight:600; }
+
+.ready-btn {
+  width:100%; padding:17px;
+  background:var(--teal); color:var(--bg);
+  border:none; border-radius:13px; cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  font-size:17px; font-weight:700; letter-spacing:0.02em;
+  transition:all 0.2s; -webkit-tap-highlight-color:transparent;
+  margin-bottom:14px;
+}
+.ready-btn:hover { opacity:0.88; transform:translateY(-1px); }
+.ready-btn:active { transform:translateY(0); }
+.ready-hint {
+  font-size:16px; color:var(--text3); line-height:1.5;
+}
+
+@media(max-width:600px) {
+  .ready-screen { padding:24px 16px; }
+  .ready-title { font-size:34px; }
+  .ready-sub { font-size:16px; }
+  .ready-steps { flex-direction:column; gap:8px; }
+  .ready-btn { font-size:16px; padding:16px; }
+}
+
+
+/* ── Brand logo ── */
+.logo, .brand-name {
+  font-family: 'Fredoka', 'Poppins', sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text); letter-spacing: -0.01em;
+  display: flex; align-items: center;
+}
+.logo em, .brand-name em {
+  color: var(--violet); font-style: italic;
+}
+/* ── Primary button — violet ── */
+.btn-teal, .ready-btn {
+  background: var(--violet-deep) !important;
+  color: #fff !important;
+}
+.btn-teal:hover, .ready-btn:hover {
+  background: var(--violet) !important;
+  opacity: 1 !important;
+}
+/* Keep teal for success/feedback states */
+.btn-teal.btn-success { background: var(--teal) !important; }
+
+
+/* Session next button — shown only during session flow */
+.session-next-btn {
+  display: none;
+  width: 100%;
+  padding: 16px;
+  background: var(--violet-deep);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-family: 'Fredoka', 'Poppins', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.session-next-btn:hover { background: var(--violet); }
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<main>
+
+<div class="ready-screen" id="ready-screen">
+  <div class="ready-inner">
+    <div class="ready-title">Actualización <em>Continua</em></div>
+    <div class="ready-sub">¿La celda que se ilumina ahora es la misma de hace uno o más pasos atrás?</div>
+
+    
+    <div style="margin-bottom:24px;"><div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+          <div id="rdy-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:120px;"></div>
+          <div id="rdy-nb-msg" style="font-size:16px;color:var(--text3);min-height:18px;"></div>
+    
+      </div>
+    </div>
+    
+    <div style="width:100%;margin-bottom:16px;">
+      <div style="font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">Nivel — pasos atrás</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="selectRdyN(1,this)" id="rdyn-1" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--violet);background:var(--violet-d);font-family:'Fredoka',sans-serif;font-size:20px;font-weight:600;color:var(--violet);cursor:pointer;">1</button>
+        <button onclick="selectRdyN(2,this)" id="rdyn-2" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);font-family:'Fredoka',sans-serif;font-size:20px;font-weight:600;color:var(--text3);cursor:pointer;">2</button>
+        <button onclick="selectRdyN(3,this)" id="rdyn-3" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);font-family:'Fredoka',sans-serif;font-size:20px;font-weight:600;color:var(--text3);cursor:pointer;">3</button>
+        <button onclick="selectRdyN(4,this)" id="rdyn-4" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);font-family:'Fredoka',sans-serif;font-size:20px;font-weight:600;color:var(--text3);cursor:pointer;">4</button>
+      </div>
+    </div>
+    <div style="width:100%;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">Modo</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="selectRdyMode('visual',this)" id="rdym-visual" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--violet);background:var(--violet-d);cursor:pointer;">
+          <div style="font-size:18px;">◼</div>
+          <div style="font-size:12px;font-weight:600;color:var(--violet);margin-top:4px;">Visual</div>
+        </button>
+        <button onclick="selectRdyMode('letter',this)" id="rdym-letter" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);cursor:pointer;">
+          <div style="font-size:18px;">A</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text3);margin-top:4px;">Letras</div>
+        </button>
+        <button onclick="selectRdyMode('dual',this)" id="rdym-dual" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);cursor:pointer;">
+          <div style="font-size:18px;">◼A</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text3);margin-top:4px;">Dual</div>
+        </button>
+      </div>
+      <div style="margin-top:8px;text-align:center;">
+        <button onclick="document.getElementById('ready-screen').classList.add('hidden');setStage(0);" style="font-size:15px;color:var(--text3);background:none;border:none;cursor:pointer;padding:4px;">¿Primera vez? Ver tutorial →</button>
+      </div>
+    </div>
+    <button class="ready-btn" onclick="dismissReady()">▶ Empecemos</button>
+    <div class="ready-hint">Empieza con 1-back · el tutorial te guía paso a paso</div>
+  </div>
+</div>
+<script>
+(function(){
+  const grid=document.getElementById('rdy-grid');
+  const msg=document.getElementById('rdy-nb-msg');
+  if(!grid) return;
+  // Build 3×3 grid
+  const cells=[];
+  for(let i=0;i<9;i++){
+    const d=document.createElement('div');
+    d.style.cssText='width:46px;height:46px;border-radius:8px;background:var(--card2);border:1px solid var(--border2);transition:all 0.2s;';
+    grid.appendChild(d); cells.push(d);
+  }
+  const seq=[4,7,4,2,7]; // positions; 4 repeats after 1 step (match), 7→4 no match
+  let si=0, prev=-1;
+  function flash(){
+    cells.forEach(c=>{ c.style.background='var(--card2)'; c.style.borderColor='var(--border2)'; });
+    const pos=seq[si%seq.length];
+    cells[pos].style.background='var(--teal)';
+    cells[pos].style.borderColor='var(--teal-b)';
+    const isMatch = pos===prev;
+    if(si>0) msg.innerHTML=isMatch
+      ?'<span style="color:var(--green);font-weight:700;">✓ ¡Igual!</span>'
+      :'<span style="color:var(--coral);font-weight:700;">✗ Diferente</span>';
+    prev=pos; si++;
+    setTimeout(()=>{
+      cells[pos].style.background='var(--card2)';
+      cells[pos].style.borderColor='var(--border2)';
+      msg.textContent='';
+      setTimeout(flash, 500);
+    },800);
+  }
+  setTimeout(flash,600);
+})();
+function dismissReady(){
+  document.getElementById('ready-screen').classList.add('hidden');
+  if(typeof requestWakeLock==='function') requestWakeLock();
+  // Apply selections directly without relying on s0 DOM elements
+  nLevel = _rdyN;
+  mode = _rdyMode;
+  try{ localStorage.setItem('em_continua_settings', JSON.stringify({n:_rdyN, mode:_rdyMode})); }catch(e){}
+  startGame();
+}
+
+// ── Session completion tracking ──
+function markComplete() {
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const all = JSON.parse(localStorage.getItem('em_completions') || '{}');
+    if(!all[today]) all[today] = [];
+    if(!all[today].includes('continua')) all[today].push('continua');
+    localStorage.setItem('em_completions', JSON.stringify(all));
+  } catch(e) {}
+  showSessionUI();
+}
+
+function completeAndContinue() {
+  markComplete();
+  setTimeout(() => goNextOrHome('index.html'), 1200);
+}
+
+
+// ── Session navigation ──
+function getSessionNext() {
+  try {
+    const q = JSON.parse(localStorage.getItem('em_session_queue')||'null');
+    if(!q) return null;
+    const today = new Date().toISOString().slice(0,10);
+    if(q.date !== today) return null; // stale queue
+
+    // Get completed today
+    const all = JSON.parse(localStorage.getItem('em_completions')||'{}');
+    const done = all[today] || [];
+
+    // Find next uncompleted in queue
+    const remaining = q.keys.filter(k => !done.includes(k));
+    if(remaining.length === 0) return 'done'; // all finished
+
+    const urls = {
+      flash:'lectura_flash_rsvp.html', bloques:'lectura_por_bloques_prototype.html',
+      contra:'contrarreloj.html', vision:'vision_paralela.html',
+      saltos:'saltos_visuales.html', memoria:'memoria_activa.html',
+      cats:'actualizacion_categorias.html', continua:'actualizacion_continua.html',
+    };
+    return urls[remaining[0]] ? urls[remaining[0]] + '?session=1' : null;
+  } catch(e) { return null; }
+}
+
+function isInSession() {
+  return new URLSearchParams(window.location.search).get('session') === '1';
+}
+
+function goNextOrHome(homeUrl) {
+  if(!isInSession()) { window.location.href = homeUrl; return; }
+  const next = getSessionNext();
+  if(!next || next === 'done') {
+    window.location.href = 'index.html?done=session';
+  } else {
+    window.location.href = next;
+  }
+}
+
+
+// Update session button labels to reflect position in queue
+function updateSessionBtnLabels() {
+  if(!isInSession()) return;
+  const next = getSessionNext();
+  const isLast = !next || next === 'done';
+  const label = isLast ? 'Finalizar sesión →' : 'Siguiente ejercicio →';
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.textContent = label;
+  });
+}
+
+</script>
+
+
+  <div class="sdots" style="display:none;">
+    <div class="sdot active" id="sd0"></div>
+    <div class="sdot" id="sd1"></div>
+    <div class="sdot" id="sd2"></div>
+  </div>
+
+  <!-- ═══════════════════════
+       STAGE 0: Setup + Tutorial
+       ═══════════════════════ -->
+  <div class="card show" id="s0">
+    <div style="padding:20px 20px 14px;border-bottom:1px solid var(--border);">
+      <div style="font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);margin-bottom:4px;">Actualización <em style="color:var(--teal);font-style:italic;">Continua</em></div>
+      <div style="font-size:15px;color:var(--text2);line-height:1.65;">¿El estímulo que ves ahora es el <strong style="color:var(--text);">mismo</strong> que viste hace <span id="s0-n">1</span> paso?</div>
+    </div>
+
+    <div style="padding:16px 20px 8px;">
+      <div style="font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">Nivel — ¿cuántos pasos atrás?</div>
+      <div style="display:flex;gap:8px;">
+        <div class="nbadge nsel" onclick="selectN(1)" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--teal);background:var(--teal-d);font-size:20px;font-weight:700;color:var(--teal);cursor:pointer;font-family:'Poppins',sans-serif;">1</div>
+        <div class="nbadge" onclick="selectN(2)" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);font-size:20px;font-weight:700;color:var(--text3);cursor:pointer;font-family:'Poppins',sans-serif;">2</div>
+        <div class="nbadge" onclick="selectN(3)" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);font-size:20px;font-weight:700;color:var(--text3);cursor:pointer;font-family:'Poppins',sans-serif;">3</div>
+        <div class="nbadge" onclick="selectN(4)" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);font-size:20px;font-weight:700;color:var(--text3);cursor:pointer;font-family:'Poppins',sans-serif;">4</div>
+      </div>
+      <div style="font-size:16px;color:var(--text3);text-align:center;margin-top:10px;line-height:1.5;" id="n-desc">1-back: comparas con el paso inmediatamente anterior. Ideal para empezar.</div>
+    </div>
+
+    <div style="padding:8px 20px 8px;">
+      <div style="font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">Modo</div>
+      <div style="display:flex;gap:8px;">
+        <div class="mcard msel" data-mode="visual" onclick="selectMode(this,'visual')" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--teal);background:var(--teal-d);cursor:pointer;">
+          <div style="font-size:18px;">◼</div>
+          <div style="font-size:12px;font-weight:600;color:var(--teal);margin-top:4px;">Visual</div>
+        </div>
+        <div class="mcard" data-mode="letter" onclick="selectMode(this,'letter')" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);cursor:pointer;">
+          <div style="font-size:18px;">A</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text3);margin-top:4px;">Letras</div>
+        </div>
+        <div class="mcard" data-mode="dual" onclick="selectMode(this,'dual')" style="flex:1;padding:12px 8px;text-align:center;border-radius:10px;border:1.5px solid var(--border2);background:var(--card2);cursor:pointer;">
+          <div style="font-size:18px;">◼A</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text3);margin-top:4px;">Dual</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:12px 20px 20px;">
+      <button class="btn btn-teal btn-wide" style="font-size:16px;" onclick="startGame()">▶ Comenzar — 10 turnos</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════
+       STAGE 1: Game
+       ═══════════════════════ -->
+  <div class="card" id="s1">
+    <div class="chead" style="padding:12px 20px;">
+      <div style="font-size:16px;color:var(--text3);"><span id="g-n-badge">1-back</span> · <span id="g-title"></span></div>
+      <div class="clive"><div class="cv" id="g-trial">1/20</div><div class="cl">turno</div></div>
+    </div>
+    <span id="g-n-label" style="display:none">1</span>
+    <div class="prog-bar"><div class="prog-fill" id="g-fill" style="width:0%;background:var(--teal)"></div></div>
+
+    <div class="arena" id="arena"></div>
+
+    <!-- Response feedback — confirms tap without touching stimulus -->
+    <div class="resp-feedback">
+      <div class="rf-pill rf-correct" id="rf-correct">✓ Registrado</div>
+      <div class="rf-pill rf-wrong" id="rf-wrong">✗ Falsa alarma</div>
+      <div class="rf-pill rf-wait" id="rf-wait">Observa…</div>
+    </div>
+
+    <div style="padding:2px 20px 8px">
+      <div class="streak-row" id="streak-row"></div>
+    </div>
+
+    <div class="cfooter">
+      <div style="font-size:15px;color:var(--text3)" id="g-hint">Memoriza los primeros turnos — luego compara</div>
+      <button class="btn btn-ghost btn-sm" onclick="abortGame()">✕ Salir</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════
+       STAGE 2: Results
+       ═══════════════════════ -->
+  <div class="card" id="s2">
+    <div class="chead">
+      <div><div class="ctitle">Resultados</div></div>
+    </div>
+    <div class="res-body" id="res-body"></div>
+  </div>
+
+  <details class="sci-details session-hide">
+  <summary>⚗ Por qué el n-back actualiza la memoria de trabajo</summary>
+  <div class="sci-details-body">El n-back exige <em>codificación continua, monitoreo y actualización</em> — los tres procesos del componente ejecutivo de la memoria de trabajo. A diferencia de las tareas de amplitud (Memoria Activa), que entrenan el <em>mantenimiento</em> bajo interferencia, el n-back entrena la capacidad de <em>descartar</em> lo obsoleto y priorizar lo nuevo. El modo dual amplifica el efecto al requerir actualización simultánea en dos modalidades. Una reciente revisión en Nature Human Behaviour (2023) con 460 participantes en tres RCTs mostró que la mejora en n-back no entrenado media la transferencia a razonamiento matricial — el indicador más limpio de inteligencia fluida.</div>
+</details>
+
+</main>
+
+<script>
+// ─────────────────────────────────────────
+// Config & State
+// ─────────────────────────────────────────
+const LETTERS = 'BCDFGHJKLMNPRSTV'; // consonants only — less confusable
+const GRID_SIZE = 9;
+const TOTAL_TRIALS = 10;
+const STIM_MS = 500;   // stimulus visible duration
+const ISI_MS = 1500;   // inter-stimulus interval (stimulus off + response window)
+const TARGET_PROB = 0.33; // ~1/3 trials are targets
+
+let mode = 'visual';  // 'visual' | 'letter' | 'dual'
+let nLevel = 1;
+let trialIdx = 0;
+let history = [];      // {pos, letter} for each trial
+let responses = [];    // {isTarget, responded, correct} for each trial
+let gameTimer = null;
+let phase = 'stimulus'; // 'stimulus' | 'response'
+let stimulusActive = false;
+let currentPos = -1;
+let currentLetter = '';
+let hits = 0, misses = 0, falseAlarms = 0, correctRejections = 0;
+let respLocked = false;
+
+const N_DESCS = {
+  1: '1-back: compara con el turno inmediatamente anterior. Ideal para comenzar.',
+  2: '2-back: compara con 2 turnos atrás — nivel de entrenamiento estándar recomendado por la investigación.',
+  3: '3-back: muy exigente. Recomendado después de dominar el 2-back durante varias sesiones.',
+  4: '4-back: nivel de experto. Solo para usuarios con rendimiento alto sostenido en 3-back.',
+};
+
+// ─────────────────────────────────────────
+// Stage nav
+// ─────────────────────────────────────────
+function setStage(n) {
+  ['s0','s1','s2'].forEach((id,i)=>document.getElementById(id).classList.toggle('show',i===n));
+  ['sd0','sd1','sd2'].forEach((id,i)=>{
+    const d=document.getElementById(id);
+    d.classList.remove('active','done');
+    if(i<n) d.classList.add('done'); else if(i===n) d.classList.add('active');
+  });
+}
+
+// ─────────────────────────────────────────
+// Tutorial step nav
+// ─────────────────────────────────────────
+function tutStep(n) {
+  document.querySelectorAll('.tut-step').forEach(el=>el.classList.remove('show'));
+  const step=document.getElementById('tut-'+n);
+  if(step) step.classList.add('show');
+  // Keep n-label in sync
+  document.querySelectorAll('.tut-n-label, #tut-n-label, #tut-n-first').forEach(el=>{
+    if(el) el.textContent=nLevel;
+  });
+}
+
+// ─────────────────────────────────────────
+// Response feedback pills
+// ─────────────────────────────────────────
+let fbTimer=null;
+function showFeedback(type) {
+  ['rf-correct','rf-wrong','rf-wait'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.remove('show');
+  });
+  clearTimeout(fbTimer);
+  const el=document.getElementById('rf-'+type);
+  if(el) {
+    el.classList.add('show');
+    fbTimer=setTimeout(()=>el.classList.remove('show'), 700);
+  }
+}
+function showWaiting() {
+  ['rf-correct','rf-wrong'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.remove('show');
+  });
+  const w=document.getElementById('rf-wait');
+  if(w) w.classList.add('show');
+}
+function hideAllFeedback() {
+  ['rf-correct','rf-wrong','rf-wait'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.remove('show');
+  });
+}
+function selectMode(el, m) {
+  mode=m;
+  if(!el) return; // called without DOM element
+  document.querySelectorAll('.mcard').forEach(c=>{
+    c.classList.remove('msel');
+    c.style.borderColor='var(--border2)';
+    c.style.background='var(--card2)';
+    const lbl=c.querySelector('div:last-child');
+    if(lbl) lbl.style.color='var(--text3)';
+  });
+  el.classList.add('msel');
+  el.style.borderColor='var(--teal)';
+  el.style.background='var(--teal-d)';
+  const lbl=el.querySelector('div:last-child');
+  if(lbl) lbl.style.color='var(--teal)';
+}
+
+function selectN(n) {
+  nLevel=n;
+  document.querySelectorAll('.nbadge').forEach(b=>{
+    b.classList.remove('nsel');
+    b.style.borderColor='var(--border2)';
+    b.style.background='var(--card2)';
+    b.style.color='var(--text3)';
+  });
+  const sel=document.querySelector(`.nbadge[onclick*="selectN(${n})"]`);
+  if(sel){
+    sel.classList.add('nsel');
+    sel.style.borderColor='var(--teal)';
+    sel.style.background='var(--teal-d)';
+    sel.style.color='var(--teal)';
+  }
+  const s0n=document.getElementById('s0-n'); if(s0n) s0n.textContent=n;
+  const nd=document.getElementById('n-desc');
+  const descs={1:'1-back: comparas con el paso inmediatamente anterior. Ideal para empezar.',
+    2:'2-back: compara con 2 pasos atrás. Nivel estándar recomendado.',
+    3:'3-back: muy exigente. Solo después de dominar el 2-back.',
+    4:'4-back: nivel experto.'};
+  if(nd) nd.textContent=descs[n]||'';
+}
+
+function buildArena() {
+  const arena = document.getElementById('arena');
+  arena.innerHTML='';
+
+  if(mode==='visual') {
+    arena.appendChild(makeGrid());
+    arena.appendChild(makeResponseRow(['¡Coincide!'], ['pos']));
+  } else if(mode==='letter') {
+    arena.appendChild(makeLetterDisplay());
+    arena.appendChild(makeResponseRow(['¡Coincide!'], ['let']));
+  } else {
+    // Dual: grid left + letter right
+    const wrap=document.createElement('div');
+    wrap.className='dual-layout';
+    wrap.appendChild(makeGrid());
+    const sep=document.createElement('div'); sep.className='dual-sep';
+    wrap.appendChild(sep);
+    wrap.appendChild(makeLetterDisplay());
+    arena.appendChild(wrap);
+    arena.appendChild(makeResponseRow(['Posición', 'Letra'], ['pos','let']));
+  }
+
+  // Streak dots
+  const row=document.getElementById('streak-row');
+  row.innerHTML='';
+  for(let i=0;i<TOTAL_TRIALS-nLevel;i++){
+    const d=document.createElement('div'); d.className='streak-dot'; d.id='sd-trial-'+i;
+    row.appendChild(d);
+  }
+}
+
+function makeGrid() {
+  const g=document.createElement('div'); g.className='vis-grid';
+  for(let i=0;i<GRID_SIZE;i++){
+    const c=document.createElement('div'); c.className='cell'; c.id='cell-'+i;
+    g.appendChild(c);
+  }
+  return g;
+}
+
+function makeLetterDisplay() {
+  const d=document.createElement('div'); d.className='letter-display flash-in'; d.id='letter-disp';
+  d.textContent='·';
+  return d;
+}
+
+function makeResponseRow(labels, types) {
+  const row=document.createElement('div'); row.className='response-row';
+  labels.forEach((lbl,i)=>{
+    const b=document.createElement('button');
+    b.className='resp-btn'; b.id='resp-'+types[i];
+    b.innerHTML=`${lbl}<span class="rkey">${types[i]==='pos'?'← A':'→ L'}</span>`;
+    b.addEventListener('click',()=>respond(types[i]));
+    row.appendChild(b);
+  });
+  return row;
+}
+
+// ─────────────────────────────────────────
+// Game logic
+// ─────────────────────────────────────────
+function startGame() {
+  requestWakeLock();
+  trialIdx=0; history=[]; responses=[];
+  hits=0; misses=0; falseAlarms=0; correctRejections=0;
+  respLocked=false;
+
+  document.getElementById('g-title').textContent=nLevel+'-back '+{visual:'Visual',letter:'Letras',dual:'Dual'}[mode];
+  document.getElementById('g-n-label').textContent=nLevel;
+  document.getElementById('g-n-badge').textContent=nLevel+'-back';
+  const _hn=document.getElementById('hdr-n'); if(_hn) _hn.textContent=nLevel+'-back';
+  document.getElementById('g-fill').style.width='0%';
+  document.getElementById('g-trial').textContent='1/'+TOTAL_TRIALS;
+
+  buildArena();
+  setStage(1);
+  // Brief countdown before first stimulus
+  document.getElementById('g-hint').textContent='Preparando…';
+  setTimeout(runTrial, 800);
+}
+
+function runTrial() {
+  if(trialIdx >= TOTAL_TRIALS) { endGame(); return; }
+
+  document.getElementById('g-trial').textContent=(trialIdx+1)+'/'+TOTAL_TRIALS;
+  document.getElementById('g-fill').style.width=((trialIdx)/TOTAL_TRIALS*100)+'%';
+  respLocked=false;
+  showWaiting();
+
+  // Generate stimulus
+  const isTarget = trialIdx >= nLevel && Math.random() < TARGET_PROB;
+  let pos, letter;
+
+  if(isTarget) {
+    const ref=history[trialIdx-nLevel];
+    pos=(mode==='visual'||mode==='dual') ? ref.pos : Math.floor(Math.random()*GRID_SIZE);
+    letter=(mode==='letter'||mode==='dual') ? ref.letter : LETTERS[Math.floor(Math.random()*LETTERS.length)];
+  } else {
+    // Generate non-matching stimulus
+    let attempts=0;
+    do {
+      pos=Math.floor(Math.random()*GRID_SIZE);
+      letter=LETTERS[Math.floor(Math.random()*LETTERS.length)];
+      attempts++;
+      if(attempts>20) break;
+    } while(
+      trialIdx>=nLevel && (
+        (mode!=='letter' && pos===history[trialIdx-nLevel].pos) ||
+        (mode!=='visual' && letter===history[trialIdx-nLevel].letter)
+      )
+    );
+  }
+
+  history.push({pos, letter});
+  currentPos=pos; currentLetter=letter;
+
+  // Determine actual target status per modality
+  let posTarget=false, letTarget=false;
+  if(trialIdx>=nLevel) {
+    const ref=history[trialIdx-nLevel];
+    posTarget=(mode!=='letter') && pos===ref.pos;
+    letTarget=(mode!=='visual') && letter===ref.letter;
+  }
+  const anyTarget = posTarget||letTarget;
+  responses.push({posTarget, letTarget, anyTarget, posResponded:false, letResponded:false});
+
+  // Show stimulus
+  showStimulus(pos, letter);
+
+  // Hide after STIM_MS
+  gameTimer=setTimeout(()=>{
+    hideStimulus();
+    // Response window
+    document.getElementById('g-hint').textContent = trialIdx>=nLevel
+      ? (anyTarget ? '¡Hay coincidencia! — responde' : 'Sin coincidencia — espera')
+      : 'Observa y memoriza…';
+    gameTimer=setTimeout(()=>{
+      // Score any non-response
+      scoreNoResponse(trialIdx);
+      trialIdx++;
+      runTrial();
+    }, ISI_MS);
+  }, STIM_MS);
+}
+
+function showStimulus(pos, letter) {
+  if(mode==='visual'||mode==='dual') {
+    const cell=document.getElementById('cell-'+pos);
+    if(cell) cell.classList.add('lit');
+  }
+  if(mode==='letter'||mode==='dual') {
+    const ld=document.getElementById('letter-disp');
+    if(ld) { ld.textContent=letter; ld.className='letter-display flash-in'; }
+  }
+}
+
+function hideStimulus() {
+  document.querySelectorAll('.cell.lit').forEach(c=>c.classList.remove('lit'));
+  const ld=document.getElementById('letter-disp');
+  if(ld) { ld.className='letter-display flash-out'; setTimeout(()=>{ if(ld) ld.textContent='·'; ld&&(ld.className='letter-display flash-in'); },100); }
+}
+
+function respond(type) {
+  if(respLocked) return;
+  if(trialIdx>=TOTAL_TRIALS) return;
+  const r=responses[trialIdx];
+  if(!r) return;
+
+  const isTarget = type==='pos' ? r.posTarget : r.letTarget;
+  const btn=document.getElementById('resp-'+type);
+
+  if(isTarget) {
+    hits++;
+    if(type==='pos') r.posResponded=true; else r.letResponded=true;
+    if(btn) { btn.classList.add('pressed-correct'); setTimeout(()=>btn.classList.remove('pressed-correct'),400); }
+    showFeedback('correct');
+    // Flash cell green briefly
+    const cell=document.getElementById('cell-'+currentPos);
+    if(cell&&(mode==='visual'||mode==='dual')) { cell.classList.remove('lit'); cell.classList.add('match-flash'); setTimeout(()=>cell.classList.remove('match-flash'),400); }
+    updateStreak(trialIdx-nLevel, 'hit');
+    if(mode!=='dual') {
+      respLocked=true;
+      clearTimeout(gameTimer);
+      setTimeout(()=>{ hideAllFeedback(); trialIdx++; runTrial(); },400);
+    }
+  } else {
+    falseAlarms++;
+    if(btn) { btn.classList.add('pressed-wrong'); setTimeout(()=>btn.classList.remove('pressed-wrong'),400); }
+    showFeedback('wrong');
+    const cell=document.getElementById('cell-'+currentPos);
+    if(cell&&(mode==='visual'||mode==='dual')) { cell.classList.add('miss-flash'); setTimeout(()=>cell.classList.remove('miss-flash'),300); }
+    updateStreak(trialIdx-nLevel, 'miss');
+  }
+  (document.getElementById('hdr-acc')||{textContent:''}).textContent=calcAcc()+'%';
+}
+
+function scoreNoResponse(idx) {
+  if(idx<nLevel) return;
+  const r=responses[idx];
+  if(!r) return;
+  if(r.posTarget && !r.posResponded) { misses++; updateStreak(idx-nLevel,'miss'); }
+  if(r.letTarget && !r.letResponded) { misses++; }
+  if(!r.anyTarget) { correctRejections++; updateStreak(idx-nLevel,'cr'); }
+  (document.getElementById('hdr-acc')||{textContent:''}).textContent=calcAcc()+'%';
+}
+
+function calcAcc() {
+  const total=hits+misses+falseAlarms+correctRejections;
+  return total>0?Math.round((hits+correctRejections)/total*100):0;
+}
+
+function updateStreak(idx, type) {
+  const dot=document.getElementById('sd-trial-'+idx);
+  if(!dot) return;
+  if(type==='hit') dot.className='streak-dot hit';
+  else if(type==='miss') dot.className='streak-dot miss';
+  else dot.className='streak-dot no-target';
+}
+
+function abortGame() {
+  clearTimeout(gameTimer);
+  hideStimulus();
+  setStage(0);
+}
+
+// ─────────────────────────────────────────
+// End game
+// ─────────────────────────────────────────
+function endGame() {
+  releaseWakeLock();
+  clearTimeout(gameTimer);
+  hideStimulus();
+
+  const acc=calcAcc();
+  const dprime = hits>0||misses>0 ? (hits/(hits+misses||1) - falseAlarms/(falseAlarms+correctRejections||1)).toFixed(2) : '–';
+  (document.getElementById('hdr-acc')||{textContent:''}).textContent=acc+'%';
+
+  // Recommend next n-level
+  let nextN=nLevel, recommendation='';
+  if(acc>=85 && nLevel<4) {
+    nextN=nLevel+1;
+    recommendation=`<strong>Rendimiento excelente.</strong> La próxima sesión avanzará a <strong>${nextN}-back</strong>. El aumento de nivel es la señal más clara de mejora real en actualización de memoria de trabajo.`;
+  } else if(acc>=70) {
+    recommendation=`<strong>Progreso sólido.</strong> Mantén el nivel ${nLevel}-back durante 2–3 sesiones más para consolidar antes de avanzar.`;
+  } else if(acc<55 && nLevel>1) {
+    nextN=nLevel-1;
+    recommendation=`<strong>Ajuste de nivel.</strong> La próxima sesión comenzará en <strong>${nextN}-back</strong>. El entrenamiento solo es efectivo justo en el límite de tu capacidad — un nivel por debajo es más productivo que fallar constantemente.`;
+  } else {
+    recommendation=`<strong>En desarrollo.</strong> El n-back se vuelve más intuitivo con la práctica diaria. Mantén el nivel actual.`;
+  }
+
+  document.getElementById('res-body').innerHTML=`
+    <div class="res-top">
+      <div class="res-box"><div class="rv">${acc}%</div><div class="rl">Precisión global</div></div>
+      <div class="res-box"><div class="rv">${nLevel}-back</div><div class="rl">Nivel completado</div></div>
+    </div>
+    <div class="res-grid">
+      <div class="rg"><div class="rv" style="color:var(--green)">${hits}</div><div class="rl">Aciertos</div></div>
+      <div class="rg"><div class="rv" style="color:var(--coral)">${misses}</div><div class="rl">Omisiones</div></div>
+      <div class="rg"><div class="rv" style="color:var(--amber)">${falseAlarms}</div><div class="rl">Falsas alarmas</div></div>
+    </div>
+    <div class="insight">${recommendation}</div>
+    <div class="res-btns">
+      <button class="btn btn-ghost session-hide" onclick="resetToSetup()">← Cambiar modo</button>
+      <button class="session-next-btn" onclick="completeAndContinue()">Siguiente ejercicio →</button>
+      <button class="btn btn-teal" onclick="startGame()">Repetir sesión →</button>
+    </div>
+  `;
+  setStage(2);
+  markComplete();
+  // Reveal session-next-btn now that it exists in the DOM
+  if(isInSession()) {
+    document.querySelectorAll('.session-next-btn').forEach(b => {
+      b.style.cssText = 'display:block!important;width:100%;padding:16px;background:var(--violet-deep);color:#fff;border:none;border-radius:13px;font-family:Fredoka,Poppins,sans-serif;font-size:17px;font-weight:600;cursor:pointer;margin-top:8px;';
+    });
+    document.querySelectorAll('.session-hide').forEach(b => b.style.display='none');
+  }
+}
+
+function resetToSetup() { setStage(0); }
+
+// Keyboard support
+document.addEventListener('keydown', e=>{
+  if(e.code==='KeyA') respond('pos');
+  if(e.code==='KeyL') respond('let');
+});
+
+setStage(0);
+
+// ── Show session navigation UI ──
+function showSessionUI() {
+  if(!isInSession()) return;
+  updateSessionBtnLabels();
+  // Show the next button
+  document.querySelectorAll('.session-next-btn').forEach(b => {
+    b.style.cssText = 'display:block!important';
+  });
+  // Hide the repeat/reset buttons
+  document.querySelectorAll('.session-hide').forEach(b => {
+    b.style.cssText = 'display:none!important';
+  });
+}
+
+// ── Wake Lock: prevent screen sleep during exercise ──
+let _wakeLock = null;
+async function requestWakeLock() {
+  if(!('wakeLock' in navigator)) return;
+  try {
+    _wakeLock = await navigator.wakeLock.request('screen');
+  } catch(e) {}
+}
+function releaseWakeLock() {
+  if(_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
+}
+// Re-acquire on tab visibility change
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible') requestWakeLock();
+});
+
+let _rdyN = 1, _rdyMode = 'visual';
+
+function selectRdyN(n, el){
+  _rdyN = n;
+  [1,2,3,4].forEach(i=>{
+    const b=document.getElementById('rdyn-'+i);
+    if(!b)return;
+    const sel=i===n;
+    b.style.borderColor=sel?'var(--violet)':'var(--border2)';
+    b.style.background=sel?'var(--violet-d)':'var(--card2)';
+    b.style.color=sel?'var(--violet)':'var(--text3)';
+  });
+}
+
+function selectRdyMode(mode, el){
+  _rdyMode = mode;
+  ['visual','letter','dual'].forEach(m=>{
+    const b=document.getElementById('rdym-'+m);
+    if(!b)return;
+    const sel=m===mode;
+    b.style.borderColor=sel?'var(--violet)':'var(--border2)';
+    b.style.background=sel?'var(--violet-d)':'var(--card2)';
+    b.querySelector('div:last-child').style.color=sel?'var(--violet)':'var(--text3)';
+  });
+}
+
+// Load saved settings
+(function loadSavedContinua(){
+  const saved = localStorage.getItem('em_continua_settings');
+  if(saved){
+    try{
+      const s=JSON.parse(saved);
+      if(s.n) selectRdyN(s.n, document.getElementById('rdyn-'+s.n));
+      if(s.mode) selectRdyMode(s.mode, document.getElementById('rdym-'+s.mode));
+    }catch(e){}
+  }
+})();
+
+</script>
+
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  </a>
+</div>
+
+</body>
+</html>
