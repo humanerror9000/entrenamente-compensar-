@@ -22,6 +22,7 @@
   --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
   --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
   --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --amber-deep:#A16707; --gold-deep:#8A712A; --green-deep:#298454; --coral-deep:#D93737;
   --muted:#4A4860;
   --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
 }
@@ -427,21 +428,21 @@ body::before{display:none;}
 
 /* ── Shared design system classes ── */
 .logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
-.logo em{color:var(--gold);font-style:italic;}
-.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.logo em{color:var(--gold-deep);font-style:italic;}
+.hdr-back{font-size:17px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
 .hdr-back:hover{color:var(--text2);}
-.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
-.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
-.hdr-stat b{color:var(--teal);font-size:13px;}
+.hdr-ex-name{font-size:17px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:17px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:15px;}
 .instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
 .instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
 .instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
 .instr-text strong{color:var(--text);font-weight:600;}
 .card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
 .sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
-.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary{padding:13px 18px;font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
 .sci-details summary::-webkit-details-marker{display:none;}
-.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details summary::after{content:'▸';font-size:12px;transition:transform 0.2s;color:var(--text3);}
 .sci-details[open] summary::after{transform:rotate(90deg);}
 .sci-details[open] summary{border-bottom:1px solid var(--border);}
 .sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
@@ -464,8 +465,8 @@ body::before{display:none;}
 }
 .ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
 @keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
-.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet-deep);font-style:italic;}
 .ready-title {
   font-family:'Poppins',sans-serif;
   font-size:clamp(32px,8vw,48px); font-weight:300;
@@ -486,7 +487,7 @@ body::before{display:none;}
 }
 .preview-label {
   position:absolute; top:10px; left:14px;
-  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  font-size:12px; font-weight:700; letter-spacing:0.10em;
   text-transform:uppercase; color:var(--text3);
 }
 .preview-inner {
@@ -578,11 +579,11 @@ body::before{display:none;}
   <div style="width:88px;height:88px;border-radius:28px;background:var(--amber-d);
     border:1.5px solid var(--amber-b);display:flex;align-items:center;justify-content:center;
     font-size:42px;margin-bottom:28px;box-shadow:0 0 40px rgba(245,166,35,0.15);">🧠</div>
-  <div id="first-intro-pos" style="font-size:14px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
-    color:var(--amber);margin-bottom:10px;">Ejercicio 1 de 3</div>
+  <div id="first-intro-pos" style="font-size:16px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+    color:var(--amber-deep);margin-bottom:10px;">Ejercicio 1 de 3</div>
   <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,7vw,40px);
     font-weight:300;color:var(--text);line-height:1.2;margin-bottom:16px;">
-    Actualización por <em style="color:var(--amber);font-style:italic;">Categorías</em>
+    Actualización por <em style="color:var(--amber-deep);font-style:italic;">Categorías</em>
   </div>
   <div style="font-size:16px;color:var(--text2);line-height:1.7;max-width:300px;margin-bottom:12px;">
     Empezaremos con un ejercicio que entrena tu <strong style="color:var(--text);">memoria de trabajo</strong>.
@@ -604,11 +605,11 @@ body::before{display:none;}
     
     <div style="display:flex;gap:12px;justify-content:center;margin-bottom:28px;">
       <div id="rdy-slot-a" style="width:110px;background:var(--teal-d);border:1px solid var(--teal-b);border-radius:10px;padding:10px 12px;text-align:center;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">🐾 Animales</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">🐾 Animales</div>
         <div id="rdy-slot-a-word" style="font-family:'Poppins',sans-serif;font-size:20px;color:var(--text);min-height:28px;transition:opacity 0.2s;">–</div>
       </div>
       <div id="rdy-slot-b" style="width:110px;background:var(--amber-d);border:1px solid var(--amber-b);border-radius:10px;padding:10px 12px;text-align:center;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">💼 Oficios</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--amber-deep);margin-bottom:6px;">💼 Oficios</div>
         <div id="rdy-slot-b-word" style="font-family:'Poppins',sans-serif;font-size:20px;color:var(--text);min-height:28px;transition:opacity 0.2s;">–</div>
       </div>
     </div>
@@ -743,23 +744,23 @@ function updateSessionBtnLabels() {
     <div id="s0-adult">
       <div style="padding:20px 20px 14px;border-bottom:1px solid var(--border);">
         <div style="font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);margin-bottom:4px;">Actualización por <em style="color:var(--teal);font-style:italic;">Categorías</em></div>
-        <div style="font-size:15px;color:var(--text2);line-height:1.6;">Recuerda <strong style="color:var(--text);">solo la última palabra</strong> de cada categoría. ¿Cuántas categorías quieres entrenar?</div>
+        <div style="font-size:17px;color:var(--text2);line-height:1.6;">Recuerda <strong style="color:var(--text);">solo la última palabra</strong> de cada categoría. ¿Cuántas categorías quieres entrenar?</div>
       </div>
       <div style="padding:16px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
         <div class="dopt dsel" id="diff-easy" onclick="setDiff('easy')" style="text-align:center;padding:14px 8px;">
           <div style="font-size:26px;font-weight:300;color:var(--teal);font-family:'Poppins',sans-serif;">2</div>
-          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">categorías</div>
-          <div style="font-size:15px;color:var(--text2);margin-top:6px;line-height:1.4;">Para empezar</div>
+          <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">categorías</div>
+          <div style="font-size:17px;color:var(--text2);margin-top:6px;line-height:1.4;">Para empezar</div>
         </div>
         <div class="dopt" id="diff-medium" onclick="setDiff('medium')" style="text-align:center;padding:14px 8px;">
           <div style="font-size:26px;font-weight:300;color:var(--teal);font-family:'Poppins',sans-serif;">3</div>
-          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">categorías</div>
-          <div style="font-size:15px;color:var(--text2);margin-top:6px;line-height:1.4;">Desafío medio</div>
+          <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">categorías</div>
+          <div style="font-size:17px;color:var(--text2);margin-top:6px;line-height:1.4;">Desafío medio</div>
         </div>
         <div class="dopt" id="diff-hard" onclick="setDiff('hard')" style="text-align:center;padding:14px 8px;">
           <div style="font-size:26px;font-weight:300;color:var(--teal);font-family:'Poppins',sans-serif;">4</div>
-          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">categorías</div>
-          <div style="font-size:15px;color:var(--text2);margin-top:6px;line-height:1.4;">Máxima dificultad</div>
+          <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">categorías</div>
+          <div style="font-size:17px;color:var(--text2);margin-top:6px;line-height:1.4;">Máxima dificultad</div>
         </div>
       </div>
       <div style="padding:0 20px 18px;">
@@ -770,7 +771,7 @@ function updateSessionBtnLabels() {
     <!-- Child s0 — friendly fallback -->
     <div id="s0-child" style="display:none;padding:40px 28px;text-align:center;">
       <div style="font-size:64px;margin-bottom:16px;line-height:1;">🧠</div>
-      <div style="font-family:'Fredoka',sans-serif;font-size:34px;font-weight:600;color:var(--violet);margin-bottom:10px;">¡Juego de Categorías!</div>
+      <div style="font-family:'Fredoka',sans-serif;font-size:34px;font-weight:600;color:var(--violet-deep);margin-bottom:10px;">¡Juego de Categorías!</div>
       <div style="font-size:16px;color:var(--text2);line-height:1.7;margin-bottom:32px;">Vas a ver palabras una por una.<br>¡Recuerda la <strong style="color:var(--text);">última palabra</strong> de cada grupo!</div>
       <button onclick="startGame()" style="width:100%;padding:20px;background:linear-gradient(135deg,var(--violet-deep),#6c5ce7);color:#fff;border:none;border-radius:18px;font-family:'Fredoka',sans-serif;font-size:22px;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgba(83,74,183,0.4);">¡Empezar! 🚀</button>
     </div>
@@ -782,7 +783,7 @@ function updateSessionBtnLabels() {
       <div style="font-size:16px;color:var(--text3);">Recuerda la última de cada categoría</div>
       <div class="clive"><div class="cv" id="g-prog">1/12</div><div class="cl">palabra</div></div>
     </div>
-    <div class="prog-bar"><div class="prog-fill" id="g-fill" style="width:0%;background:var(--amber)"></div></div>
+    <div class="prog-bar"><div class="prog-fill" id="g-fill" style="width:0%;background:var(--amber-deep)"></div></div>
 
     <!-- Streaming phase -->
     <div id="stream-phase">
@@ -813,7 +814,7 @@ function updateSessionBtnLabels() {
         </div>
       </div>
       <div class="cfooter">
-        <div style="font-size:12px;color:var(--muted)">Las ranuras muestran la última palabra guardada de cada categoría</div>
+        <div style="font-size:14px;color:var(--muted)">Las ranuras muestran la última palabra guardada de cada categoría</div>
         <button class="btn btn-ghost btn-sm" onclick="abortGame()">✕ Salir</button>
       </div>
     </div>
@@ -821,14 +822,14 @@ function updateSessionBtnLabels() {
     <!-- Recall phase (hidden until stream ends) -->
     <div id="recall-phase" style="display:none">
       <div style="padding:14px 20px 10px;background:var(--amber-m);border-bottom:1.5px solid var(--border)">
-        <div style="font-size:13px;font-weight:700;color:var(--amber)">¿Cuál fue la última palabra de cada categoría?</div>
-        <div style="font-size:12px;color:var(--ink2);margin-top:2px">Elige una respuesta por categoría</div>
+        <div style="font-size:15px;font-weight:700;color:var(--amber-deep)">¿Cuál fue la última palabra de cada categoría?</div>
+        <div style="font-size:14px;color:var(--ink2);margin-top:2px">Elige una respuesta por categoría</div>
       </div>
       <div class="recall-area">
         <div class="recall-grid" id="recall-grid"></div>
       </div>
       <div class="cfooter">
-        <div style="font-size:12px;color:var(--muted)" id="recall-hint">Responde las <span id="recall-remaining">4</span> categorías para continuar</div>
+        <div style="font-size:14px;color:var(--muted)" id="recall-hint">Responde las <span id="recall-remaining">4</span> categorías para continuar</div>
         <button class="btn btn-teal" id="next-round-btn" style="display:none" onclick="nextRound()">Siguiente ronda →</button>
       </div>
     </div>
@@ -1349,8 +1350,8 @@ document.addEventListener('visibilitychange', () => {
 </script>
 
 <div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
-  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;display:flex;align-items:center;gap:8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet-deep);font-style:italic;">Forma</em><span data-partner-logo="small"></span>
   </a>
 </div>
 

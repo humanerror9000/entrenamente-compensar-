@@ -18,6 +18,7 @@
   --gold:#C9A84C; --amber:#F5A623;
   --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12);
   --green:#4ECB9A; --green-d:rgba(78,203,154,0.12);
+  --amber-deep:#A16707; --gold-deep:#8A712A; --green-deep:#278460; --coral-deep:#D93737;
   --r:14px; --sh:0 2px 16px rgba(0,0,0,0.32);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -39,7 +40,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .ready-step{display:flex;align-items:flex-start;gap:14px;background:var(--card);
   border:1px solid var(--border2);border-radius:13px;padding:14px 16px;text-align:left;}
 .ready-step-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
-.ready-step-title{font-size:14px;color:var(--text);font-weight:600;margin-bottom:3px;}
+.ready-step-title{font-size:16px;color:var(--text);font-weight:600;margin-bottom:3px;}
 .ready-step-desc{font-size:16px;color:var(--text3);line-height:1.55;}
 .ready-btn{width:100%;max-width:340px;padding:18px;background:var(--violet-deep);
   color:#fff;border:none;border-radius:14px;
@@ -56,7 +57,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .stage-header{padding:14px 20px 0;display:flex;align-items:center;
   justify-content:space-between;flex-shrink:0;}
 .stage-label{font-size:16px;color:var(--text3);}
-.stage-step{font-size:13px;color:var(--teal);font-family:'Fredoka',sans-serif;}
+.stage-step{font-size:15px;color:var(--teal);font-family:'Fredoka',sans-serif;}
 
 /* ── Progress bar ── */
 .prog-bar-wrap{height:3px;background:var(--border);flex-shrink:0;margin-top:10px;}
@@ -72,13 +73,13 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 
 /* ── Stage footer ── */
 .stage-footer{padding:14px 24px 32px;border-top:1px solid var(--border);flex-shrink:0;background:var(--bg);}
-.stage-hint{font-size:15px;color:var(--text3);text-align:center;margin-bottom:12px;}
+.stage-hint{font-size:17px;color:var(--text3);text-align:center;margin-bottom:12px;}
 .btn-primary{width:100%;padding:17px;background:var(--violet-deep);color:#fff;
   border:none;border-radius:14px;font-family:'Fredoka','DM Sans',sans-serif;
   font-size:18px;font-weight:600;cursor:pointer;}
 .btn-ghost{padding:12px 20px;background:transparent;color:var(--text2);
   border:1.5px solid var(--border2);border-radius:12px;
-  font-family:'DM Sans',sans-serif;font-size:15px;cursor:pointer;}
+  font-family:'DM Sans',sans-serif;font-size:17px;cursor:pointer;}
 
 /* ── Comprehension question ── */
 .q-screen{flex:1;display:flex;flex-direction:column;
@@ -90,9 +91,9 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
   background:var(--card);font-size:16px;color:var(--text2);
   cursor:pointer;transition:all 0.12s;}
 .q-opt.correct{border-color:var(--teal-b);background:var(--teal-d);color:var(--teal);}
-.q-opt.wrong{border-color:rgba(224,92,92,0.3);background:var(--coral-d);color:var(--coral);}
+.q-opt.wrong{border-color:rgba(224,92,92,0.3);background:var(--coral-d);color:var(--coral-deep);}
 .q-opt.locked{pointer-events:none;}
-.q-feedback{font-size:14px;color:var(--text3);text-align:center;min-height:18px;}
+.q-feedback{font-size:16px;color:var(--text3);text-align:center;min-height:18px;}
 
 /* ── Results ── */
 .results-area{flex:1;display:flex;flex-direction:column;align-items:center;
@@ -105,10 +106,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .result-card{background:var(--card);border:1px solid var(--border2);border-radius:13px;
   padding:14px;text-align:center;}
 .result-card-val{font-size:24px;font-weight:600;font-family:'Fredoka',sans-serif;}
-.result-card-lbl{font-size:14px;color:var(--text3);text-transform:uppercase;
+.result-card-lbl{font-size:16px;color:var(--text3);text-transform:uppercase;
   letter-spacing:0.08em;margin-top:3px;}
 .result-insight{background:var(--violet-d);border:1px solid var(--violet-b);
-  border-radius:13px;padding:16px;font-size:14px;color:var(--text2);
+  border-radius:13px;padding:16px;font-size:16px;color:var(--text2);
   line-height:1.65;width:100%;max-width:340px;}
 .result-btns{display:flex;gap:10px;width:100%;max-width:340px;}
 
@@ -195,7 +196,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
       mientras lees — termina antes de que desaparezca.
     </div>
     <div style="background:var(--card);border:1px solid var(--border2);border-radius:12px;
-      padding:14px 20px;font-size:14px;color:var(--text3);max-width:300px;line-height:1.6;">
+      padding:14px 20px;font-size:16px;color:var(--text3);max-width:300px;line-height:1.6;">
       No hay barra visible — el texto mismo es el reloj.
     </div>
   </div>
@@ -261,7 +262,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
         <div class="result-card-lbl">Comprensión</div>
       </div>
       <div class="result-card">
-        <div class="result-card-val" id="r-delta" style="color:var(--violet)">—</div>
+        <div class="result-card-val" id="r-delta" style="color:var(--violet-deep)">—</div>
         <div class="result-card-lbl">vs. anterior</div>
       </div>
     </div>
@@ -277,11 +278,9 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 <!-- Mente en Forma wordmark -->
 <div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;
   justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
-  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;
-    color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;
-    opacity:0.6;transition:opacity 0.2s;"
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;display:flex;align-items:center;gap:8px;"
     onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+    Mente en <em style="color:var(--violet-deep);font-style:italic;">Forma</em><span data-partner-logo="small"></span>
   </a>
 </div>
 
@@ -820,11 +819,11 @@ function showResults() {
   // Insight
   let insight = '';
   if(compPct === 100) {
-    insight = '<strong style="color:var(--violet)">Comprensión perfecta.</strong> Tu lectura es tanto rápida como precisa. La próxima sesión aumentará el ritmo.';
+    insight = '<strong style="color:var(--violet-deep)">Comprensión perfecta.</strong> Tu lectura es tanto rápida como precisa. La próxima sesión aumentará el ritmo.';
   } else if(compPct >= 50) {
-    insight = '<strong style="color:var(--violet)">Buen ritmo.</strong> Leíste con velocidad y retuviste lo esencial. Sigue practicando para mejorar la comprensión bajo presión.';
+    insight = '<strong style="color:var(--violet-deep)">Buen ritmo.</strong> Leíste con velocidad y retuviste lo esencial. Sigue practicando para mejorar la comprensión bajo presión.';
   } else {
-    insight = '<strong style="color:var(--amber)">Comprensión baja.</strong> El ritmo fue alto pero la retención sufrió. Intenta leer con más atención en los próximos ejercicios.';
+    insight = '<strong style="color:var(--amber-deep)">Comprensión baja.</strong> El ritmo fue alto pero la retención sufrió. Intenta leer con más atención en los próximos ejercicios.';
   }
   document.getElementById('result-insight').innerHTML = insight;
 

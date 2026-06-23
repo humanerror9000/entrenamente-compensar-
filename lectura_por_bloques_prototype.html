@@ -21,6 +21,7 @@
   --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
   --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
   --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --amber-deep:#A16707; --gold-deep:#8A712A; --green-deep:#298454; --coral-deep:#D93737;
   --muted:#4A4860;
   --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
 }
@@ -269,7 +270,7 @@
   margin-bottom:0; }
 .recon-drop-zone .placeholder { color:var(--text3); font-size:16px; align-self:center; }
 .recon-divider { display:flex; align-items:center; gap:10px; margin:14px 0 10px;
-  font-size:13px; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; }
+  font-size:15px; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; }
 .recon-divider::before, .recon-divider::after { content:''; flex:1; height:1px; background:var(--border); }
 .chunk-bank { display:flex; flex-wrap:wrap; gap:8px; }
   .recon-drop-zone {
@@ -286,7 +287,7 @@
   .recon-drop-zone .placeholder {
     font-size: 13px; color: var(--muted); font-style: italic; width: 100%; text-align: center; padding: 8px 0;
   }
-  .recon-drop-zone .chunk-tile { background:var(--violet-d); border-color:var(--violet-b); color:var(--violet); }
+  .recon-drop-zone .chunk-tile { background:var(--violet-d); border-color:var(--violet-b); color:var(--violet-deep); }
 .chunk-tile {
     display: inline-flex; align-items: center;
     font-family: 'Lora', serif; font-size: 18px;
@@ -383,7 +384,7 @@
   .flash-area { padding: 24px 16px !important; }
   .flash-chunk { font-size: 20px !important; padding: 10px 16px !important; }
   .recon-area { padding: 16px 16px !important; }
-  .recon-drop-zone .chunk-tile { background:var(--violet-d); border-color:var(--violet-b); color:var(--violet); font-weight:600; }
+  .recon-drop-zone .chunk-tile { background:var(--violet-d); border-color:var(--violet-b); color:var(--violet-deep); font-weight:600; }
 .chunk-tile { font-size: 17px !important; padding: 12px 16px !important; min-height: 48px !important; font-weight:500; }
   .recon-drop-zone { min-height: 60px !important; padding: 10px 12px !important; }
   .card-instruction { padding: 12px 16px !important; font-size: 14px !important; }
@@ -404,21 +405,21 @@ body::before{display:none;}
 
 /* ── Shared design system classes ── */
 .logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
-.logo em{color:var(--gold);font-style:italic;}
-.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.logo em{color:var(--gold-deep);font-style:italic;}
+.hdr-back{font-size:17px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
 .hdr-back:hover{color:var(--text2);}
-.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
-.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
-.hdr-stat b{color:var(--teal);font-size:13px;}
+.hdr-ex-name{font-size:17px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:17px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:15px;}
 .instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
 .instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
 .instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
 .instr-text strong{color:var(--text);font-weight:600;}
 .card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
 .sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
-.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary{padding:13px 18px;font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
 .sci-details summary::-webkit-details-marker{display:none;}
-.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details summary::after{content:'▸';font-size:12px;transition:transform 0.2s;color:var(--text3);}
 .sci-details[open] summary::after{transform:rotate(90deg);}
 .sci-details[open] summary{border-bottom:1px solid var(--border);}
 .sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
@@ -441,8 +442,8 @@ body::before{display:none;}
 }
 .ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
 @keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
-.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet-deep);font-style:italic;}
 .ready-title {
   font-family:'Poppins',sans-serif;
   font-size:clamp(32px,8vw,48px); font-weight:300;
@@ -463,7 +464,7 @@ body::before{display:none;}
 }
 .preview-label {
   position:absolute; top:10px; left:14px;
-  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  font-size:12px; font-weight:700; letter-spacing:0.10em;
   text-transform:uppercase; color:var(--text3);
 }
 .preview-inner {
@@ -546,8 +547,8 @@ body::before{display:none;}
   overflow-y:auto; z-index:10; background:var(--bg); }
 .focos-header { padding:14px 20px 0; display:flex; align-items:center;
   justify-content:space-between; flex-shrink:0; }
-.focos-label { font-size:13px; color:var(--text3); }
-.focos-speed { font-size:13px; color:var(--teal); font-family:'Fredoka',sans-serif; }
+.focos-label { font-size:15px; color:var(--text3); }
+.focos-speed { font-size:15px; color:var(--teal); font-family:'Fredoka',sans-serif; }
 .focos-area { flex:1; display:flex; align-items:center; justify-content:center;
   padding:24px 28px; }
 .focos-para { font-family:'Lora',serif; font-size:20px; line-height:2.0;
@@ -1111,12 +1112,12 @@ function startFocos() {
   focosRunning = true;
   // Brief countdown
   const area = document.getElementById('focos-area');
-  area.innerHTML = '<div style="font-family:Poppins,sans-serif;font-size:72px;font-weight:300;color:var(--violet);text-align:center;width:100%;">3</div>';
+  area.innerHTML = '<div style="font-family:Poppins,sans-serif;font-size:72px;font-weight:300;color:var(--violet-deep);text-align:center;width:100%;">3</div>';
   let count = 3;
   const cd = setInterval(() => {
     count--;
     if(count > 0) {
-      area.innerHTML = '<div style="font-family:Poppins,sans-serif;font-size:72px;font-weight:300;color:var(--violet);text-align:center;width:100%;">' + count + '</div>';
+      area.innerHTML = '<div style="font-family:Poppins,sans-serif;font-size:72px;font-weight:300;color:var(--violet-deep);text-align:center;width:100%;">' + count + '</div>';
     } else {
       clearInterval(cd);
       initFocos();
@@ -1171,7 +1172,7 @@ function finishFocos() {
     }
     // Clear the paragraph area to declutter — focus entirely on the question
     const area = document.getElementById('focos-area');
-    if(area) area.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:15px;">✓ Secuencia completada</div>';
+    if(area) area.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:17px;">✓ Secuencia completada</div>';
 
     const footer = document.getElementById('focos-footer');
     const qDiv = document.createElement('div');
@@ -1188,7 +1189,7 @@ function finishFocos() {
         if(i === q.correct) {
           d.style.cssText += 'border-color:var(--teal-b);background:var(--teal-d);color:var(--teal);';
         } else {
-          d.style.cssText += 'border-color:rgba(255,107,91,0.3);color:var(--coral);';
+          d.style.cssText += 'border-color:rgba(255,107,91,0.3);color:var(--coral-deep);';
           document.querySelectorAll('.focos-opt')[q.correct].style.cssText += 'border-color:var(--teal-b);background:var(--teal-d);color:var(--teal);';
         }
         setTimeout(() => {
@@ -1215,7 +1216,7 @@ function startFlash() {
     <div class="flash-counter" id="flash-ctr">Bloque 1 de ${flashChunks.length}</div>
     <div class="flash-chunk" id="flash-text" style="font-family:'Lora',serif;font-size:clamp(20px,5vw,28px);color:var(--text);padding:14px 22px;background:var(--violet-d);border:1.5px solid var(--violet-b);border-radius:14px;">${flashChunks[0]}</div>
     <div class="flash-progress-bar"><div class="flash-progress-fill" id="flash-pb" style="width:${100/flashChunks.length}%"></div></div>
-    <div style="font-size:14px;color:var(--text3);margin-top:4px;">Velocidad adaptativa</div>
+    <div style="font-size:16px;color:var(--text3);margin-top:4px;">Velocidad adaptativa</div>
   `;
   flashTimer = setInterval(advanceFlash, 1100);
 }
@@ -1226,7 +1227,7 @@ function advanceFlash() {
     clearInterval(flashTimer);
     document.getElementById('flash-area').innerHTML = `
       <div style="font-size:17px;font-weight:600;color:var(--teal)">✓ Secuencia completada</div>
-      <div style="font-size:15px;color:var(--text3);margin-top:4px;">Responde la pregunta de comprensión</div>
+      <div style="font-size:17px;color:var(--text3);margin-top:4px;">Responde la pregunta de comprensión</div>
     `;
     showFlashQuestion();
     return;
@@ -1451,8 +1452,8 @@ function showFlashQuestion() {
 </script>
 
 <div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
-  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;display:flex;align-items:center;gap:8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet-deep);font-style:italic;">Forma</em><span data-partner-logo="small"></span>
   </a>
 </div>
 

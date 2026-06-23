@@ -58,8 +58,15 @@ window.BRAND = {
   // Keys must match the EXERCISES map in index.html.
   firstSession: ['cats', 'flash', 'saltos'],
 
+  // ── Partner logo ──
+  // Official Compensar logo, provided directly by their team (via John).
+  // Drop a different file + path here for a future client; every page
+  // that has a <span data-partner-logo="..."> slot picks it up automatically.
+  partnerLogoSrc: 'compensar-logo.png',
+  partnerLogoAlt: 'Compensar',
+
   // ── Visual palette (PLACEHOLDER — not Compensar's verified brand spec) ──
-  // We don't have an official brand kit yet. This is a plausible
+  // We don't have an official color brand kit yet. This is a plausible
   // orange-led palette based on Compensar's public-facing visual
   // signals, meant to be swapped out the moment a real kit shows up.
   // Only the violet family is overridden — these files already define
@@ -90,3 +97,23 @@ window.BRAND = {
   root.setProperty('--bg2', c.bg2);
   root.setProperty('--card2', c.card2);
 })();
+
+// Inject the partner logo into any slot marked with data-partner-logo
+// on the page. Sizes: small (footer wordmarks), medium (top bar),
+// large (onboarding). Runs on DOMContentLoaded since, unlike the CSS
+// variables above, this needs actual body elements to exist first.
+document.addEventListener('DOMContentLoaded', function applyPartnerLogo(){
+  const B = window.BRAND;
+  if(!B.partnerLogoSrc) return;
+  const heights = { small: '22px', medium: '30px', large: '44px' };
+  document.querySelectorAll('[data-partner-logo]').forEach(el => {
+    const size = el.getAttribute('data-partner-logo') || 'small';
+    const img = document.createElement('img');
+    img.src = B.partnerLogoSrc;
+    img.alt = B.partnerLogoAlt || '';
+    img.style.height = heights[size] || heights.small;
+    img.style.width = 'auto';
+    img.style.display = 'block';
+    el.appendChild(img);
+  });
+});

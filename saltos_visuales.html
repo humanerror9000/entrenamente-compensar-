@@ -21,6 +21,7 @@
   --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
   --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
   --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --amber-deep:#A16707; --gold-deep:#8A712A; --green-deep:#298454; --coral-deep:#D93737;
   --muted:#4A4860;
   --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
 }
@@ -444,21 +445,21 @@ body::before{display:none;}
 
 /* ── Shared design system classes ── */
 .logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
-.logo em{color:var(--gold);font-style:italic;}
-.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.logo em{color:var(--gold-deep);font-style:italic;}
+.hdr-back{font-size:17px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
 .hdr-back:hover{color:var(--text2);}
-.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
-.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
-.hdr-stat b{color:var(--teal);font-size:13px;}
+.hdr-ex-name{font-size:17px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:17px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:15px;}
 .instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
 .instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
 .instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
 .instr-text strong{color:var(--text);font-weight:600;}
 .card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
 .sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
-.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary{padding:13px 18px;font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
 .sci-details summary::-webkit-details-marker{display:none;}
-.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details summary::after{content:'▸';font-size:12px;transition:transform 0.2s;color:var(--text3);}
 .sci-details[open] summary::after{transform:rotate(90deg);}
 .sci-details[open] summary{border-bottom:1px solid var(--border);}
 .sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
@@ -481,8 +482,8 @@ body::before{display:none;}
 }
 .ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
 @keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
-.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet-deep);font-style:italic;}
 .ready-title {
   font-family:'Poppins',sans-serif;
   font-size:clamp(32px,8vw,48px); font-weight:300;
@@ -503,7 +504,7 @@ body::before{display:none;}
 }
 .preview-label {
   position:absolute; top:10px; left:14px;
-  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  font-size:12px; font-weight:700; letter-spacing:0.10em;
   text-transform:uppercase; color:var(--text3);
 }
 .preview-inner {
@@ -595,7 +596,7 @@ body::before{display:none;}
   <div style="width:88px;height:88px;border-radius:28px;background:var(--teal-d);
     border:1.5px solid var(--teal-b);display:flex;align-items:center;justify-content:center;
     font-size:42px;margin-bottom:28px;box-shadow:0 0 40px rgba(46,207,184,0.15);">👁</div>
-  <div id="first-intro-pos" style="font-size:14px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+  <div id="first-intro-pos" style="font-size:16px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
     color:var(--teal);margin-bottom:10px;">Ejercicio 3 de 3</div>
   <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,7vw,44px);
     font-weight:300;color:var(--text);line-height:1.2;margin-bottom:16px;">
@@ -633,7 +634,7 @@ body::before{display:none;}
         <div style="position:absolute;left:40%;transform:translateX(-50%);
           width:44px;height:44px;border-radius:50%;background:rgba(245,166,35,0.15);
           border:2px solid var(--amber);display:flex;align-items:center;justify-content:center;
-          font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--amber);
+          font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--amber-deep);
           box-shadow:0 0 0 6px rgba(245,166,35,0.08);">E</div>
         <!-- Waiting circle -->
         <div style="position:absolute;left:72%;transform:translateX(-50%);
@@ -646,8 +647,8 @@ body::before{display:none;}
           border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;
           font-family:'Poppins',sans-serif;font-size:16px;font-weight:500;color:var(--text3);">O</div>
       </div>
-      <div style="text-align:center;margin-top:14px;font-size:14px;color:var(--text3);">
-        Toca el círculo <strong style="color:var(--amber);">dorado</strong> cuando se ilumine
+      <div style="text-align:center;margin-top:14px;font-size:16px;color:var(--text3);">
+        Toca el círculo <strong style="color:var(--amber-deep);">dorado</strong> cuando se ilumine
       </div>
     </div>
 
@@ -860,7 +861,7 @@ function updateSessionBtnLabels() {
        ═══════════════════════════════ -->
   <div class="drill-card" id="drill-0">
     <div class="card-head" style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
-      <div style="font-size:14px;color:var(--text3);">Saltos horizontales</div>
+      <div style="font-size:16px;color:var(--text3);">Saltos horizontales</div>
       <div class="live-stat"><div class="val" id="j-score">0/0</div><div class="lbl">aciertos</div></div>
     </div>
     <div class="fb-bar"><div class="fb-fill" id="j-fb" style="width:0%;background:var(--teal)"></div></div>
@@ -874,11 +875,11 @@ function updateSessionBtnLabels() {
         <div id="j-beat-row" style="display:flex;gap:8px;align-items:center;justify-content:center;">
           <div id="j-beat-dot" style="width:18px;height:18px;border-radius:50%;background:var(--border2);
             transition:background 0.05s,transform 0.05s;"></div>
-          <div id="j-beat-label" style="font-size:15px;color:var(--text3);">–</div>
+          <div id="j-beat-label" style="font-size:17px;color:var(--text3);">–</div>
         </div>
       </div>
       <div class="jump-instruction" id="jump-instr">
-        Toca el círculo <strong style="color:var(--amber)">dorado</strong> al ritmo del metrónomo.
+        Toca el círculo <strong style="color:var(--amber-deep)">dorado</strong> al ritmo del metrónomo.
       </div>
     </div>
     <div class="drill-footer">
@@ -892,7 +893,7 @@ function updateSessionBtnLabels() {
        ═══════════════════════════════ -->
   <div class="drill-card" id="drill-1">
     <div class="card-head" style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
-      <div style="font-size:14px;color:var(--text3);">Barrido de retorno</div><span id="sw-regressions" style="display:none"></span>
+      <div style="font-size:16px;color:var(--text3);">Barrido de retorno</div><span id="sw-regressions" style="display:none"></span>
       <div class="live-stat"><div class="val" id="s-rt">–</div><div class="lbl">ms / línea</div></div>
     </div>
   <div class="fb-bar"><div class="fb-fill" id="sw-fb" style="width:0%;background:var(--teal)"></div></div>
@@ -908,12 +909,12 @@ function updateSessionBtnLabels() {
     </div>
     <!-- Comprehension questions — shown after sweep completes -->
     <div id="sw-questions" style="display:none; padding: 0 24px 20px; border-top: 1px solid var(--border); margin-top: 4px;">
-      <div style="font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);padding:16px 0 12px">Comprensión del texto leído</div>
+      <div style="font-size:16px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);padding:16px 0 12px">Comprensión del texto leído</div>
       <div id="sw-q-container" style="display:flex;flex-direction:column;gap:14px;"></div>
-      <div id="sw-q-result" style="display:none;margin-top:16px;padding:12px 15px;border-radius:10px;font-size:13px;line-height:1.6;"></div>
+      <div id="sw-q-result" style="display:none;margin-top:16px;padding:12px 15px;border-radius:10px;font-size:15px;line-height:1.6;"></div>
     </div>
     <div class="drill-footer">
-      <span style="font-size:15px;color:var(--text3)">El barrido correcto aterriza a 3–7 caracteres del margen izquierdo</span>
+      <span style="font-size:17px;color:var(--text3)">El barrido correcto aterriza a 3–7 caracteres del margen izquierdo</span>
       <button class="btn btn-ghost" onclick="startSweep()">Reiniciar</button>
     </div>
   </div>
@@ -923,7 +924,7 @@ function updateSessionBtnLabels() {
        ═══════════════════════════════ -->
   <div class="drill-card" id="drill-2">
     <div class="card-head" style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
-      <div style="font-size:14px;color:var(--text3);">Amplitud visual</div><span id="sp-acc" style="display:none"></span>
+      <div style="font-size:16px;color:var(--text3);">Amplitud visual</div><span id="sp-acc" style="display:none"></span>
       <div class="live-stat"><div class="val" id="v-acc">–</div><div class="lbl">precisión</div></div>
     </div>
   <div class="fb-bar"><div class="fb-fill" id="sp-fb" style="width:0%;background:var(--purple)"></div></div>
@@ -936,7 +937,7 @@ function updateSessionBtnLabels() {
     </div>
     <div class="drill-footer">
       <div style="display:flex;gap:6px;align-items:center">
-        <span style="font-size:15px;color:var(--text3)">Exposición:</span>
+        <span style="font-size:17px;color:var(--text3)">Exposición:</span>
         <button class="btn btn-ghost" onclick="setSpanExposure(700)" id="sp-700" style="padding:5px 10px">700ms</button>
         <button class="btn btn-ghost" onclick="setSpanExposure(500)" id="sp-500" style="padding:5px 10px;border-color:var(--purple);color:var(--purple)">500ms</button>
         <button class="btn btn-ghost" onclick="setSpanExposure(300)" id="sp-300" style="padding:5px 10px">300ms</button>
@@ -950,7 +951,7 @@ function updateSessionBtnLabels() {
        ═══════════════════════════════ -->
   <div class="drill-card" id="drill-3">
     <div class="card-head" style="padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
-      <div style="font-size:14px;color:var(--text3);">Escaneo numérico</div><span id="kd-time" style="display:none"></span>
+      <div style="font-size:16px;color:var(--text3);">Escaneo numérico</div><span id="kd-time" style="display:none"></span>
       <div class="live-stat"><div class="val" id="k-rt">–</div><div class="lbl">ms / número</div></div>
     </div>
   <div class="fb-bar"><div class="fb-fill" id="kd-fb" style="width:0%;background:var(--purple)"></div></div>
@@ -964,7 +965,7 @@ function updateSessionBtnLabels() {
       </div>
     </div>
     <div class="drill-footer">
-      <span style="font-size:15px;color:var(--text3)">Dificultad adaptativa tras cada ronda</span>
+      <span style="font-size:17px;color:var(--text3)">Dificultad adaptativa tras cada ronda</span>
       <div style="display:flex;gap:8px">
         <button class="btn btn-ghost" onclick="initKD()">Reiniciar</button>
         <button class="btn btn-teal" id="kd-start-btn" onclick="startKD()">▶ Iniciar</button>
@@ -1076,7 +1077,7 @@ function startJump() {
   buildJumpTargets();
   document.getElementById('j-start-btn').textContent='En progreso…';
   document.getElementById('j-start-btn').disabled=true;
-  document.getElementById('jump-instr').innerHTML='Toca el círculo <strong style="color:var(--amber)">dorado</strong> al ritmo del metrónomo.';
+  document.getElementById('jump-instr').innerHTML='Toca el círculo <strong style="color:var(--amber-deep)">dorado</strong> al ritmo del metrónomo.';
   document.getElementById('j-score').textContent='0/0';
   document.getElementById('j-fb').style.width='0%';
 
@@ -1091,7 +1092,7 @@ function startJump() {
   cdOv.style.cssText = 'position:fixed;inset:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;';
   cdOv.innerHTML = `
     <div style="font-size:16px;color:var(--text3);margin-bottom:16px;letter-spacing:0.08em;text-transform:uppercase;">Prepárate</div>
-    <div id="cd-number" style="font-family:'Poppins',sans-serif;font-size:96px;font-weight:200;color:var(--violet);line-height:1;">${countdown}</div>
+    <div id="cd-number" style="font-family:'Poppins',sans-serif;font-size:96px;font-weight:200;color:var(--violet-deep);line-height:1;">${countdown}</div>
     <div style="font-size:16px;color:var(--text3);margin-top:16px;">Al ritmo del metrónomo</div>
   `;
   document.body.appendChild(cdOv);
@@ -1104,7 +1105,7 @@ function startJump() {
     } else {
       clearInterval(cdInterval);
       cdOv.remove();
-      document.getElementById('jump-instr').innerHTML='Toca el círculo <strong style="color:var(--amber)">dorado</strong> al ritmo del metrónomo.';
+      document.getElementById('jump-instr').innerHTML='Toca el círculo <strong style="color:var(--amber-deep)">dorado</strong> al ritmo del metrónomo.';
       document.getElementById('j-beat-label').textContent = bpm + ' bpm';
       // First target immediately, then metronome drives the rest
       nextJumpTarget();
@@ -1177,7 +1178,7 @@ function finishJump() {
   ov.innerHTML = `
     <div style="font-size:52px;margin-bottom:12px;">${acc >= 80 ? '🎯' : acc >= 60 ? '👍' : '💪'}</div>
     <div style="font-family:'Poppins',sans-serif;font-size:26px;font-weight:300;color:var(--text);margin-bottom:6px;">Saltos horizontales</div>
-    <div style="font-size:15px;color:var(--text3);margin-bottom:24px;">Ronda ${jRound} de 2</div>
+    <div style="font-size:17px;color:var(--text3);margin-bottom:24px;">Ronda ${jRound} de 2</div>
     <div style="background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:22px 32px;margin-bottom:28px;width:100%;max-width:300px;">
       <div style="font-size:52px;font-weight:700;color:var(--teal);font-family:'Fredoka',sans-serif;">${acc}%</div>
       <div style="font-size:16px;color:var(--text2);margin-top:4px;">${jHits} de ${J_ROUNDS} aciertos</div>
@@ -1228,7 +1229,7 @@ function resetJump() {
   document.getElementById('j-score').textContent='–';
   document.getElementById('j-beat-label').textContent='–';
   document.getElementById('j-fb').style.width='0%';
-  document.getElementById('jump-instr').innerHTML='Toca el círculo <strong style="color:var(--amber)">dorado</strong> al ritmo del metrónomo.';
+  document.getElementById('jump-instr').innerHTML='Toca el círculo <strong style="color:var(--amber-deep)">dorado</strong> al ritmo del metrónomo.';
   buildJumpTargets();
 }
 
@@ -1271,13 +1272,13 @@ function renderSweepLine() {
     lineEl.textContent = line;
     if(li < swLine) {
       // Already read — small and dimmed
-      lineEl.style.cssText='font-size:14px;opacity:0.3;color:var(--text3);padding:2px 0;transition:all 0.3s;';
+      lineEl.style.cssText='font-size:16px;opacity:0.3;color:var(--text3);padding:2px 0;transition:all 0.3s;';
     } else if(li === swLine) {
       // Active line — large, bright, centered
       lineEl.style.cssText='font-size:26px;color:var(--text);font-weight:400;padding:12px 0;line-height:1.5;text-align:center;transition:all 0.3s;';
     } else {
       // Future lines — small and very dimmed
-      lineEl.style.cssText='font-size:14px;opacity:0.15;color:var(--text3);padding:2px 0;transition:all 0.3s;';
+      lineEl.style.cssText='font-size:16px;opacity:0.15;color:var(--text3);padding:2px 0;transition:all 0.3s;';
     }
     display.appendChild(lineEl);
   });
@@ -1314,8 +1315,8 @@ function sweepAdvance() {
     document.getElementById('sw-fb').style.background='var(--green)';
     // Show completion message in text area, then reveal questions
     document.getElementById('sweep-display').innerHTML=
-      '<span style="color:var(--teal);font-size:14px;font-weight:600">✓ Barrido completado — '+swHits+' líneas avanzadas.</span>' +
-      '<br><span style="color:var(--text3);font-size:13px;margin-top:6px;display:block">Ahora responde las preguntas de comprensión sin releer el texto.</span>';
+      '<span style="color:var(--teal);font-size:16px;font-weight:600">✓ Barrido completado — '+swHits+' líneas avanzadas.</span>' +
+      '<br><span style="color:var(--text3);font-size:15px;margin-top:6px;display:block">Ahora responde las preguntas de comprensión sin releer el texto.</span>';
     swQAnswered=0; swQCorrect=0;
     buildSweepQuestions();
     document.getElementById('sw-questions').style.display='block';
@@ -1339,10 +1340,10 @@ function showSweepQuestion(qi) {
   const q = SWEEP_QUESTIONS[qi];
   const container = document.getElementById('sw-q-container');
   container.innerHTML = `
-    <div style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:6px">Pregunta ${qi+1} de ${SWEEP_QUESTIONS.length}</div>
-    <div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.5">${q.q}</div>
+    <div style="font-size:13px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:6px">Pregunta ${qi+1} de ${SWEEP_QUESTIONS.length}</div>
+    <div style="font-size:17px;font-weight:600;color:var(--text);margin-bottom:14px;line-height:1.5">${q.q}</div>
     <div id="sw-opts-${qi}" style="display:flex;flex-direction:column;gap:9px">
-      ${q.opts.map((o,oi)=>`<div class="q-opt" style="padding:12px 16px;border-radius:10px;border:1px solid var(--border2);background:var(--card2);cursor:pointer;font-size:14px;color:var(--text2);transition:all 0.15s" onclick="sweepAnswer(${qi},${oi},${q.correct})">${o}</div>`).join('')}
+      ${q.opts.map((o,oi)=>`<div class="q-opt" style="padding:12px 16px;border-radius:10px;border:1px solid var(--border2);background:var(--card2);cursor:pointer;font-size:16px;color:var(--text2);transition:all 0.15s" onclick="sweepAnswer(${qi},${oi},${q.correct})">${o}</div>`).join('')}
     </div>
   `;
 }
@@ -1380,7 +1381,7 @@ function sweepAnswer(qi, chosen, correct) {
       ov.innerHTML = `
         <div style="font-size:52px;margin-bottom:12px;">${good ? '📖' : '💪'}</div>
         <div style="font-family:'Poppins',sans-serif;font-size:26px;font-weight:300;color:var(--text);margin-bottom:6px;">Barrido de retorno</div>
-        <div style="font-size:15px;color:var(--text3);margin-bottom:24px;">Comprensión del texto</div>
+        <div style="font-size:17px;color:var(--text3);margin-bottom:24px;">Comprensión del texto</div>
         <div style="background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:22px 32px;margin-bottom:28px;width:100%;max-width:300px;">
           <div style="font-size:52px;font-weight:700;color:${good ? 'var(--teal)' : 'var(--amber)'};font-family:'Fredoka',sans-serif;">${pct}%</div>
           <div style="font-size:16px;color:var(--text2);margin-top:4px;">${swQCorrect} de ${SWEEP_QUESTIONS.length} respuestas correctas</div>
@@ -1441,7 +1442,7 @@ function spNextTrial() {
   const pEl=document.getElementById('sp-prompt');
   // Show trial counter in prompt while target is flashing
   pEl.style.display='block';
-  pEl.innerHTML=`Intento <strong style="color:var(--amber)">${spTrials+1}</strong> de ${SP_MAX_TRIALS} — memoriza el número`;
+  pEl.innerHTML=`Intento <strong style="color:var(--amber-deep)">${spTrials+1}</strong> de ${SP_MAX_TRIALS} — memoriza el número`;
   tEl.style.display='block'; tEl.textContent=spTarget;
   document.getElementById('sp-grid').innerHTML='';
   setTimeout(()=>{
@@ -1472,8 +1473,8 @@ function spanTap(n, target, cell) {
   document.getElementById('sp-fb').style.width=(spTrials/SP_MAX_TRIALS*100)+'%';
   document.getElementById('sp-fb').style.background=hit?'var(--green)':'var(--coral)';
   document.getElementById('sp-prompt').innerHTML=hit
-    ?`<strong style="color:var(--green)">✓ Correcto</strong> — ${spTrials}/${SP_MAX_TRIALS} intentos · Precisión: ${acc}%`
-    :`<strong style="color:var(--coral)">✗ Incorrecto</strong> — El número era <strong>${target}</strong> · ${spTrials}/${SP_MAX_TRIALS} intentos`;
+    ?`<strong style="color:var(--green-deep)">✓ Correcto</strong> — ${spTrials}/${SP_MAX_TRIALS} intentos · Precisión: ${acc}%`
+    :`<strong style="color:var(--coral-deep)">✗ Incorrecto</strong> — El número era <strong>${target}</strong> · ${spTrials}/${SP_MAX_TRIALS} intentos`;
 
   if(spTrials >= SP_MAX_TRIALS) {
     setTimeout(finishSpan, 900);
@@ -1496,20 +1497,20 @@ function finishSpan() {
 
   let grade, advice;
   if(acc>=85) {
-    grade=`<strong style="color:var(--green)">Excelente — ${acc}%</strong>`;
+    grade=`<strong style="color:var(--green-deep)">Excelente — ${acc}%</strong>`;
     advice=`Amplitud visual alta. Intenta reducir el tiempo de exposición a 300ms en la próxima sesión.`;
   } else if(acc>=65) {
-    grade=`<strong style="color:var(--amber)">Bueno — ${acc}%</strong>`;
+    grade=`<strong style="color:var(--amber-deep)">Bueno — ${acc}%</strong>`;
     advice=`Progreso sólido. Mantén ${spExposure}ms de exposición hasta alcanzar 85% de precisión.`;
   } else {
-    grade=`<strong style="color:var(--coral)">En desarrollo — ${acc}%</strong>`;
+    grade=`<strong style="color:var(--coral-deep)">En desarrollo — ${acc}%</strong>`;
     advice=`Intenta con 700ms de exposición para consolidar la memoria visual antes de reducir el tiempo.`;
   }
 
   document.getElementById('sp-prompt').innerHTML=`
     <div style="font-size:22px;font-weight:700;margin-bottom:6px">${spHits} / ${SP_MAX_TRIALS}</div>
     <div style="margin-bottom:8px">${grade}</div>
-    <div style="font-size:15px;color:var(--text2);line-height:1.6">${advice}</div>
+    <div style="font-size:17px;color:var(--text2);line-height:1.6">${advice}</div>
   `;
   document.getElementById('sp-start-btn').disabled=false;
   document.getElementById('sp-start-btn').textContent='▶ Repetir';
@@ -1566,7 +1567,7 @@ function startKD() {
   kdNext=1; kdErrors=0; kdRunning=true;
   kdStartTime=performance.now();
   document.getElementById('kd-start-btn').disabled=true;
-  document.getElementById('kd-instr').innerHTML='Toca los números en orden: <strong style="color:var(--amber)">'+kdNext+'</strong>';
+  document.getElementById('kd-instr').innerHTML='Toca los números en orden: <strong style="color:var(--amber-deep)">'+kdNext+'</strong>';
   kdTicker=setInterval(()=>{
     const elapsed=((performance.now()-kdStartTime)/1000).toFixed(1);
     (document.getElementById('kd-time')||{textContent:''}).textContent=elapsed+'s';
@@ -1580,7 +1581,7 @@ function kdTap(n, el) {
     kdNext++;
     document.getElementById('kd-next').textContent=kdNext;
     document.getElementById('kd-fb').style.width=(kdNext-1)/KD_COUNT*100+'%';
-    document.getElementById('kd-instr').innerHTML='Toca: <strong style="color:var(--amber)">'+kdNext+'</strong>';
+    document.getElementById('kd-instr').innerHTML='Toca: <strong style="color:var(--amber-deep)">'+kdNext+'</strong>';
     if(kdNext>KD_COUNT) finishKD();
   } else {
     el.className='kd-num kd-error';
@@ -1601,8 +1602,8 @@ function finishKD() {
   (document.getElementById('kd-time')||{textContent:''}).textContent=elapsed+'s';
   document.getElementById('kd-fb').style.background=kdErrors===0?'var(--green)':'var(--amber)';
   const msg=kdErrors===0
-    ?`<strong style="color:var(--green)">✓ Perfecto — ${elapsed}s sin errores.</strong> Dificultad aumentada para la próxima ronda.`
-    :`Completado en <strong>${elapsed}s</strong> con <strong style="color:var(--coral)">${kdErrors} error${kdErrors>1?'es':''}</strong>. Intenta de nuevo para mejorar la precisión antes de aumentar velocidad.`;
+    ?`<strong style="color:var(--green-deep)">✓ Perfecto — ${elapsed}s sin errores.</strong> Dificultad aumentada para la próxima ronda.`
+    :`Completado en <strong>${elapsed}s</strong> con <strong style="color:var(--coral-deep)">${kdErrors} error${kdErrors>1?'es':''}</strong>. Intenta de nuevo para mejorar la precisión antes de aumentar velocidad.`;
   document.getElementById('kd-instr').innerHTML=msg;
   document.getElementById('kd-start-btn').disabled=false;
   document.getElementById('kd-start-btn').textContent='▶ Repetir';
@@ -1710,7 +1711,7 @@ function showSaltosComplete(){
   title.style.cssText="font-family:'Poppins',sans-serif;font-size:30px;font-weight:300;color:var(--text);";
   title.textContent='Saltos Visuales';
   const sub=document.createElement('div');
-  sub.style.cssText='font-size:15px;color:var(--text2);';
+  sub.style.cssText='font-size:17px;color:var(--text2);';
   sub.textContent='Los cuatro ejercicios completados.';
   const btn=document.createElement('button');
   btn.style.cssText="width:100%;padding:16px;background:var(--violet-deep);color:#fff;border:none;border-radius:13px;font-family:'Fredoka','Poppins',sans-serif;font-size:17px;font-weight:600;cursor:pointer;";
@@ -1765,8 +1766,8 @@ function dismissDrillIntro(n) {
 </script>
 
 <div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
-  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;display:flex;align-items:center;gap:8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet-deep);font-style:italic;">Forma</em><span data-partner-logo="small"></span>
   </a>
 </div>
 

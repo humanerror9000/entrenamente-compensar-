@@ -21,6 +21,7 @@
   --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
   --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
   --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --amber-deep:#A16707; --gold-deep:#8A712A; --green-deep:#298454; --coral-deep:#D93737;
   --ink:var(--text); --ink2:var(--text2); --muted:#4A4860;
   --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
 }
@@ -415,21 +416,21 @@ body::before{display:none;}
 
 /* ── Shared design system classes ── */
 .logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
-.logo em{color:var(--gold);font-style:italic;}
-.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.logo em{color:var(--gold-deep);font-style:italic;}
+.hdr-back{font-size:17px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
 .hdr-back:hover{color:var(--text2);}
-.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
-.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
-.hdr-stat b{color:var(--teal);font-size:13px;}
+.hdr-ex-name{font-size:17px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:17px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:15px;}
 .instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
 .instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
 .instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
 .instr-text strong{color:var(--text);font-weight:600;}
 .card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
 .sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
-.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary{padding:13px 18px;font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
 .sci-details summary::-webkit-details-marker{display:none;}
-.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details summary::after{content:'▸';font-size:12px;transition:transform 0.2s;color:var(--text3);}
 .sci-details[open] summary::after{transform:rotate(90deg);}
 .sci-details[open] summary{border-bottom:1px solid var(--border);}
 .sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
@@ -452,8 +453,8 @@ body::before{display:none;}
 }
 .ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
 @keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
-.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet-deep);font-style:italic;}
 .ready-title {
   font-family:'Poppins',sans-serif;
   font-size:clamp(32px,8vw,48px); font-weight:300;
@@ -474,7 +475,7 @@ body::before{display:none;}
 }
 .preview-label {
   position:absolute; top:10px; left:14px;
-  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  font-size:12px; font-weight:700; letter-spacing:0.10em;
   text-transform:uppercase; color:var(--text3);
 }
 .preview-inner {
@@ -720,10 +721,10 @@ function showResults(panelId, hits, total, task) {
     grade = `<span style="color:var(--teal)">${acc}%</span>`;
     insight = `<strong>Amplitud visual excelente.</strong> Tu ventana de procesamiento paralelo está bien desarrollada. Reduce el tiempo de exposición o aumenta la longitud de cadena en la próxima sesión.`;
   } else if(acc >= 65) {
-    grade = `<span style="color:var(--amber)">${acc}%</span>`;
+    grade = `<span style="color:var(--amber-deep)">${acc}%</span>`;
     insight = `<strong>Progreso sólido.</strong> Tu VAS está ampliándose. Mantén la dificultad actual durante 3–4 sesiones más antes de reducir la exposición.`;
   } else {
-    grade = `<span style="color:var(--coral)">${acc}%</span>`;
+    grade = `<span style="color:var(--coral-deep)">${acc}%</span>`;
     insight = `<strong>En construcción.</strong> El VAS se desarrolla con práctica repetida. Aumenta el tiempo de exposición o reduce la longitud de la cadena para consolidar antes de avanzar.`;
   }
 
@@ -786,11 +787,11 @@ function startWR() {
   const prompt = document.getElementById('wr-prompt');
   prompt.style.display='';
   let count = 3;
-  prompt.innerHTML = `<span style="font-size:52px;font-weight:300;color:var(--violet);font-family:'Poppins',sans-serif;">${count}</span>`;
+  prompt.innerHTML = `<span style="font-size:52px;font-weight:300;color:var(--violet-deep);font-family:'Poppins',sans-serif;">${count}</span>`;
   const cd = setInterval(()=>{
     count--;
     if(count > 0) {
-      prompt.innerHTML = `<span style="font-size:52px;font-weight:300;color:var(--violet);font-family:'Poppins',sans-serif;">${count}</span>`;
+      prompt.innerHTML = `<span style="font-size:52px;font-weight:300;color:var(--violet-deep);font-family:'Poppins',sans-serif;">${count}</span>`;
     } else {
       clearInterval(cd);
       prompt.style.display='none';
@@ -851,7 +852,7 @@ function buildWRResponse() {
   // Backspace button
   const bk = document.createElement('button');
   bk.className='letter-btn'; bk.textContent='⌫'; bk.id='wr-backspace';
-  bk.style.cssText='font-family:"Poppins",sans-serif;font-size:16px;color:var(--coral);border-color:rgba(190,18,60,0.3);';
+  bk.style.cssText='font-family:"Poppins",sans-serif;font-size:16px;color:var(--coral-deep);border-color:rgba(190,18,60,0.3);';
   bk.addEventListener('click', wrBackspace);
   choices.appendChild(bk);
 
@@ -925,7 +926,7 @@ function afterWR(){
   showModeTransition(1,
     'Informe','parcial',
     'Ahora se señala una posición — identifica solo esa letra.',
-    '<div style="font-family:\'Poppins\',sans-serif;font-size:28px;color:var(--teal);letter-spacing:0.1em;">MAKO<span style="color:var(--amber)"> ↑3</span></div>',
+    '<div style="font-family:\'Poppins\',sans-serif;font-size:28px;color:var(--teal);letter-spacing:0.1em;">MAKO<span style="color:var(--amber-deep)"> ↑3</span></div>',
     '▶ Continuar'
   );
 }
@@ -934,7 +935,7 @@ function afterPR(){
   showModeTransition(2,
     'Coincidencia','de cadenas',
     '¿Son iguales las dos cadenas? Responde rápido.',
-    '<div style="display:flex;gap:12px;align-items:center;font-family:\'Poppins\',sans-serif;font-size:22px;"><span style="color:var(--teal)">BARO</span><span style="color:var(--text3)">vs</span><span style="color:var(--amber)">BALO</span></div>',
+    '<div style="display:flex;gap:12px;align-items:center;font-family:\'Poppins\',sans-serif;font-size:22px;"><span style="color:var(--teal)">BARO</span><span style="color:var(--text3)">vs</span><span style="color:var(--amber-deep)">BALO</span></div>',
     '▶ Continuar'
   );
 }
@@ -977,24 +978,24 @@ function showFinalResults(){
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;">
         <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:12px 8px;">
           <div style="font-size:20px;font-weight:700;color:var(--text);">${Math.round(sessionScores.wr.h/sessionScores.wr.t*100)}%</div>
-          <div style="font-size:10px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em;">Completo</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em;">Completo</div>
         </div>
         <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:12px 8px;">
           <div style="font-size:20px;font-weight:700;color:var(--text);">${Math.round(sessionScores.pr.h/sessionScores.pr.t*100)}%</div>
-          <div style="font-size:10px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em;">Parcial</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em;">Parcial</div>
         </div>
         <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:12px 8px;">
           <div style="font-size:20px;font-weight:700;color:var(--text);">${Math.round(sessionScores.sm.h/sessionScores.sm.t*100)}%</div>
-          <div style="font-size:10px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em;">Coincidencia</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em;">Coincidencia</div>
         </div>
       </div>
-      <div style="background:var(--violet-d);border:1px solid var(--violet-b);border-radius:11px;padding:14px 16px;font-size:14px;color:var(--text2);line-height:1.65;width:100%;text-align:left;">${insight}</div>
+      <div style="background:var(--violet-d);border:1px solid var(--violet-b);border-radius:11px;padding:14px 16px;font-size:16px;color:var(--text2);line-height:1.65;width:100%;text-align:left;">${insight}</div>
       ${isInSession() ? `
         <button onclick="completeAndContinue()" style="width:100%;padding:16px;background:var(--violet-deep);color:#fff;border:none;border-radius:13px;font-family:'Fredoka','Poppins',sans-serif;font-size:17px;font-weight:600;cursor:pointer;margin-bottom:10px;">${_btnLabel}</button>
       ` : `
         <div style="display:flex;gap:10px;width:100%;">
-          <button onclick="location.reload()" style="flex:1;padding:13px;background:transparent;color:var(--text2);border:1.5px solid var(--border2);border-radius:11px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Repetir</button>
-          <a href="index.html" style="flex:1;padding:13px;background:var(--teal);color:var(--bg);border:none;border-radius:11px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;">← Inicio</a>
+          <button onclick="location.reload()" style="flex:1;padding:13px;background:transparent;color:var(--text2);border:1.5px solid var(--border2);border-radius:11px;font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;cursor:pointer;">Repetir</button>
+          <a href="index.html" style="flex:1;padding:13px;background:var(--teal);color:var(--bg);border:none;border-radius:11px;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;">← Inicio</a>
         </div>
       `}
     </div>
@@ -1071,7 +1072,7 @@ function prNextTrial() {
       border:1.5px solid var(--border2); background:var(--card2);
       display:flex; align-items:center; justify-content:center;
       font-family:'Poppins',sans-serif;
-      font-size:11px; font-weight:700; color:var(--muted);
+      font-size:13px; font-weight:700; color:var(--muted);
       letter-spacing:0; transition:all 0.2s;
     `;
     box.textContent = i+1;
@@ -1369,7 +1370,7 @@ function buildPRAnimation(container) {
         strEl.style.opacity = '0';
         setTimeout(()=>{
           strEl.innerHTML = w.split('').map((c,j)=>
-            j===pos ? '<span style="color:var(--amber);text-decoration:underline">'+c+'</span>'
+            j===pos ? '<span style="color:var(--amber-deep);text-decoration:underline">'+c+'</span>'
                     : '<span style="opacity:0.25">'+c+'</span>'
           ).join('');
           strEl.style.opacity = '1';
@@ -1421,7 +1422,7 @@ function startTransitionCountdown(nextTask) {
   if(window._transitionIv) { clearInterval(window._transitionIv); window._transitionIv = null; }
   const ov = document.getElementById('mode-transition-ov');
   if(!ov) return;
-  ov.innerHTML = '<div style="font-family:Poppins,sans-serif;font-size:96px;font-weight:300;color:var(--violet);" id="tc-num">3</div>';
+  ov.innerHTML = '<div style="font-family:Poppins,sans-serif;font-size:96px;font-weight:300;color:var(--violet-deep);" id="tc-num">3</div>';
   let count = 3;
   const cd = setInterval(()=>{
     count--;
@@ -1444,9 +1445,9 @@ function startTransitionCountdown(nextTask) {
 </script>
 
 <div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;padding:10px 20px 20px;pointer-events:none;">
-  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Mente en <em style="color:var(--violet);font-style:italic;">Forma</em></a>
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;display:flex;align-items:center;gap:8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Mente en <em style="color:var(--violet-deep);font-style:italic;">Forma</em><span data-partner-logo="small"></span></a>
 </div>
 
-<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;padding:10px 20px 20px;pointer-events:none;"><a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Mente en <em style="color:var(--violet);font-style:italic;">Forma</em></a></div>
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;padding:10px 20px 20px;pointer-events:none;"><a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;display:flex;align-items:center;gap:8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Mente en <em style="color:var(--violet-deep);font-style:italic;">Forma</em><span data-partner-logo="small"></span></a></div>
 </body>
 </html>

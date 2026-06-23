@@ -18,6 +18,7 @@
   --coral:#E05C5C; --coral-d:rgba(224,92,92,0.12); --coral-b:rgba(224,92,92,0.30);
   --purple:#B8A9FF; --purple-d:rgba(184,169,255,0.12); --purple-b:rgba(184,169,255,0.28);
   --green:#52C98A; --green-d:rgba(82,201,138,0.12); --green-b:rgba(82,201,138,0.30);
+  --amber-deep:#A16707; --gold-deep:#8A712A; --green-deep:#298454; --coral-deep:#D93737;
   --ink:var(--text); --ink2:var(--text2); --muted:#4A4860;
   --r:14px; --sh:0 2px 20px rgba(0,0,0,0.35);
 }
@@ -380,21 +381,21 @@ body::before{display:none;}
 
 /* ── Shared design system classes ── */
 .logo{font-family:'Poppins',sans-serif;font-size:20px;font-weight:300;color:var(--text);letter-spacing:-0.01em;}
-.logo em{color:var(--gold);font-style:italic;}
-.hdr-back{font-size:15px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
+.logo em{color:var(--gold-deep);font-style:italic;}
+.hdr-back{font-size:17px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color 0.15s;}
 .hdr-back:hover{color:var(--text2);}
-.hdr-ex-name{font-size:15px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
-.hdr-stat{font-size:15px;color:var(--text3);display:flex;align-items:center;gap:5px;}
-.hdr-stat b{color:var(--teal);font-size:13px;}
+.hdr-ex-name{font-size:17px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
+.hdr-stat{font-size:17px;color:var(--text3);display:flex;align-items:center;gap:5px;}
+.hdr-stat b{color:var(--teal);font-size:15px;}
 .instr-banner{background:var(--teal-d);border-bottom:1px solid var(--teal-b);padding:14px 20px;display:flex;align-items:flex-start;gap:12px;}
 .instr-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
 .instr-text{font-size:17px;color:var(--text2);line-height:1.65;}
 .instr-text strong{color:var(--text);font-weight:600;}
 .card-title-serif{font-family:'Poppins',sans-serif;font-size:24px;font-weight:300;color:var(--text);line-height:1.1;margin-bottom:4px;}
 .sci-details{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
-.sci-details summary{padding:13px 18px;font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
+.sci-details summary{padding:13px 18px;font-size:14px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent;}
 .sci-details summary::-webkit-details-marker{display:none;}
-.sci-details summary::after{content:'▸';font-size:10px;transition:transform 0.2s;color:var(--text3);}
+.sci-details summary::after{content:'▸';font-size:12px;transition:transform 0.2s;color:var(--text3);}
 .sci-details[open] summary::after{transform:rotate(90deg);}
 .sci-details[open] summary{border-bottom:1px solid var(--border);}
 .sci-body,.sci-details-body{padding:14px 18px 16px;font-size:16px;color:var(--text2);line-height:1.7;}
@@ -417,8 +418,8 @@ body::before{display:none;}
 }
 .ready-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:12px 0 8px;text-align:center;}
 @keyframes rdyUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.ready-logo{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
-.ready-logo em{color:var(--violet);font-style:italic;}
+.ready-logo{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:0.02em;margin-bottom:16px;text-align:center;}
+.ready-logo em{color:var(--violet-deep);font-style:italic;}
 .ready-title {
   font-family:'Poppins',sans-serif;
   font-size:clamp(32px,8vw,48px); font-weight:300;
@@ -439,7 +440,7 @@ body::before{display:none;}
 }
 .preview-label {
   position:absolute; top:10px; left:14px;
-  font-size:10px; font-weight:700; letter-spacing:0.10em;
+  font-size:12px; font-weight:700; letter-spacing:0.10em;
   text-transform:uppercase; color:var(--text3);
 }
 .preview-inner {
@@ -532,7 +533,7 @@ body::before{display:none;}
       <div id="rdy-mem-anim" style="min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
         <div id="rdy-mem-eq" style="font-family:'Poppins',sans-serif;font-size:32px;color:var(--text);transition:opacity 0.25s;"></div>
         <div id="rdy-mem-word" style="font-family:'Poppins',sans-serif;font-size:28px;color:var(--teal);letter-spacing:0.08em;transition:opacity 0.25s;display:none;"></div>
-        <div id="rdy-mem-label" style="font-size:15px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;"></div>
+        <div id="rdy-mem-label" style="font-size:17px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;"></div>
       </div>
     </div>
     <button class="ready-btn" onclick="dismissReady()">▶ Empecemos</button>
@@ -558,7 +559,7 @@ function showSpanTransition(){
   ov.innerHTML=`
     <div style="font-family:'Poppins',sans-serif;font-size:36px;font-weight:300;color:var(--text);margin-bottom:4px;">¡Bien hecho!</div>
     <div style="font-size:16px;color:var(--text2);max-width:320px;line-height:1.65;margin-bottom:8px;">Ahora inténtalo con <strong style="color:var(--text);">oraciones</strong> en lugar de ecuaciones. Mismo objetivo — recuerda las palabras en orden.</div>
-    <div style="background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:16px 20px;max-width:300px;font-size:14px;color:var(--text2);line-height:1.6;">
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:16px 20px;max-width:300px;font-size:16px;color:var(--text2);line-height:1.6;">
       <em style="color:var(--teal);">"El cielo es azul"</em> → ¿Es verdad? → Recuerda: <strong>azul</strong>
     </div>
     <button onclick="document.getElementById('span-transition').style.display='none';startReadingSpan();" style="width:100%;max-width:300px;padding:15px;background:var(--teal);color:var(--bg);border:none;border-radius:12px;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;">▶ Continuar</button>
@@ -728,23 +729,23 @@ function updateSessionBtnLabels() {
     </div>
 
     <div style="padding:20px 24px 8px">
-      <div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:16px" id="s0-desc">
+      <div style="font-size:15px;color:var(--ink2);line-height:1.7;margin-bottom:16px" id="s0-desc">
         <strong>Cómo funciona:</strong> Verás una ecuación matemática. Responde verdadero o falso rápidamente. Luego aparecerá una palabra — memorízala. Esto se repite 3–5 veces por ronda. Al terminar, escribe todas las palabras en orden usando el teclado de pantalla.
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px">
         <div style="background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:12px;text-align:center">
           <div style="font-size:20px;font-weight:700;color:var(--purple)">3–5</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">palabras por ronda</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">palabras por ronda</div>
         </div>
         <div style="background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:12px;text-align:center">
           <div style="font-size:20px;font-weight:700;color:var(--teal)">5</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">rondas por sesión</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">rondas por sesión</div>
         </div>
       </div>
     </div>
 
     <div class="cfooter">
-      <div style="font-size:12px;color:var(--muted)">~3 minutos · Nivel se ajusta entre sesiones</div>
+      <div style="font-size:14px;color:var(--muted)">~3 minutos · Nivel se ajusta entre sesiones</div>
       <button class="btn btn-teal" onclick="startSession()">▶ Iniciar sesión</button>
     </div>
   </div>
@@ -757,7 +758,7 @@ function updateSessionBtnLabels() {
       <div style="font-size:16px;color:var(--text3);">Responde · memoriza · recuerda</div>
       <div class="clive"><div class="cv" id="trial-counter">1/5</div><div class="cl">ronda</div></div>
     </div>
-    <div class="prog-bar"><div class="prog-fill" id="trial-fill" style="width:0%;background:var(--amber)"></div></div>
+    <div class="prog-bar"><div class="prog-fill" id="trial-fill" style="width:0%;background:var(--amber-deep)"></div></div>
 
     <!-- Processing task -->
     <div class="proc-area" id="proc-area"></div>
@@ -772,7 +773,7 @@ function updateSessionBtnLabels() {
     <div class="adapt-banner" id="adapt-banner"></div>
 
     <div class="cfooter" id="trial-footer">
-      <div style="font-size:12px;color:var(--muted)" id="trial-hint">Responde la ecuación para continuar</div>
+      <div style="font-size:14px;color:var(--muted)" id="trial-hint">Responde la ecuación para continuar</div>
     </div>
   </div>
 
@@ -781,7 +782,7 @@ function updateSessionBtnLabels() {
        ══════════════════════════ -->
   <div class="card" id="stage-recall">
     <div class="chead" style="padding:12px 20px;">
-      <div style="font-size:14px;color:var(--text3);">Escribe en orden</div>
+      <div style="font-size:16px;color:var(--text3);">Escribe en orden</div>
       <div class="clive"><div class="cv" id="recall-set">3</div><div class="cl">palabras</div></div>
     </div>
     <div class="recall-area">
@@ -1092,7 +1093,7 @@ function buildRecallUI() {
     k.className='key'; 
     k.textContent=word;
     k.dataset.word=word;
-    k.style.cssText='font-size:15px;padding:12px 8px;font-family:"Crimson Pro",serif;letter-spacing:0.05em;';
+    k.style.cssText='font-size:17px;padding:12px 8px;font-family:"Crimson Pro",serif;letter-spacing:0.05em;';
     k.addEventListener('click', ()=>recallWordTap(k, word));
     keys.appendChild(k);
   });
@@ -1226,7 +1227,7 @@ function endSession() {
 
   // Build trial history pills
   const hist = document.getElementById('trial-history'); if(!hist) { setStage(3); return; }
-  hist.innerHTML='<div style="font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);width:100%;margin-bottom:4px">Historial de rondas</div>';
+  hist.innerHTML='<div style="font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);width:100%;margin-bottom:4px">Historial de rondas</div>';
   allTrialResults.forEach((r,i)=>{
     const pct = r.partialScore/r.setSize;
     const cls = pct===1?'th-full':pct>=0.5?'th-partial':'th-zero';
@@ -1378,7 +1379,7 @@ function showSessionOverlay() {
   title.style.cssText = "font-family:'Poppins',sans-serif;font-size:30px;font-weight:300;color:var(--text);";
   title.textContent = 'Memoria Activa';
   const sub = document.createElement('div');
-  sub.style.cssText = 'font-size:15px;color:var(--text2);';
+  sub.style.cssText = 'font-size:17px;color:var(--text2);';
   sub.textContent = 'Ejercicio completado';
   const btn = document.createElement('button');
   btn.style.cssText = "width:100%;padding:16px;background:var(--violet-deep);color:#fff;border:none;border-radius:13px;font-family:'Fredoka','Poppins',sans-serif;font-size:17px;font-weight:600;cursor:pointer;";
@@ -1422,8 +1423,8 @@ function nextSentence() { return _maNextFromPool('em_ma_sent', SENTENCES); }
 </script>
 
 <div style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;align-items:center;padding:10px 20px 20px;pointer-events:none;">
-  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-    Mente en <em style="color:var(--violet);font-style:italic;">Forma</em>
+  <a href="index.html" style="font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;color:var(--text3);letter-spacing:-0.01em;text-decoration:none;pointer-events:all;opacity:0.6;transition:opacity 0.2s;display:flex;align-items:center;gap:8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    Mente en <em style="color:var(--violet-deep);font-style:italic;">Forma</em><span data-partner-logo="small"></span>
   </a>
 </div>
 
