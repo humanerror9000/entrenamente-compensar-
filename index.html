@@ -206,12 +206,15 @@ body::before{display:none;}
 <div id="onboarding">
   <div class="ob-screen active" id="ob-s1">
     <div class="ob-logo" id="brand-logo"></div>
-    <div data-partner-logo="large" style="display:flex;justify-content:center;margin-bottom:36px;"></div>
     <div class="ob-dots"><div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
     <div class="ob-title" id="ob-s1-title"></div>
     <div class="ob-sub" id="ob-s1-sub"></div>
     <input class="ob-input" id="ob-name" type="text" placeholder="" autocomplete="given-name" maxlength="30" oninput="checkName()">
     <button class="ob-btn" id="ob-s1-btn" disabled onclick="goTo(2)">Continuar →</button>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:32px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);">Un programa de bienestar</div>
+      <div data-partner-logo="medium"></div>
+    </div>
   </div>
   <div class="ob-screen" id="ob-s2">
     <div class="ob-dots"><div class="ob-dot done"></div><div class="ob-dot active"></div><div class="ob-dot"></div></div>
