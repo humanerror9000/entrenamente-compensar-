@@ -604,13 +604,13 @@ body::before{display:none;}
 
     
     <div style="display:flex;gap:12px;justify-content:center;margin-bottom:28px;">
-      <div id="rdy-slot-a" style="width:110px;background:var(--teal-d);border:1px solid var(--teal-b);border-radius:10px;padding:10px 12px;text-align:center;">
-        <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">🐾 Animales</div>
-        <div id="rdy-slot-a-word" style="font-family:'Poppins',sans-serif;font-size:20px;color:var(--text);min-height:28px;transition:opacity 0.2s;">–</div>
+      <div id="rdy-slot-a" style="width:132px;background:var(--teal-d);border:1px solid var(--teal-b);border-radius:10px;padding:10px 10px;text-align:center;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;white-space:nowrap;">🐾 Animales</div>
+        <div id="rdy-slot-a-word" style="font-family:'Poppins',sans-serif;font-size:20px;color:var(--text);min-height:28px;">águila</div>
       </div>
-      <div id="rdy-slot-b" style="width:110px;background:var(--amber-d);border:1px solid var(--amber-b);border-radius:10px;padding:10px 12px;text-align:center;">
-        <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--amber-deep);margin-bottom:6px;">💼 Oficios</div>
-        <div id="rdy-slot-b-word" style="font-family:'Poppins',sans-serif;font-size:20px;color:var(--text);min-height:28px;transition:opacity 0.2s;">–</div>
+      <div id="rdy-slot-b" style="width:132px;background:var(--amber-d);border:1px solid var(--amber-b);border-radius:10px;padding:10px 10px;text-align:center;">
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--amber-deep);margin-bottom:6px;white-space:nowrap;">💼 Oficios</div>
+        <div id="rdy-slot-b-word" style="font-family:'Poppins',sans-serif;font-size:20px;color:var(--text);min-height:28px;">médico</div>
       </div>
     </div>
     <button class="ready-btn" onclick="dismissReady()">▶ Empecemos</button>
@@ -618,32 +618,6 @@ body::before{display:none;}
   </div>
 </div>
 <script>
-(function(){
-  const seq=[
-    {cat:'a',word:'perro'},{cat:'b',word:'médico'},
-    {cat:'a',word:'águila'},{cat:'b',word:'piloto'},
-    {cat:'a',word:'cebra'}
-  ];
-  let si=0;
-  const sw=document.getElementById('rdy-stream-word');
-  const sc=document.getElementById('rdy-stream-cat');
-  const sa=document.getElementById('rdy-slot-a-word');
-  const sb=document.getElementById('rdy-slot-b-word');
-  if(!sw) return;
-  function next(){
-    const item=seq[si%seq.length];
-    sw.style.opacity='0';
-    setTimeout(()=>{
-      sw.textContent=item.word; sw.style.opacity='1';
-      sc.textContent=item.cat==='a'?'🐾 Animales':'💼 Oficios';
-      if(item.cat==='a'){ sa.textContent=item.word; sa.style.color='var(--teal)'; setTimeout(()=>sa.style.color='var(--text)',600); }
-      else { sb.textContent=item.word; sb.style.color='var(--amber)'; setTimeout(()=>sb.style.color='var(--text)',600); }
-      si++;
-    },120);
-    setTimeout(()=>{ sw.style.opacity='0'; sc.textContent=''; setTimeout(next,400); },1100);
-  }
-  setTimeout(next,500);
-})();
 function dismissFirstIntro() {
   document.getElementById('first-intro').style.display = 'none';
   document.getElementById('ready-screen').classList.remove('hidden');
@@ -1304,31 +1278,6 @@ function releaseWakeLock() {
 document.addEventListener('visibilitychange', () => {
   if(document.visibilityState === 'visible') requestWakeLock();
 });
-
-// ── Ready screen preview animation ──
-(function startCatPreview(){
-  const slotA = document.getElementById('rdy-slot-a-word');
-  const slotB = document.getElementById('rdy-slot-b-word');
-  if(!slotA || !slotB) return;
-  const animales = ['águila','cebra','tigre','oso','puma'];
-  const oficios  = ['médico','piloto','chef','pintor','juez'];
-  let i = 0;
-  function tick(){
-    const a = animales[i % animales.length];
-    const b = oficios[i % oficios.length];
-    slotA.style.opacity = '0';
-    slotB.style.opacity = '0';
-    setTimeout(function(){
-      slotA.textContent = a;
-      slotB.textContent = b;
-      slotA.style.opacity = '1';
-      slotB.style.opacity = '1';
-      i++;
-    }, 200);
-  }
-  tick();
-  setInterval(tick, 1800);
-})();
 
 // First-time intro
 (function(){
